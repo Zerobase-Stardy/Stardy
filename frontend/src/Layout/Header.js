@@ -21,6 +21,7 @@ const LinkItem = ({ active, children, to }) => (
           <LinkItem to="/progamer">Pro-gamer</LinkItem>
           <LinkItem to="/races">Races</LinkItem>
           <LinkItem to="/community">Community</LinkItem>
+          <LinkItem to="/mylecture">내 강의실</LinkItem>
           <input />
         </HeaderNav>
     </Wrap>
