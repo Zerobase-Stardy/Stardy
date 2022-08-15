@@ -16,6 +16,9 @@ export default function Nav() {
   )
 }
 
-const  Navigation= styled.nav`
+const Navigation= styled.nav`
+display: flex;
+flex-direction: row-reverse;
+justify-content: flex-end;
 
 `

@@ -6,7 +6,11 @@ import reset from "styled-reset";  // style-reset 패키지
 const GlobalStyle = createGlobalStyle`
  ${reset}
 
-
+body
+{
+  width: 80%;
+  margin: 0 auto;
+}
 
 header
 {
