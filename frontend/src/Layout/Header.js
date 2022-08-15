@@ -19,7 +19,7 @@ const LinkItem = ({ active, children, to }) => (
               </LinkItem> 
             </LogoArea>
             <UserNaviArea > 
-              <LinkItem to="/login"> Login </LinkItem> | <LinkItem to="/mypage"> My Page </LinkItem> 
+              <Login>  Login </Login> | <LinkItem to="/mypage"> My Page </LinkItem> 
             </UserNaviArea>
             <HeaderNav>
               <LinkItem to="/progamer">Pro-gamer</LinkItem>
@@ -66,4 +66,11 @@ const UserNaviArea = styled.div`
   top: 12px;
   font-size: 14px;
 
+`
+
+const Login = styled.button`
+border: 0;
+outline: 0;
+background-color: transparent;
+color: white
 `

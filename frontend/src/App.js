@@ -5,7 +5,6 @@ import Footer from "./Layout/Footer";
 import Header from "./Layout/Header";
 import Community from "./pages/Community";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
 import MyLecture from "./pages/MyLecture";
 import Mypage from "./pages/Mypage";
 import ProGamer from "./pages/ProGamer";
@@ -26,7 +25,6 @@ function App() {
   <Route path={"/races"} element={<Races />}></Route>
   <Route path={"/community"} element={<Community />}></Route>
   <Route path={"/mylecture"} element={<MyLecture />}></Route>
-  <Route path={"/login"} element={<Login />}></Route>
   <Route path={"/mypage"} element={<Mypage />}></Route>
 </Routes>
 <Footer />
