@@ -17,28 +17,28 @@ export default function Footer() {
         <a href="https://dokuny.notion.site/Stardy-1a5d71be1ff149c8b8495a148c1bca3c"><SiNotion /></a>
         </Top>
         <Bottom>
-<Member>
-<h1>Member</h1>
-<div>BackEnd : 이도훈  , 노영훈  , 김현빈</div> 
-<div>FrontEnd : 임호준  , 이승훈</div>
-</Member>
-        <Tools>
-        <h1>Tools</h1>
-            <div>
-            BackEnd : &nbsp;
-            <SiSpring color='#6aad3c'/>&nbsp;&nbsp;
-            <SiSpringboot color='#6aad3c'/>&nbsp;&nbsp;
-            <SiSpringsecurity color='#6aad3c'/>&nbsp;&nbsp;
-            <SiMariadb />
-            </div>
+          <Member>
+          <h1>Member</h1>
+          <div>BackEnd : 이도훈  , 노영훈  , 김현빈</div> 
+          <div>FrontEnd : 임호준  , 이승훈</div>
+          </Member>
+          <Tools>
+          <h1>Tools</h1>
+              <div>
+              BackEnd : &nbsp;
+              <SiSpring color='#6aad3c'/>&nbsp;&nbsp;
+              <SiSpringboot color='#6aad3c'/>&nbsp;&nbsp;
+              <SiSpringsecurity color='#6aad3c'/>&nbsp;&nbsp;
+              <SiMariadb />
+              </div>
 
-            <div>FrontEnd : &nbsp;
-            <SiHtml5 color='#ea6329'/>&nbsp;&nbsp;
-            <SiCss3 color='#156eb0'/>&nbsp;&nbsp;
-            <SiJavascript color='#f6d236'/>&nbsp;&nbsp;
-            <SiReact color='skyblue'/>
-            </div>
-          </Tools>
+              <div>FrontEnd : &nbsp;
+              <SiHtml5 color='#ea6329'/>&nbsp;&nbsp;
+              <SiCss3 color='#156eb0'/>&nbsp;&nbsp;
+              <SiJavascript color='#f6d236'/>&nbsp;&nbsp;
+              <SiReact color='skyblue'/>
+              </div>
+            </Tools>
 
         </Bottom>
 
@@ -49,6 +49,8 @@ export default function Footer() {
     </footer>
   )
 }
+
+
 
 const Wrap = styled.div`
 padding: 20px;

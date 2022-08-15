@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
-
+import Logo from "../favicon.ico"
 
 const LinkItem = ({ active, children, to }) => (
   <Link to = {to} className={`menu-item ${active ? active : ""}`}> { children } </Link>
@@ -10,31 +10,41 @@ const LinkItem = ({ active, children, to }) => (
   
   export default function Header() {
     return (
-      <Wrap>
-        <LogoArea> 
-          <LinkItem to="/"> STARdy </LinkItem> 
-        </LogoArea>
-        <UserNaviArea > 
-          <LinkItem to="/login"> Login </LinkItem> | <LinkItem to="/mypage"> My Page </LinkItem> 
-        </UserNaviArea>
-        <HeaderNav>
-          <LinkItem to="/progamer">Pro-gamer</LinkItem>
-          <LinkItem to="/races">Races</LinkItem>
-          <LinkItem to="/community">Community</LinkItem>
-          <LinkItem to="/mylecture">내 강의실</LinkItem>
-          <input />
-        </HeaderNav>
-    </Wrap>
+      <HeaderArea>
+          <Wrap>
+            <LogoArea> 
+              <LinkItem to="/">
+                <img src={Logo} alt="Logo" width="28" height="28"/>
+                STARdy 
+              </LinkItem> 
+            </LogoArea>
+            <UserNaviArea > 
+              <LinkItem to="/login"> Login </LinkItem> | <LinkItem to="/mypage"> My Page </LinkItem> 
+            </UserNaviArea>
+            <HeaderNav>
+              <LinkItem to="/progamer">Pro-gamer</LinkItem>
+              <LinkItem to="/races">Races</LinkItem>
+              <LinkItem to="/community">Community</LinkItem>
+              <LinkItem to="/mylecture">내 강의실</LinkItem>
+              <input />
+            </HeaderNav>
+        </Wrap>
+      </HeaderArea>
   )
 }
 
 
 
 const Wrap = styled.div`
+width: 80%;
+margin: 0 auto;
+position: relative;
+`
 
+const HeaderArea = styled.header`
 background-color: black;
 color: white;
-position: relative;
+
 `
 const LogoArea = styled.div`
   width: 100%;
