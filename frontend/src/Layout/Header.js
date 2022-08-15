@@ -3,12 +3,16 @@ import styled from 'styled-components';
 import { Link } from "react-router-dom";
 import Logo from "../favicon.ico"
 
+
+
 const LinkItem = ({ active, children, to }) => (
   <Link to = {to} className={`menu-item ${active ? active : ""}`}> { children } </Link>
   );
   
-  
-  export default function Header() {
+
+  export default function Header(props) {
+
+
     return (
       <HeaderArea>
           <Wrap>
@@ -19,7 +23,7 @@ const LinkItem = ({ active, children, to }) => (
               </LinkItem> 
             </LogoArea>
             <UserNaviArea > 
-              <Login>  Login </Login> | <LinkItem to="/mypage"> My Page </LinkItem> 
+              <Login onClick={props.toggle}>  Login </Login> | <LinkItem to="/mypage"> My Page </LinkItem> 
             </UserNaviArea>
             <HeaderNav>
               <LinkItem to="/progamer">Pro-gamer</LinkItem>

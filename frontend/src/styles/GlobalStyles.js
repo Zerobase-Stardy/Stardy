@@ -6,7 +6,9 @@ import reset from "styled-reset";  // style-reset 패키지
 const GlobalStyle = createGlobalStyle`
  ${reset}
 
-
+*{
+  box-sizing: border-box;
+}
 
 header
 {
