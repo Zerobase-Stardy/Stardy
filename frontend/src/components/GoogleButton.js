@@ -7,6 +7,7 @@ import {gapi} from 'gapi-script'
 const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 export default function GoogleButton({ onSocial }){
+
 useEffect (() => {
     function start () {
         gapi.client.init({
@@ -14,7 +15,6 @@ useEffect (() => {
             scope:'email',
         });
     }
-
     gapi.load('client:auth2' , start);
 }, []);
 

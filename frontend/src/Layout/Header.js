@@ -76,5 +76,8 @@ const Login = styled.button`
 border: 0;
 outline: 0;
 background-color: transparent;
-color: white
+color: white;
+cursor: pointer;
+font-family: 'Galmuri';
+font-size: 14px;
 `

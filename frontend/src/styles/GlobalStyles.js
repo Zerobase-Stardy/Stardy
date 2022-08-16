@@ -1,15 +1,32 @@
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";  // style-reset 패키지
-
-//전역적 스타일 작성하는 곳 입니다!
+import Gowun from "./fonts/GowunDodum-Regular.ttf"
+import Galmuri from "./fonts/Galmuri9.ttf"
 
 const GlobalStyle = createGlobalStyle`
+@font-face {
+  font-family: "Gowun Dodum";
+  src: url(${Gowun});
+
+}
+
+@font-face {
+  font-family: "Galmuri";
+  src: url(${Galmuri});
+}
+
  ${reset}
 
 *{
+  
   box-sizing: border-box;
 }
 
+
+body{
+font-family: "Gowun Dodum"
+
+}
 header
 {
   width: 100%;
