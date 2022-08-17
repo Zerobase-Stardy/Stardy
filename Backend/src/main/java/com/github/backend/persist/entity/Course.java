@@ -9,10 +9,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@Entity
-@EntityListeners(AuditingEntityListener.class)
 public class Course extends BaseTimeEntity{
 
     @Id
