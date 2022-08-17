@@ -30,7 +30,7 @@ public class Member extends BaseTimeEntity{
 
 	private String nickname;
 
-	private boolean withdrawlYn;
+	private boolean withdrawalYn;
 
 	private long point;
 
