@@ -16,6 +16,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -39,14 +44,14 @@ public class GamerControllerTest {
     void testSuccessGamerRegister() throws Exception{
         //given
         given(gamerService.registerGamer(
-                anyString(),
-                anyString(),
-                anyString(),
-                anyString()))
-                .willReturn(
-                        Gamer.builder()
-                                .name("유영진")
-                                .race("테란")
+                                        anyString(),
+                                        anyString(),
+                                        anyString(),
+                                        anyString()))
+                                        .willReturn(
+                                                Gamer.builder()
+                                                        .name("유영진")
+                                                        .race("테란")
                                 .nickName("rush")
                                 .introduce("단단한 테란")
                                 .build()
@@ -77,5 +82,45 @@ public class GamerControllerTest {
                 .andExpect(jsonPath("$.race").value("테란"))
                 .andExpect(jsonPath("$.nickName").value("rush"))
                 .andExpect(jsonPath("$.introduce").value("단단한 테란"));
+    }
+
+    @Test
+    @DisplayName("게이머 리스트 조회 성공")
+    void testSuccessGetGamerList() throws Exception {
+        //given
+        given(gamerService.registerGamer(
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString()))
+                .willReturn(
+                        Gamer.builder()
+                                .name("유영진")
+                                .race("테란")
+                                .nickName("rush")
+                                .introduce("단단한 테란")
+                                .build()
+                );
+        List<Gamer> gamerList = new ArrayList<>();
+        Gamer gamer = gamerService.registerGamer(
+                "유영진",
+                "테란",
+                "rush",
+                "단단한 테란"
+        );
+        gamerList.add(gamer);
+
+        given(gamerService.getGamerList())
+                .willReturn(gamerList);
+        //when
+
+        //then
+        mockMvc.perform(get("/gamer/get-list"))
+                .andDo(print())
+                .andExpect(jsonPath("$.gamerList[0].name").value(gamer.getName()))
+                .andExpect(jsonPath("$.gamerList[0].race").value(gamer.getRace()))
+                .andExpect(jsonPath("$.gamerList[0].nickName").value(gamer.getNickName()))
+                .andExpect(jsonPath("$.gamerList[0].introduce").value(gamer.getIntroduce()))
+                .andExpect(status().isOk());
     }
 }

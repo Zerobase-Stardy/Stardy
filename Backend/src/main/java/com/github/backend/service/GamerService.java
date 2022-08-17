@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class GamerService {
@@ -33,6 +35,12 @@ public class GamerService {
         );
 
     }
+
+    @Transactional
+    public List<Gamer> getGamerList(){
+        return gamerRepository.findAll();
+    }
+
 
     private void validateCreateGamer(String nickname) {
         if (gamerRepository.existsByNickName(nickname))

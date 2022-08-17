@@ -2,18 +2,17 @@ package com.github.backend.web;
 
 import com.github.backend.model.dto.CreateAdmin;
 import com.github.backend.model.dto.RegisterGamer;
+import com.github.backend.model.dto.SelectGamer;
 import com.github.backend.persist.entity.Admin;
 import com.github.backend.persist.entity.Gamer;
 import com.github.backend.service.AdminService;
 import com.github.backend.service.GamerService;
 import jdk.vm.ci.code.Register;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,5 +39,12 @@ public class GamerController {
                 gamer.getNickName(),
                 gamer.getIntroduce()
         );
+    }
+
+    @GetMapping("/get-list")
+    public SelectGamer.Response getGamerList(){
+
+        List<Gamer> gamer = gamerService.getGamerList();
+        return new SelectGamer.Response(gamer);
     }
 }
