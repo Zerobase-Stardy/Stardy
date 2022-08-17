@@ -43,4 +43,8 @@ public class Member extends BaseTimeEntity{
 	public void increasePoint(long amount) {
 		this.point += amount;
 	}
+
+	public void decreasePoint(long amount) {
+		this.point -= amount;
+	}
 }
