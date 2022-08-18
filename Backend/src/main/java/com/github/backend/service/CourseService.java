@@ -1,11 +1,14 @@
 package com.github.backend.service;
 
 import com.github.backend.exception.CourseException;
+import com.github.backend.exception.GamerException;
+import com.github.backend.model.dto.UpdateCourse;
 import com.github.backend.persist.entity.Course;
 import com.github.backend.persist.entity.Gamer;
 import com.github.backend.persist.repository.CourseRepository;
 import com.github.backend.persist.repository.GamerRepository;
 import com.github.backend.type.CourseErrorCode;
+import com.github.backend.type.GamerErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,8 +56,31 @@ public class CourseService {
                 .orElseThrow(() -> new CourseException(CourseErrorCode.NOT_EXIST_COURSE));
     }
 
+    @Transactional
+    public Course updateCourseInfo(Long courseId, UpdateCourse.Request request){
+
+        Gamer gamer = gamerRepository.findById(request.getGamerId())
+                .orElseThrow(() -> new CourseException(CourseErrorCode.NOT_EXIST_GAMER));
+
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new CourseException(CourseErrorCode.NOT_EXIST_COURSE));
+
+        course.setTitle(request.getTitle());
+        course.setVideoUrl(request.getVideoUrl());
+        course.setThumbnailUrl(request.getThumbnailUrl());
+        course.setComment(request.getComment());
+        course.setLevel(request.getLevel());
+        course.setRace(request.getRace());
+        course.setPrice(request.getPrice());
+        course.setGamer(gamer);
+
+        return courseRepository.save(course);
+    }
+
     private void validateRegisterCourse(String title) {
         if(courseRepository.existsByTitle(title))
             throw new CourseException(CourseErrorCode.EXIST_SAME_TITLE);
     }
+
+
 }

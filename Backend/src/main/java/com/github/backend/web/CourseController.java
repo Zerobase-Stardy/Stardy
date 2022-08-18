@@ -2,6 +2,7 @@ package com.github.backend.web;
 
 import com.github.backend.model.dto.CourseInfoResponse;
 import com.github.backend.model.dto.RegisterCourse;
+import com.github.backend.model.dto.UpdateCourse;
 import com.github.backend.persist.entity.Course;
 import com.github.backend.service.CourseService;
 import lombok.RequiredArgsConstructor;
@@ -49,5 +50,25 @@ public class CourseController {
                 courseService.getCourseInfo(courseId)
         );
     }
+
+    @PutMapping("/{courseId}/edit")
+    public UpdateCourse.Response updateCourseInfo(
+            @PathVariable("courseId") @Valid Long courseId,
+            @RequestBody UpdateCourse.Request request
+    ){
+
+        Course course = courseService.updateCourseInfo(courseId, request);
+        return new UpdateCourse.Response(
+                course.getGamer().getName(),
+                course.getTitle(),
+                course.getVideoUrl(),
+                course.getThumbnailUrl(),
+                course.getComment(),
+                course.getLevel(),
+                course.getRace(),
+                course.getPrice()
+        );
+    }
+
 
 }
