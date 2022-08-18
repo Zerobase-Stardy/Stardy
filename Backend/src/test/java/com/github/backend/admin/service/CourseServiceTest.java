@@ -154,4 +154,82 @@ public class CourseServiceTest {
         //then
         assertEquals(courseException.getErrorCode(), CourseErrorCode.EXIST_SAME_TITLE);
     }
+
+    @Test
+    @DisplayName("강의 정보 조회 성공")
+    void testGetCourseInfo(){
+        //given
+        given(gamerRepository.save(any()))
+                .willReturn(
+                        Gamer.builder()
+                                .id(1L)
+                                .name("유영진")
+                                .race("테란")
+                                .nickName("rush")
+                                .introduce("단단한 테란")
+                                .build()
+                );
+        Gamer gamer = gamerService.registerGamer(
+                "유영진","테란","rush","단단한 테란"
+        );
+
+        given(gamerRepository.findById(anyLong()))
+                .willReturn(Optional.of(gamer));
+
+        given(courseRepository.existsByTitle(anyString()))
+                .willReturn(false);
+
+        given(courseRepository.save(any()))
+                .willReturn(
+                        Course.builder()
+                                .id(1L)
+                                .gamer(gamer)
+                                .title("벙커링")
+                                .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
+                                .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
+                                .comment("세상에서 제일 쉬운 8배럭 벙커링 강의")
+                                .level("입문")
+                                .race("테란")
+                                .price(10L)
+                                .build()
+                );
+        Course course = courseService.registerCourse(
+                gamer.getId(),
+                "벙커링",
+                "https://www.youtube.com/watch?v=2rpu0f-qog4"
+                ,"https://img.youtube.com/vi/2rpu0f-qog4/default.jpg"
+                ,"세상에서 제일 쉬운 8배럭 벙커링 강의"
+                ,"입문"
+                ,"테란"
+                ,10L
+        );
+
+        given(courseRepository.findById(anyLong()))
+                .willReturn(Optional.of(course));
+        //when
+        Course courseInfo = courseService.getCourseInfo(course.getId());
+
+        //then
+        assertEquals(course.getId(), courseInfo.getId());
+        assertEquals(course.getGamer().getName(), courseInfo.getGamer().getName());
+        assertEquals(course.getTitle(), courseInfo.getTitle());
+        assertEquals(course.getVideoUrl(), courseInfo.getVideoUrl());
+        assertEquals(course.getThumbnailUrl(), courseInfo.getThumbnailUrl());
+        assertEquals(course.getComment(), courseInfo.getComment());
+        assertEquals(course.getRace(), courseInfo.getRace());
+        assertEquals(course.getPrice(), courseInfo.getPrice());
+    }
+
+    @Test
+    @DisplayName("강의 정보 조회 실패 - 해당하는 강의 없음")
+    void testGetCourseInfoFailed(){
+        //given
+        given(courseRepository.findById(anyLong()))
+                .willReturn(Optional.empty());
+        //when
+        CourseException courseException = assertThrows(CourseException.class,
+                () -> courseService.getCourseInfo(1L));
+        //then
+        assertEquals(courseException.getErrorCode(), CourseErrorCode.NOT_EXIST_COURSE);
+    }
 }

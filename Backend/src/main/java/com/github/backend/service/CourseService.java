@@ -46,6 +46,13 @@ public class CourseService {
        );
     }
 
+    @Transactional
+    public Course getCourseInfo(Long courseId){
+
+        return courseRepository.findById(courseId)
+                .orElseThrow(() -> new CourseException(CourseErrorCode.NOT_EXIST_COURSE));
+    }
+
     private void validateRegisterCourse(String title) {
         if(courseRepository.existsByTitle(title))
             throw new CourseException(CourseErrorCode.EXIST_SAME_TITLE);
