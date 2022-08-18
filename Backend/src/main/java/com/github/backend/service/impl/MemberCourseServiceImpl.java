@@ -48,4 +48,19 @@ public class MemberCourseServiceImpl implements MemberCourseService {
 			.bookmark(false)
 			.build());
 	}
+
+	@Transactional
+	@Override
+	public void toggleBookmark(String email, Long memberCourseId) {
+		MemberCourse memberCourse = memberCourseRepository.findWithMemberById(memberCourseId)
+			.orElseThrow(() -> new MemberCourseException(MEMBER_COURSE_NOT_EXISTS));
+
+		Member member = memberCourse.getMember();
+
+		if (!member.getEmail().equals(email)) {
+			throw new MemberCourseException(MEMBER_COURSE_NOT_EXISTS);
+		}
+
+		memberCourse.toggleBookmark();
+	}
 }
