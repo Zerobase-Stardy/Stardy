@@ -30,7 +30,7 @@ public class Member extends BaseTimeEntity{
 
 	private String nickname;
 
-	private boolean withdrawlYn;
+	private boolean withdrawalYn;
 
 	private long point;
 
@@ -42,5 +42,9 @@ public class Member extends BaseTimeEntity{
 
 	public void increasePoint(long amount) {
 		this.point += amount;
+	}
+
+	public void decreasePoint(long amount) {
+		this.point -= amount;
 	}
 }
