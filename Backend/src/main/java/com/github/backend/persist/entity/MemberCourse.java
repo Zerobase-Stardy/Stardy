@@ -37,5 +37,5 @@ public class MemberCourse {
 	@JoinColumn
 	private Course course;
 
-	private boolean bookMark;
+	private boolean bookmark;
 }

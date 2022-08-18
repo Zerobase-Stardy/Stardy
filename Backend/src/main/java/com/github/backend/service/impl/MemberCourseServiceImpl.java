@@ -45,7 +45,7 @@ public class MemberCourseServiceImpl implements MemberCourseService {
 		memberCourseRepository.save(MemberCourse.builder()
 			.member(member)
 			.course(course)
-			.bookMark(false)
+			.bookmark(false)
 			.build());
 	}
 }
