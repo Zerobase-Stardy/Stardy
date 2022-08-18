@@ -38,4 +38,8 @@ public class MemberCourse {
 	private Course course;
 
 	private boolean bookmark;
+
+	public void toggleBookmark() {
+		this.bookmark = !this.bookmark;
+	}
 }
