@@ -2,7 +2,7 @@ package com.github.backend.admin.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.backend.model.dto.RegisterCourse;
-import com.github.backend.model.dto.RegisterGamer;
+import com.github.backend.model.dto.UpdateCourse;
 import com.github.backend.persist.entity.Course;
 import com.github.backend.persist.entity.Gamer;
 import com.github.backend.service.CourseService;
@@ -17,10 +17,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
+
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -122,6 +124,180 @@ public class CourseControllerTest {
                 .andExpect(jsonPath("$.level").value(course.getLevel()))
                 .andExpect(jsonPath("$.comment").value(course.getComment()))
                 .andExpect(jsonPath("$.price").value(course.getPrice()));
+    }
+    
+    @Test
+    @DisplayName("강의 정보 조회 성공")
+    void testGetCourseInfo() throws Exception{
+        //given
+        given(gamerService.registerGamer(
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString()))
+                .willReturn(
+                        Gamer.builder()
+                                .id(1L)
+                                .name("유영진")
+                                .race("테란")
+                                .nickName("rush")
+                                .introduce("단단한 테란")
+                                .build()
+                );
+
+        Gamer gamer = gamerService.registerGamer(
+                "유영진",
+                "테란",
+                "rush",
+                "단단한 테란"
+        );
+
+        given(courseService.registerCourse(
+                anyLong(),
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString(),
+                anyLong()))
+                .willReturn(
+                        Course.builder()
+                                .id(1L)
+                                .gamer(gamer)
+                                .title("벙커링")
+                                .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
+                                .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
+                                .comment("세상에서 제일 쉬운 8배럭 벙커링 강의")
+                                .level("입문")
+                                .race("테란")
+                                .price(10L)
+                                .build()
+                );
+        Course course = courseService.registerCourse(
+                1L,
+                "벙커링",
+                "https://www.youtube.com/watch?v=2rpu0f-qog4",
+                "https://img.youtube.com/vi/2rpu0f-qog4/default.jpg",
+                "세상에서 제일 쉬운 8배럭 벙커링 강의",
+                "입문",
+                "테란",
+                10L
+        );
+
+        given(courseService.getCourseInfo(anyLong()))
+                .willReturn(
+                        Course.builder()
+                                .id(1L)
+                                .gamer(gamer)
+                                .title("벙커링")
+                                .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
+                                .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
+                                .comment("세상에서 제일 쉬운 8배럭 벙커링 강의")
+                                .level("입문")
+                                .race("테란")
+                                .price(10L)
+                                .build()
+                );
+        //when
+        Course courseInfo = courseService.getCourseInfo(1L);
+
+        
+        //then
+        mockMvc.perform(get(String.format("/course/%d", 1)))
+                .andDo(print())
+                .andExpect(jsonPath("$.courseId").value(course.getId()))
+                .andExpect(jsonPath("$.gamerName").value(course.getGamer().getName()))
+                .andExpect(jsonPath("$.title").value(course.getTitle()))
+                .andExpect(jsonPath("$.videoUrl").value(course.getVideoUrl()))
+                .andExpect(jsonPath("$.thumbnailUrl").value(course.getThumbnailUrl()))
+                .andExpect(jsonPath("$.comment").value(course.getComment()))
+                .andExpect(jsonPath("$.level").value(course.getLevel()))
+                .andExpect(jsonPath("$.race").value(course.getRace()))
+                .andExpect(jsonPath("$.price").value(course.getPrice()))
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    @DisplayName("강의 정보 수정 성공")
+    void testUpdateCourseInfo() throws Exception{
+        //given
+        Gamer gamer = Gamer.builder()
+                .id(1L)
+                .name("유영진")
+                .race("테란")
+                .nickName("rush")
+                .introduce("단단한 테란")
+                .build();
+
+        Course course = Course.builder()
+                .id(1L)
+                .gamer(gamer)
+                .title("벙커링")
+                .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
+                .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
+                .comment("세상에서 제일 쉬운 8배럭 벙커링 강의")
+                .level("입문")
+                .race("테란")
+                .price(10L)
+                .build();
+
+        Course updateCourse = Course.builder()
+                .id(1L)
+                .gamer(gamer)
+                .title("벙커링")
+                .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
+                .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
+                .comment("심화 8배럭 벙커링 강의")
+                .level("고급")
+                .race("테란")
+                .price(20L)
+                .build();
+
+        UpdateCourse.Request request =
+                new UpdateCourse.Request(
+                        1L,
+                        "벙커링",
+                        "https://www.youtube.com/watch?v=2rpu0f-qog4",
+                        "https://img.youtube.com/vi/2rpu0f-qog4/default.jpg",
+                        "심화 8배럭 벙커링 강의",
+                        "고급",
+                        "테란",
+                        20L
+                );
+
+        given(courseService.updateCourseInfo(anyLong(), any()))
+                .willReturn(updateCourse);
+
+        //when
+        Course compCourse = courseService.updateCourseInfo(course.getId(), request);
+
+        //then
+        mockMvc.perform(put(String.format("/course/%d/edit", course.getId()))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(
+                        new UpdateCourse.Request(
+                                updateCourse.getGamer().getId(),
+                                updateCourse.getTitle(),
+                                updateCourse.getVideoUrl(),
+                                updateCourse.getThumbnailUrl(),
+                                updateCourse.getComment(),
+                                updateCourse.getLevel(),
+                                updateCourse.getRace(),
+                                updateCourse.getPrice()
+                        )
+                )))
+                .andDo(print())
+                .andExpect(jsonPath("$.gamerName").value(compCourse.getGamer().getName()))
+                .andExpect(jsonPath("$.title").value(compCourse.getTitle()))
+                .andExpect(jsonPath("$.videoUrl").value(compCourse.getVideoUrl()))
+                .andExpect(jsonPath("$.thumbnailUrl").value(compCourse.getThumbnailUrl()))
+                .andExpect(jsonPath("$.comment").value(compCourse.getComment()))
+                .andExpect(jsonPath("$.level").value(compCourse.getLevel()))
+                .andExpect(jsonPath("$.race").value(compCourse.getRace()))
+                .andExpect(jsonPath("$.price").value(compCourse.getPrice()))
+                .andExpect(status().isOk());
     }
 
 }
