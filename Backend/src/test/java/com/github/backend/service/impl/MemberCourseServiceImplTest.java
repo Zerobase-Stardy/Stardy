@@ -17,7 +17,6 @@ import com.github.backend.persist.repository.MemberCourseRepository;
 import com.github.backend.persist.repository.MemberRepository;
 import com.github.backend.type.MemberCourseErrorCode;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -78,7 +77,7 @@ class MemberCourseServiceImplTest {
 		//then
 		verify(memberCourseRepository).save(captor.capture());
 		assertThat(member.getPoint()).isEqualTo(0);
-		assertThat(captor.getValue().isBookMark()).isFalse();
+		assertThat(captor.getValue().isBookmark()).isFalse();
 	}
 
 	@DisplayName("강의 구매 실패 - 회원이 존재하지 않을 때")
@@ -155,5 +154,61 @@ class MemberCourseServiceImplTest {
 			() -> memberCourseService.takeCourse(member.getEmail(), course.getId()))
 			.isInstanceOf(MemberCourseException.class)
 			.hasMessage(MemberCourseErrorCode.NOT_ENOUGH_POINT.getDescription());
+	}
+
+	@DisplayName("강의 즐겨찾기 성공")
+	@Test
+	void toggleBookmark_success() {
+		//given
+		MemberCourse memberCourse = MemberCourse.builder()
+			.id(1L)
+			.member(member)
+			.bookmark(false)
+			.build();
+
+		given(memberCourseRepository.findWithMemberById(anyLong()))
+			.willReturn(Optional.of(memberCourse));
+
+		//when
+		memberCourseService.toggleBookmark(member.getEmail(), 1L);
+
+		//then
+		assertThat(memberCourse.isBookmark()).isTrue();
+	}
+
+	@DisplayName("강의 즐겨찾기 실패 - MemberCourse가 존재하지 않을 때")
+	@Test
+	void toggleBookmark_fail_MemberCourseNotExists() {
+		//given
+		given(memberCourseRepository.findWithMemberById(anyLong()))
+			.willReturn(Optional.empty());
+
+		//when
+		//then
+		assertThatThrownBy(
+			() -> memberCourseService.toggleBookmark(member.getEmail(), 1L))
+			.isInstanceOf(MemberCourseException.class)
+			.hasMessage(MemberCourseErrorCode.MEMBER_COURSE_NOT_EXISTS.getDescription());
+	}
+
+	@DisplayName("강의 즐겨찾기 실패 - MemberCourse의 이메일과 요청자의 이메일이 일치하지 않을 때")
+	@Test
+	void toggleBookmark_fail_MemberCourseNotExists_EmailIncorrect() {
+		//given
+		MemberCourse memberCourse = MemberCourse.builder()
+			.id(1L)
+			.member(member)
+			.bookmark(false)
+			.build();
+
+		given(memberCourseRepository.findWithMemberById(anyLong()))
+			.willReturn(Optional.of(memberCourse));
+
+		//when
+		//then
+		assertThatThrownBy(
+			() -> memberCourseService.toggleBookmark("incorrectEmail", 1L))
+			.isInstanceOf(MemberCourseException.class)
+			.hasMessage(MemberCourseErrorCode.MEMBER_COURSE_NOT_EXISTS.getDescription());
 	}
 }
