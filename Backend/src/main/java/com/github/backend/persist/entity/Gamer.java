@@ -6,7 +6,10 @@ import javax.persistence.*;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
+@Entity
+@NoArgsConstructor
 public class Gamer extends BaseTimeEntity{
     /**
      * id : idx(pk)
