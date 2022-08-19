@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
-import Logo from "../favicon.ico"
+
 import NavHoverMenu from '../components/NavHoverMenu';
+
 
 const LinkItem = ({ active, children, to }) => (
   <Link to = {to} className={`menu-item ${active ? active : ""}`} style={{ position: "relative"}}> { children } </Link>
   );
   
-  
+
   export default function Header() {
 
     const [visible, setVisible] = useState({
@@ -26,18 +27,18 @@ const LinkItem = ({ active, children, to }) => (
         display: "none"
       })
     }
+
     return (
       
       <HeaderArea>
           <Wrap>
             <LogoArea> 
               <LinkItem to="/">
-                <img src={Logo} alt="Logo" width="28" height="28"/>
-                STARdy 
+                STARDY 
               </LinkItem> 
             </LogoArea>
             <UserNaviArea > 
-              <Login>  Login </Login> | <LinkItem to="/mypage"> My Page </LinkItem> 
+              <Login onClick={props.toggle}>  Login </Login> | <LinkItem to="/mypage"> My Page </LinkItem> 
             </UserNaviArea>
             <HeaderNav>
 
@@ -78,6 +79,7 @@ const LogoArea = styled.div`
   font-weight: bold;
   color: white;
   margin-bottom: 8px;
+  font-family: Gowun Dodum;
 `
 const HeaderNav = styled.div`
   padding: 4px;
@@ -97,8 +99,8 @@ const Login = styled.button`
 border: 0;
 outline: 0;
 background-color: transparent;
-color: white
+color: white;
+cursor: pointer;
+font-family: 'Galmuri';
+font-size: 14px;
 `
-
-
-

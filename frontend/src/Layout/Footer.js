@@ -61,7 +61,7 @@ gap:20px
 `
 const Logo = styled.h1`
 margin: 0 auto;
-font-size: 36px;
+font-size: 30px;
 `
 
 const Top = styled.div`
@@ -76,7 +76,7 @@ margin: 0 auto;
 text-align: center;
 display: grid;
 gap: 20px;
-font-size: 17px;
+font-size: 14px;
 
 `
 
@@ -85,7 +85,7 @@ display: grid;
 gap: 10px;
 
 h1{
-  font-size: 24px;
+  font-size: 20px;
 }
 `
 
@@ -93,7 +93,7 @@ const Tools = styled.div`
 display: grid;
 gap: 10px;
 h1{
-  font-size: 24px;
+  font-size: 20px;
 }
 `
 
