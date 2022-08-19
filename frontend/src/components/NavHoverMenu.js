@@ -5,17 +5,11 @@ import styled from 'styled-components';
 export default function NavHoverMenu(props){
     return(
         <MenuItems style={props.style}>
-            <ItemsList>
-                <div></div>
-                <ItemsUl>
-                    <li style={{cursor: "pointer"}}>저그</li>
-                    <li style={{cursor: "pointer"}}>테란</li>
-                    <li style={{cursor: "pointer"}}>프로토스</li>
-                </ItemsUl>
-                <div></div>
-                <div></div>
-                <div></div>
-            </ItemsList>
+            <ItemsUl>
+                    <li style={{cursor: "pointer", textAlign: "center" }}>저그</li>
+                    <li style={{cursor: "pointer", textAlign: "center" }}>테란</li>
+                    <li style={{cursor: "pointer", textAlign: "center" }}>프로토스</li>
+            </ItemsUl>
         </MenuItems>
     )
 }
@@ -24,23 +18,19 @@ export default function NavHoverMenu(props){
 const MenuItems = styled.div`
   background-color: black;
   opacity: 0.8;
-  width: 100%;
+  width: 7vw;
   height: 20vh;
   position: absolute;
+  left: -32px
 `
-const ItemsList = styled.div`
+const ItemsUl = styled.ul`
   width: 80%;
   height: 100%;
   display: flex;
-  justify-content: space-between;
-  margin: 0 auto;
+  justify-content: space-around;
+  flex-direction: column;
+  padding: 4px 0 4px 12px;
+  margin: 0;
 `
 
-const ItemsUl = styled.ul`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    padding: 0;
-    opacity: 1;
-`
 

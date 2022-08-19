@@ -15,7 +15,7 @@ import GlobalStyles from "./styles/GlobalStyles";
 
 function App() {
   return (
-    
+    <>
   <BrowserRouter>
     <ScrollToTop />  {/* 페이지 이동시 스크롤 위로 고정하는 컴포넌트 */}
     <GlobalStyles />
@@ -29,7 +29,9 @@ function App() {
       <Route path={"/mypage"} element={<Mypage />}></Route>
     </Routes>
     <Footer />
+  <div> HI </div>
   </BrowserRouter>
+    </>
 
   );
 }
