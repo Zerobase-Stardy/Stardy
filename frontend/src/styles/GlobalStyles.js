@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
-import reset from "styled-reset";  // style-reset 패키지
-import Gowun from "./fonts/GowunDodum-Regular.ttf"
-import Galmuri from "./fonts/Galmuri9.ttf"
+import reset from "styled-reset"; // style-reset 패키지
+import Gowun from "./fonts/GowunDodum-Regular.ttf";
+import Galmuri from "./fonts/Galmuri9.ttf";
 
 const GlobalStyle = createGlobalStyle`
 @font-face {
@@ -24,9 +24,10 @@ const GlobalStyle = createGlobalStyle`
 
 
 body{
-font-family: "Gowun Dodum"
-
+font-family: "Gowun Dodum";
+background-Color: #fbfbfb;
 }
+
 header
 {
   width: 100%;
@@ -34,6 +35,9 @@ header
   color: #fff;
 }
 
+main{
+  padding-bottom: 100px;
+}
 footer
 {
   width: 100%;

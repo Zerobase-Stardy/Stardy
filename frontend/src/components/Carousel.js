@@ -4,7 +4,6 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-
 export default function Carousel() {
   const images = [
     {
@@ -13,7 +12,7 @@ export default function Carousel() {
       title: "언제까지 스린이 할래?",
       Content: "입문자를 위한 일타강사의 강의",
       link: "https://ifh.cc/g/poF0CD.png",
-      SmallImg: "https://ifh.cc/g/poF0CD.png"
+      SmallImg: "https://ifh.cc/g/poF0CD.png",
     },
     {
       id: 1,
@@ -21,7 +20,7 @@ export default function Carousel() {
       title: "매일 업뎃되는 강의!",
       Content: "매일 업데이트 되는 다양한 강의를 둘러보세요.",
       link: "",
-      SmallImg: "https://ifh.cc/g/Q4oshF.png"
+      SmallImg: "https://ifh.cc/g/Q4oshF.png",
     },
     // {
     //   id: 2,
@@ -46,13 +45,12 @@ export default function Carousel() {
   };
 
   const slideshow = images.map((image) => (
-    
     <ImgZone key={image.id}>
       <Img src={image.url} />
       <ImgLinkZone>
-      <SmallImg>
-        <img src={image.SmallImg} alt="carousel"/>
-      </SmallImg>
+        <SmallImg>
+          <img src={image.SmallImg} alt="carousel" />
+        </SmallImg>
         <Title>{image.title} </Title>
         <Content>{image.Content}</Content>
       </ImgLinkZone>
@@ -169,11 +167,11 @@ const Content = styled.p`
 `;
 
 const SmallImg = styled.div`
-width: 400px;
-height: 300px;
-float: right;
+  width: 400px;
+  height: 300px;
+  float: right;
 
-img{
-  width: 100%;
-}
-`
+  img {
+    width: 100%;
+  }
+`;
