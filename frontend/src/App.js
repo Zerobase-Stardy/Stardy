@@ -4,7 +4,6 @@ import ScrollToTop from "./components/ScrollToTop";
 import LoginModal from "./components/LoginModal";
 import Footer from "./Layout/Footer";
 import Header from "./Layout/Header";
-
 import Community from "./pages/Community";
 import Home from "./pages/Home";
 import MyLecture from "./pages/MyLecture";
@@ -38,7 +37,6 @@ function App() {
 
 
 </BrowserRouter>
-
 
   );
 }
