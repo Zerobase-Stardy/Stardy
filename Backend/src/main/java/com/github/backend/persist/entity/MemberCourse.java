@@ -37,5 +37,9 @@ public class MemberCourse {
 	@JoinColumn
 	private Course course;
 
-	private boolean bookMark;
+	private boolean bookmark;
+
+	public void toggleBookmark() {
+		this.bookmark = !this.bookmark;
+	}
 }
