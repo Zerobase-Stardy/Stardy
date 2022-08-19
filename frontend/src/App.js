@@ -34,6 +34,8 @@ function App() {
 </Routes>
 <Footer />
 {openModal ? <LoginModal toggle={toggleModal} openModal={openModal}/> : null}
+
+
 </BrowserRouter>
 
   );

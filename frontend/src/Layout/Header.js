@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
-import Logo from "../favicon.ico"
 
 
 
@@ -18,8 +17,7 @@ const LinkItem = ({ active, children, to }) => (
           <Wrap>
             <LogoArea> 
               <LinkItem to="/">
-                <img src={Logo} alt="Logo" width="28" height="28"/>
-                STARdy 
+                STARDY 
               </LinkItem> 
             </LogoArea>
             <UserNaviArea > 
@@ -57,6 +55,7 @@ const LogoArea = styled.div`
   font-weight: bold;
   color: white;
   margin-bottom: 8px;
+  font-family: Gowun Dodum;
 `
 const HeaderNav = styled.div`
   padding: 4px;
