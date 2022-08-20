@@ -29,7 +29,6 @@ function App() {
       <Route path={"/mypage"} element={<Mypage />}></Route>
     </Routes>
     <Footer />
-  <div> HI </div>
   </BrowserRouter>
     </>
 

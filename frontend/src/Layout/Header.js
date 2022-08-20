@@ -48,6 +48,7 @@ const LinkItem = ({ active, children, to }) => (
                   <NavHoverMenu style={visible}/>
                 </LinkItem>
               </div>
+              
               <LinkItem to="/community">Community</LinkItem>
               <LinkItem to="/mylecture">내 강의실</LinkItem>
               <input />
