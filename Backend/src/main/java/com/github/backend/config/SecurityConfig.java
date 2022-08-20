@@ -4,6 +4,7 @@ package com.github.backend.config;
 import com.github.backend.security.jwt.JwtAuthenticationFilter;
 import com.github.backend.security.jwt.JwtAuthenticationProvider;
 import com.github.backend.security.jwt.JwtEntryPoint;
+import com.github.backend.service.impl.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +24,8 @@ public class SecurityConfig {
 	private final JwtEntryPoint jwtEntryPoint;
 	private final AuthenticationConfiguration authenticationConfiguration;
 
+	private final CustomOAuth2UserService oAuth2UserService;
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.headers().frameOptions().disable();
@@ -33,6 +36,10 @@ public class SecurityConfig {
 
 		http.formLogin().disable();
 		http.logout().disable();
+
+		http.oauth2Login()
+				.userInfoEndpoint()
+					.userService(oAuth2UserService);
 
 		http.exceptionHandling()
 			.authenticationEntryPoint(jwtEntryPoint);

@@ -3,7 +3,9 @@ package com.github.backend.service.impl;
 import static com.github.backend.model.dto.TokenMemberDto.*;
 import static com.github.backend.security.jwt.JwtInfo.KEY_EMAIL;
 import static com.github.backend.security.jwt.JwtInfo.KEY_ID;
+import static com.github.backend.security.jwt.JwtInfo.KEY_NICKNAME;
 import static com.github.backend.security.jwt.JwtInfo.KEY_ROLES;
+import static com.github.backend.security.jwt.JwtInfo.KEY_STATUS;
 import static javax.management.timer.Timer.ONE_MINUTE;
 
 import com.github.backend.exception.JwtInvalidException;
@@ -49,7 +51,7 @@ public class TokenService {
 		String refreshToken = createToken(memberInfo, jwtInfo.getEncodedRefreshKey(),
 			jwtInfo.getRefreshTokenExpiredMin());
 
-		refreshTokenRepository.save(memberInfo.getUsername(), refreshToken, Duration.ofMinutes(
+		refreshTokenRepository.save(memberInfo.getEmail(), refreshToken, Duration.ofMinutes(
 			jwtInfo.getRefreshTokenExpiredMin()));
 
 		return refreshToken;
@@ -60,7 +62,9 @@ public class TokenService {
 
 		Claims claims = Jwts.claims();
 		claims.put(KEY_ID, memberInfo.getId());
-		claims.put(KEY_EMAIL, memberInfo.getUsername());
+		claims.put(KEY_EMAIL, memberInfo.getEmail());
+		claims.put(KEY_NICKNAME, memberInfo.getNickname());
+		claims.put(KEY_STATUS, memberInfo.getStatus());
 		claims.put(KEY_ROLES, Collections.singleton(memberInfo.getRole()));
 
 		return Jwts.builder()

@@ -14,6 +14,8 @@ public class JwtInfo {
 	public static final String KEY_ROLES = "roles";
 	public static final String KEY_ID = "id";
 	public static final String KEY_EMAIL = "email";
+	public static final String KEY_NICKNAME = "nickname";
+	public static final String KEY_STATUS = "status";
 
 	@Value("${spring.jwt.access-secret}")
 	private String accessKey;

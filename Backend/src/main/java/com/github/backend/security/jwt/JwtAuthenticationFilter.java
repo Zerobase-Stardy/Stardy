@@ -34,6 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				Authentication authentication = authenticationManager.authenticate(
 					jwtAuthenticationToken);
 				SecurityContextHolder.getContext().setAuthentication(authentication);
+
 			} catch (AuthenticationException e) {
 				SecurityContextHolder.clearContext();
 				request.setAttribute("exception",e.getMessage());
@@ -50,8 +51,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
 			return bearerToken.substring(BEARER_PREFIX.length());
 		}
-
-		log.warn("Request Header doesn't include JWT");
 
 		return "";
 	}
