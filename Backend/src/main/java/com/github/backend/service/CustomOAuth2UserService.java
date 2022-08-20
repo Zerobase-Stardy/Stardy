@@ -1,4 +1,4 @@
-package com.github.backend.service.impl;
+package com.github.backend.service;
 
 
 import com.github.backend.model.constants.Role;
@@ -55,6 +55,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .nickname("")
                 .status(Status.WAIT)
                 .build();
+
         memberRepository.save(member);
 
         var memberAttribute = oAuth2Attribute.convertToMap();

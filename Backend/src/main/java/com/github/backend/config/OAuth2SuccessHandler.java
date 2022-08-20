@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.backend.model.dto.UserDto;
 import com.github.backend.model.dto.UserRequestMapper;
 import com.github.backend.model.dto.Token;
-import com.github.backend.service.impl.TokenService;
+import com.github.backend.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
@@ -30,10 +30,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
         UserDto userDto = userRequestMapper.toDto(oAuth2User);
-
         Token token = tokenService.generateToken(userDto.getEmail(), "USER");
 
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+token);
         log.info("{}", token);
 
         writeTokenResponse(response, token);

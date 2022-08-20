@@ -1,4 +1,4 @@
-package com.github.backend.service.impl;
+package com.github.backend.service;
 
 import com.github.backend.model.dto.Token;
 import io.jsonwebtoken.Claims;

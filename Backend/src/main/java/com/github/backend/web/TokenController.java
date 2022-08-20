@@ -1,7 +1,7 @@
 package com.github.backend.web;
 
 import com.github.backend.model.dto.Token;
-import com.github.backend.service.impl.TokenService;
+import com.github.backend.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

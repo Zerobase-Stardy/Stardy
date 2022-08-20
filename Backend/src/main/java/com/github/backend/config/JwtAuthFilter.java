@@ -1,7 +1,7 @@
 package com.github.backend.config;
 
 import com.github.backend.model.dto.UserDto;
-import com.github.backend.service.impl.TokenService;
+import com.github.backend.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

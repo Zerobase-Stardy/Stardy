@@ -1,7 +1,7 @@
 package com.github.backend.config;
 
-import com.github.backend.service.impl.CustomOAuth2UserService;
-import com.github.backend.service.impl.TokenService;
+import com.github.backend.service.CustomOAuth2UserService;
+import com.github.backend.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
