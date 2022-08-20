@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 
 public class TokenMemberDto {
 
@@ -24,6 +23,7 @@ public class TokenMemberDto {
 		private String role;
 
 		public static MemberInfo of(Claims claims) {
+
 			return MemberInfo.builder()
 				.id(claims.get(JwtInfo.KEY_ID, Long.class))
 				.email(claims.get(JwtInfo.KEY_EMAIL, String.class))

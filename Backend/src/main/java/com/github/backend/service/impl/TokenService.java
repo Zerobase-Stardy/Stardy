@@ -61,11 +61,12 @@ public class TokenService {
 		Date now = new Date();
 
 		Claims claims = Jwts.claims();
+
 		claims.put(KEY_ID, memberInfo.getId());
 		claims.put(KEY_EMAIL, memberInfo.getEmail());
 		claims.put(KEY_NICKNAME, memberInfo.getNickname());
 		claims.put(KEY_STATUS, memberInfo.getStatus());
-		claims.put(KEY_ROLES, Collections.singleton(memberInfo.getRole()));
+		claims.put(KEY_ROLES, memberInfo.getRole());
 
 		return Jwts.builder()
 			.setClaims(claims)

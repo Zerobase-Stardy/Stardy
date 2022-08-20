@@ -1,14 +1,14 @@
 package com.github.backend.service.impl;
 
-import com.github.backend.exception.JwtInvalidException;
-import com.github.backend.model.constants.MemberStatus;
+
+import com.github.backend.model.dto.CustomOAuth2User;
 import com.github.backend.model.dto.OAuthAttributes;
 import com.github.backend.model.dto.TokenMemberDto.MemberInfo;
 import com.github.backend.persist.entity.Member;
 import com.github.backend.persist.repository.MemberRepository;
-import com.github.backend.type.JwtErrorCode;
-import io.jsonwebtoken.lang.Strings;
+
 import java.util.Collections;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -39,20 +39,25 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName,
 			oAuth2User.getAttributes());
 
-		Member member = memberRepository.findByEmail(attributes.getEmail())
-			.orElse(memberRepository.save(attributes.toMember()));
+		Optional<Member> optionalMember = memberRepository.findByEmail(attributes.getEmail());
+		Member member;
 
+		if (optionalMember.isPresent()) {
+			member = optionalMember.get();
+		} else {
+			member = memberRepository.save(attributes.toMember());
+		}
 
 		MemberInfo memberInfo = MemberInfo.builder()
 			.id(member.getId())
 			.nickname(member.getNickname())
 			.role(member.getRole().name())
 			.email(member.getEmail())
+			.status(member.getStatus().name())
 			.build();
 
-		attributes.getAttributes().put("memberInfo", memberInfo);
 
-		return new DefaultOAuth2User(
+		return new CustomOAuth2User(memberInfo,
 			Collections.singleton(new SimpleGrantedAuthority(member.getRole().name())),
 			attributes.getAttributes(), attributes.getNameAttributeKey());
 	}

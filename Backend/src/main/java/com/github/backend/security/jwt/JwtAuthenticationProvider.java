@@ -35,17 +35,21 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
 		MemberInfo memberInfo = MemberInfo.of(claims);
 
-		switch (memberInfo.getStatus()) {
+		String status = memberInfo.getStatus();
+
+		System.out.println(status);
+
+		switch (status) {
 			case "BANNED":
 				throw new JwtInvalidException(JwtErrorCode.MEMBER_STATUS_BANNED);
 			case "WITHDRAWAL":
 				throw new JwtInvalidException(JwtErrorCode.MEMBER_STATUS_WITHDRAWAL);
 			case "WAIT":
 				throw new JwtInvalidException(JwtErrorCode.MEMBER_STATUS_WAIT);
+			default:
+				return new JwtAuthenticationToken(memberInfo, "",
+					Arrays.asList(new SimpleGrantedAuthority(memberInfo.getRole())));
 		}
-
-		return new JwtAuthenticationToken(memberInfo, "",
-			Arrays.asList(new SimpleGrantedAuthority(memberInfo.getRole())));
 	}
 
 	@Override
