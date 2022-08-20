@@ -63,9 +63,12 @@ public class TokenServiceImpl {
 			.compact();
 	}
 
-
-
-
+	public boolean existsRefreshToken(String username) {
+		return refreshTokenRepository.existsByUsername(username);
+	}
+	public void deleteRefreshToken(String username) {
+		refreshTokenRepository.deleteByUsername(username);
+	}
 
 
 

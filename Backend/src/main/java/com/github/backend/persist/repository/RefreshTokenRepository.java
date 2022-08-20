@@ -19,4 +19,26 @@ public class RefreshTokenRepository {
 		ValueOperations<String, String> values = redisTemplate.opsForValue();
 		values.set(KEY_PREFIX + username, refreshToken, duration);
 	}
+
+	public boolean existsByUsername(String username) {
+		ValueOperations<String, String> values = redisTemplate.opsForValue();
+		String refreshToken = values.get(KEY_PREFIX + username);
+
+		if (!StringUtils.hasText(refreshToken)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public Optional<String> findByUsername(String username) {
+		ValueOperations<String, String> values = redisTemplate.opsForValue();
+
+		return Optional.ofNullable(values.get(KEY_PREFIX + username));
+	}
+
+	public void deleteByUsername(String username) {
+		ValueOperations<String, String> values = redisTemplate.opsForValue();
+		values.getAndDelete(KEY_PREFIX + username);
+	}
 }
