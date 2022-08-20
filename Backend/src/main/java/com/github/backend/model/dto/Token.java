@@ -1,4 +1,4 @@
-package com.github.backend.service.impl;
+package com.github.backend.model.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

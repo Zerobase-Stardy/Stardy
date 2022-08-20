@@ -1,5 +1,6 @@
 package com.github.backend.service.impl;
 
+import com.github.backend.model.dto.Token;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;

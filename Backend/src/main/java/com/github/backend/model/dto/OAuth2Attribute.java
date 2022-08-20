@@ -1,4 +1,4 @@
-package com.github.backend.service.impl;
+package com.github.backend.model.dto;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,6 +11,7 @@ import java.util.Map;
 @ToString
 @Builder(access = AccessLevel.PRIVATE)
 @Getter
+public
 class OAuth2Attribute {
     private Map<String, Object> attributes;
     private String attributeKey;
@@ -18,8 +19,8 @@ class OAuth2Attribute {
     private String name;
     private String picture;
 
-    static OAuth2Attribute of(String provider, String attributeKey,
-                              Map<String, Object> attributes) {
+    public static OAuth2Attribute of(String provider, String attributeKey,
+                                     Map<String, Object> attributes) {
         switch (provider) {
             case "google":
                 return ofGoogle(attributeKey, attributes);
@@ -70,13 +71,12 @@ class OAuth2Attribute {
                 .build();
     }
 
-    Map<String, Object> convertToMap() {
+    public Map<String, Object> convertToMap() {
         Map<String, Object> map = new HashMap<>();
         map.put("id", attributeKey);
         map.put("key", attributeKey);
         map.put("name", name);
         map.put("email", email);
-        map.put("picture", picture);
 
         return map;
     }

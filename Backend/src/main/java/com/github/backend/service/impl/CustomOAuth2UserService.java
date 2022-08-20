@@ -3,6 +3,7 @@ package com.github.backend.service.impl;
 
 import com.github.backend.model.constants.Role;
 import com.github.backend.model.constants.Status;
+import com.github.backend.model.dto.OAuth2Attribute;
 import com.github.backend.persist.entity.Member;
 import com.github.backend.persist.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

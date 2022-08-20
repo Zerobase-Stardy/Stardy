@@ -3,7 +3,7 @@ package com.github.backend.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.backend.model.dto.UserDto;
 import com.github.backend.model.dto.UserRequestMapper;
-import com.github.backend.service.impl.Token;
+import com.github.backend.model.dto.Token;
 import com.github.backend.service.impl.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
