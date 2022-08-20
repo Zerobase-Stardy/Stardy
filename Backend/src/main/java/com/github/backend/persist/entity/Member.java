@@ -8,6 +8,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.github.backend.model.constants.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,7 +32,7 @@ public class Member extends BaseTimeEntity{
 
 	private String nickname;
 
-	private boolean withdrawalYn;
+
 
 	private long point;
 
@@ -38,6 +40,8 @@ public class Member extends BaseTimeEntity{
 
 	@Enumerated(EnumType.STRING)
 	private Role role;
+
+	private Status status;
 
 
 	public void increasePoint(long amount) {
