@@ -6,20 +6,28 @@ import static com.github.backend.security.jwt.JwtInfo.KEY_ID;
 import static com.github.backend.security.jwt.JwtInfo.KEY_ROLES;
 import static javax.management.timer.Timer.ONE_MINUTE;
 
+import com.github.backend.exception.JwtInvalidException;
 import com.github.backend.persist.repository.RefreshTokenRepository;
 import com.github.backend.security.jwt.JwtInfo;
+import com.github.backend.type.JwtErrorCode;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
-public class TokenServiceImpl {
+public class TokenService {
 
 	private final RefreshTokenRepository refreshTokenRepository;
 
@@ -70,6 +78,40 @@ public class TokenServiceImpl {
 		refreshTokenRepository.deleteByUsername(username);
 	}
 
+
+
+	public Claims parseAccessToken(String token) {
+		return parseToken(token, jwtInfo.getEncodedAccessKey());
+	}
+	public Claims parseRefreshToken(String token) {
+		return parseToken(token, jwtInfo.getEncodedRefreshKey());
+	}
+
+	private Claims parseToken(String token,byte[] encodedKey) {
+		Claims claims;
+		try {
+			claims = Jwts.parserBuilder()
+				.setSigningKey(encodedKey)
+				.build()
+				.parseClaimsJws(token).getBody();
+		} catch (SignatureException e) {
+			log.warn("Invalid JWT signature: {}", e.getMessage());
+			throw new JwtInvalidException(JwtErrorCode.INVALID_JWT_SIGNATURE, e);
+		} catch (MalformedJwtException e) {
+			log.warn("Invalid JWT token: {}", e.getMessage());
+			throw new JwtInvalidException(JwtErrorCode.INVALID_JWT_SIGNATURE, e);
+		} catch (ExpiredJwtException e) {
+			log.warn("JWT token is expired: {}", e.getMessage());
+			throw new JwtInvalidException(JwtErrorCode.EXPIRED_JWT, e);
+		} catch (UnsupportedJwtException e) {
+			log.warn("JWT token is unsupported: {}", e.getMessage());
+			throw new JwtInvalidException(JwtErrorCode.INVALID_JWT_SIGNATURE, e);
+		} catch (IllegalArgumentException e) {
+			log.warn("JWT claims string is empty or null: {}", e.getMessage());
+			throw new JwtInvalidException(JwtErrorCode.INVALID_JWT_SIGNATURE, e);
+		}
+		return claims;
+	}
 
 
 }
