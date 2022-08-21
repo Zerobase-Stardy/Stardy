@@ -1,5 +1,7 @@
 package com.github.backend.persist.entity;
 
+import com.github.backend.model.constants.AuthType;
+import com.github.backend.model.constants.MemberStatus;
 import com.github.backend.model.constants.Role;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,11 +32,13 @@ public class Member extends BaseTimeEntity{
 
 	private String nickname;
 
-	private boolean withdrawalYn;
+	@Enumerated(EnumType.STRING)
+	private MemberStatus status;
 
 	private long point;
 
-	private String authType;
+	@Enumerated(EnumType.STRING)
+	private AuthType authType;
 
 	@Enumerated(EnumType.STRING)
 	private Role role;
