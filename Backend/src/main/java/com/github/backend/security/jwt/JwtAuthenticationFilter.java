@@ -1,5 +1,7 @@
 package com.github.backend.security.jwt;
 
+import static com.github.backend.security.jwt.JwtInfo.*;
+
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -19,20 +21,24 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-	private static final String BEARER_PREFIX = "Bearer ";
-
 	private final AuthenticationManager authenticationManager;
 
 	@Override
 	public void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
-		String token = getJwtFrom(request);
 
+		authenticate(request, getJwtFrom(request));
+
+		filterChain.doFilter(request, response);
+	}
+
+	private void authenticate(HttpServletRequest request, String token) {
 		if (StringUtils.hasText(token)) {
 			try {
 				JwtAuthenticationToken jwtAuthenticationToken = new JwtAuthenticationToken(token);
 				Authentication authentication = authenticationManager.authenticate(
 					jwtAuthenticationToken);
+
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 
 			} catch (AuthenticationException e) {
@@ -40,12 +46,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				request.setAttribute("exception",e.getMessage());
 			}
 		}
-
-		filterChain.doFilter(request, response);
 	}
 
 	private String getJwtFrom(HttpServletRequest request) {
-		// 요청 헤더에서 Bearer Token 가져오기
 		String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
 
 		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {

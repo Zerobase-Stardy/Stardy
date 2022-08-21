@@ -1,6 +1,10 @@
 package com.github.backend.service.impl;
 
-import static com.github.backend.type.MemberCourseErrorCode.*;
+import static com.github.backend.type.MemberCourseErrorCode.ALREADY_MEMBER_COURSE_EXISTS;
+import static com.github.backend.type.MemberCourseErrorCode.COURSE_NOT_EXISTS;
+import static com.github.backend.type.MemberCourseErrorCode.MEMBER_COURSE_NOT_EXISTS;
+import static com.github.backend.type.MemberCourseErrorCode.MEMBER_NOT_EXISTS;
+import static com.github.backend.type.MemberCourseErrorCode.NOT_ENOUGH_POINT;
 
 import com.github.backend.exception.MemberCourseException;
 import com.github.backend.persist.entity.Course;

@@ -1,7 +1,6 @@
 package com.github.backend.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.backend.model.Result;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
