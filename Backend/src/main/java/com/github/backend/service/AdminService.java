@@ -127,6 +127,13 @@ public class AdminService {
         return gamerRepository.save(gamer);
     }
 
+    @Transactional
+    public void deleteGamer(Long id){
+        Gamer gamer = gamerRepository.findById(id)
+                .orElseThrow(() -> new GamerException(GamerErrorCode.NOT_EXIST_GAMER));
+
+        gamerRepository.delete(gamer);
+    }
 
     /**
      * 강의 등록

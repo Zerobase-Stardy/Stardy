@@ -20,8 +20,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class AdminServiceTest {
@@ -216,6 +219,42 @@ public class AdminServiceTest {
         //then
         assertEquals(gamerException.getErrorCode(), GamerErrorCode.NOT_EXIST_GAMER);
 
+    }
+
+    @Test
+    @DisplayName("게이머 정보 삭제 성공")
+    void testDeleteGamerInfo(){
+        //given
+        Gamer gamer = Gamer.builder()
+                .id(1L)
+                .name("유영진")
+                .race("테란")
+                .nickName("rush")
+                .introduce("단단한 테란")
+                .build();
+
+        given(gamerRepository.findById(gamer.getId()))
+                .willReturn(Optional.of(gamer));
+
+        //when
+        adminService.deleteGamer(gamer.getId());
+
+        //then
+        verify(gamerRepository).delete(gamer);
+    }
+
+    @Test
+    @DisplayName("게이머 정보 삭제 실패 - 게이머를 찾을 수 없음")
+    void testDeleteGamerInfoFailedNotFoundGamer(){
+        //given
+        given(gamerRepository.findById(anyLong()))
+                .willReturn(Optional.empty());
+
+        //when
+        GamerException gamerException = assertThrows(
+                GamerException.class, () -> adminService.deleteGamer(1L));
+        //then
+        assertEquals(gamerException.getErrorCode(), GamerErrorCode.NOT_EXIST_GAMER);
     }
 
 
