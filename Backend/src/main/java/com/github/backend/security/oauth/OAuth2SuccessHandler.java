@@ -32,7 +32,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 		Tokens tokens = tokenService.issueAllToken(memberInfo);
 
 		setResponse(response);
-
 		response.getWriter().println(objectMapper.writeValueAsString(new Result<>(200, true, tokens)));
 
 	}

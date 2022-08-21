@@ -6,7 +6,6 @@ import com.github.backend.model.dto.OAuthAttributes;
 import com.github.backend.model.dto.TokenMemberDto.MemberInfo;
 import com.github.backend.persist.entity.Member;
 import com.github.backend.persist.repository.MemberRepository;
-
 import java.util.Collections;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,6 @@ import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserServ
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 

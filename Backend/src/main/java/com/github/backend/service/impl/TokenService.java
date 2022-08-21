@@ -1,6 +1,7 @@
 package com.github.backend.service.impl;
 
-import static com.github.backend.model.dto.TokenMemberDto.*;
+import static com.github.backend.model.dto.TokenMemberDto.MemberInfo;
+import static com.github.backend.model.dto.TokenMemberDto.Tokens;
 import static com.github.backend.security.jwt.JwtInfo.KEY_EMAIL;
 import static com.github.backend.security.jwt.JwtInfo.KEY_ID;
 import static com.github.backend.security.jwt.JwtInfo.KEY_NICKNAME;
@@ -20,7 +21,6 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import java.time.Duration;
-import java.util.Collections;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
