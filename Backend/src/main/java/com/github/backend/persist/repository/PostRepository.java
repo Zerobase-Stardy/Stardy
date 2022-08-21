@@ -1,0 +1,8 @@
+package com.github.backend.persist.repository;
+
+import com.github.backend.persist.entity.Post;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PostRepository extends JpaRepository<Post, Long> {
+
+}
