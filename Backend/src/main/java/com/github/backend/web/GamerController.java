@@ -17,26 +17,6 @@ public class GamerController {
 
     private final GamerService gamerService;
 
-    @PostMapping("/register")
-    public RegisterGamer.Response registerGamer(
-            @RequestBody @Valid RegisterGamer.Request request
-    ){
-        Gamer gamer = gamerService.registerGamer(
-                request.getName(),
-                request.getRace(),
-                request.getNickName(),
-                request.getIntroduce()
-        );
-
-        // convert Entity to DTO
-        return new RegisterGamer.Response(
-                gamer.getName(),
-                gamer.getRace(),
-                gamer.getNickName(),
-                gamer.getIntroduce()
-        );
-    }
-
     @GetMapping("/list")
     public SelectGamer.Response getGamerList(){
 
