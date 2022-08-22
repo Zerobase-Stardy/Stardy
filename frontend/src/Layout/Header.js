@@ -56,19 +56,16 @@ const LinkItem = ({ active, children, to }) => (
   )
 }
 
-
-
 const Wrap = styled.div`
-width: 80%;
-margin: 0 auto;
-position: relative;
-`
+  width: 80%;
+  margin: 0 auto;
+  position: relative;
+`;
 
 const HeaderArea = styled.header`
-background-color: black;
-color: white;
-
-`
+  background-color: black;
+  color: white;
+`;
 const LogoArea = styled.div`
   width: 100%;
   font-size: 32px;
@@ -77,27 +74,26 @@ const LogoArea = styled.div`
   color: white;
   margin-bottom: 8px;
   font-family: Gowun Dodum;
-`
+`;
 const HeaderNav = styled.div`
   padding: 4px;
   display: flex;
   justify-content: space-between;
-`
+`;
 
 const UserNaviArea = styled.div`
   position: absolute;
   right: 4px;
   top: 12px;
   font-size: 14px;
-
-`
+`;
 
 const Login = styled.button`
-border: 0;
-outline: 0;
-background-color: transparent;
-color: white;
-cursor: pointer;
-font-family: 'Galmuri';
-font-size: 14px;
-`
+  border: 0;
+  outline: 0;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+  font-family: "Galmuri";
+  font-size: 14px;
+`;
