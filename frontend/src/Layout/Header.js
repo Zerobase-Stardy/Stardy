@@ -1,35 +1,59 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import { Link } from "react-router-dom";
+import Logo from "../favicon.ico"
+import NavHoverMenu from '../components/NavHoverMenu';
 
 const LinkItem = ({ active, children, to }) => (
-  <Link to={to} className={`menu-item ${active ? active : ""}`}>
-    {" "}
-    {children}{" "}
-  </Link>
-);
-
-export default function Header(props) {
-  return (
-    <HeaderArea>
-      <Wrap>
-        <LogoArea>
-          <LinkItem to="/">STARDY</LinkItem>
-        </LogoArea>
-        <UserNaviArea>
-          <Login onClick={props.toggle}> Login </Login> |
-          <LinkItem to="/mypage"> My Page </LinkItem>
-        </UserNaviArea>
-        <HeaderNav>
-          <LinkItem to="/progamer">Pro-gamer</LinkItem>
-          <LinkItem to="/races">Races</LinkItem>
-          <LinkItem to="/post">Community</LinkItem>
-          <LinkItem to="/mylecture">내 강의실</LinkItem>
-          <input />
-        </HeaderNav>
-      </Wrap>
-    </HeaderArea>
+  <Link to = {to} className={`menu-item ${active ? active : ""}`} style={{ position: "relative"}}> { children } </Link>
   );
+  
+
+  export default function Header(props) {
+
+    const [visible, setVisible] = useState({
+      display: "none"
+    })
+
+    const seeDropDown = () => {
+        setVisible({
+          display: "block"
+        })
+    }
+
+    const deleteDrop = () => {
+      setVisible({
+        display: "none"
+      })
+    }
+    return (
+      <HeaderArea>
+          <Wrap>
+            <LogoArea> 
+              <LinkItem to="/">
+                STARDY 
+              </LinkItem> 
+            </LogoArea>
+            <UserNaviArea > 
+              <Login onClick={props.toggle}>  Login </Login> | <LinkItem to="/mypage"> My Page </LinkItem> 
+            </UserNaviArea>
+            <HeaderNav>
+
+                <LinkItem to="/progamer">Pro-gamer</LinkItem>
+
+              <div onMouseOver={seeDropDown}  onMouseLeave={deleteDrop}>
+                <LinkItem to="/races" >Races
+                  <NavHoverMenu style={visible}/>
+                </LinkItem>
+              </div>
+              
+              <LinkItem to="/community">Community</LinkItem>
+              <LinkItem to="/mylecture">내 강의실</LinkItem>
+              <input />
+            </HeaderNav>
+        </Wrap>
+      </HeaderArea>
+  )
 }
 
 const Wrap = styled.div`
