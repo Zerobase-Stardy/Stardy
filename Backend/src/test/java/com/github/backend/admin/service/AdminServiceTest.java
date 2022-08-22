@@ -20,8 +20,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class AdminServiceTest {
@@ -155,6 +158,103 @@ public class AdminServiceTest {
         assertEquals(gamer.getNickName(), findGamerList.get(0).getNickName());
         assertEquals(gamer.getRace(), findGamerList.get(0).getRace());
         assertEquals(gamer.getIntroduce(), findGamerList.get(0).getIntroduce());
+    }
+
+    @Test
+    @DisplayName("게이머 정보 수정 성공")
+    void testUpdateGamer(){
+        //given
+        Gamer gamer = Gamer.builder()
+                .id(1L)
+                .name("유영진")
+                .race("테란")
+                .nickName("rush")
+                .introduce("단단한 테란")
+                .build();
+
+        Gamer updateGamer = Gamer.builder()
+                .id(1L)
+                .name("유영진")
+                .race("토스")
+                .nickName("rush")
+                .introduce("단단한 테란")
+                .build();
+
+        given(gamerRepository.findById(anyLong()))
+                .willReturn(Optional.of(gamer));
+
+        given(gamerRepository.save(any()))
+                .willReturn(updateGamer);
+        //when
+
+        Gamer compGamer = adminService.updateGamer(
+                1L, "유영진", "토스", "rush", "단단한 테란"
+        );
+
+        //then
+        assertEquals(compGamer.getName(), updateGamer.getName());
+        assertEquals(compGamer.getRace(), updateGamer.getRace());
+        assertEquals(compGamer.getNickName(), updateGamer.getNickName());
+        assertEquals(compGamer.getIntroduce(), updateGamer.getIntroduce());
+    }
+
+    @Test
+    @DisplayName("게이머 정보 수정 실패 - 해당하는 게이머를 찾을 수 없음")
+    void testUpdateGamerFailedNotFoundGamer(){
+        //given
+
+        given(gamerRepository.findById(anyLong()))
+                .willReturn(Optional.empty());
+        //when
+
+        GamerException gamerException = assertThrows(
+                GamerException.class, () -> adminService.updateGamer(
+                        1L,
+                        "유영진",
+                        "테란",
+                        "rush",
+                        "단단한 테란"
+                ));
+
+        //then
+        assertEquals(gamerException.getErrorCode(), GamerErrorCode.NOT_EXIST_GAMER);
+
+    }
+
+    @Test
+    @DisplayName("게이머 정보 삭제 성공")
+    void testDeleteGamerInfo(){
+        //given
+        Gamer gamer = Gamer.builder()
+                .id(1L)
+                .name("유영진")
+                .race("테란")
+                .nickName("rush")
+                .introduce("단단한 테란")
+                .build();
+
+        given(gamerRepository.findById(gamer.getId()))
+                .willReturn(Optional.of(gamer));
+
+        //when
+        adminService.deleteGamer(gamer.getId());
+
+        //then
+        verify(gamerRepository).delete(gamer);
+    }
+
+    @Test
+    @DisplayName("게이머 정보 삭제 실패 - 게이머를 찾을 수 없음")
+    void testDeleteGamerInfoFailedNotFoundGamer(){
+        //given
+        given(gamerRepository.findById(anyLong()))
+                .willReturn(Optional.empty());
+
+        //when
+        GamerException gamerException = assertThrows(
+                GamerException.class, () -> adminService.deleteGamer(1L));
+        //then
+        assertEquals(gamerException.getErrorCode(), GamerErrorCode.NOT_EXIST_GAMER);
     }
 
 

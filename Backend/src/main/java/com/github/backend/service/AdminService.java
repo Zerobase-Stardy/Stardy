@@ -94,8 +94,45 @@ public class AdminService {
 
 
     private void validateCreateGamer(String nickname) {
-        if (gamerRepository.existsByNickName(nickname))
+        if (gamerRepository.existsByNickName(nickname)) {
             throw new GamerException(GamerErrorCode.EXIST_SAME_GAMER_NICKNAME);
+        }
+    }
+
+    /**
+     * 게이머 정보 수정
+     * @param id : id(pk)
+     * @param name : 게이머 이름
+     * @param race : 게이머 종족
+     * @param nickname : 게이머 인게임 별명
+     * @param introduce : 게이머 자기 소개
+     * id에 해당하는 gamer 존재해야 함.
+     */
+    @Transactional
+    public Gamer updateGamer(
+            Long id,
+            String name,
+            String race,
+            String nickname,
+            String introduce
+    ){
+        Gamer gamer = gamerRepository.findById(id)
+                .orElseThrow(() -> new GamerException(GamerErrorCode.NOT_EXIST_GAMER));
+
+        gamer.setName(name);
+        gamer.setRace(race);
+        gamer.setNickName(nickname);
+        gamer.setIntroduce(introduce);
+
+        return gamerRepository.save(gamer);
+    }
+
+    @Transactional
+    public void deleteGamer(Long id){
+        Gamer gamer = gamerRepository.findById(id)
+                .orElseThrow(() -> new GamerException(GamerErrorCode.NOT_EXIST_GAMER));
+
+        gamerRepository.delete(gamer);
     }
 
     /**
