@@ -1,23 +1,23 @@
 package com.github.backend.service.impl;
 
-import static com.github.backend.type.AttendanceErrorCode.*;
-
 import com.github.backend.exception.AttendanceException;
 import com.github.backend.persist.entity.Attendance;
 import com.github.backend.persist.entity.Member;
 import com.github.backend.persist.repository.AttendanceRepository;
 import com.github.backend.persist.repository.MemberRepository;
 import com.github.backend.service.AttendanceService;
-import com.github.backend.type.AttendanceErrorCode;
-import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
+import static com.github.backend.type.AttendanceErrorCode.ALREADY_CHECK_ATTENDANCE;
+import static com.github.backend.type.AttendanceErrorCode.MEMBER_NOT_EXISTS;
+
 @RequiredArgsConstructor
 @Service
-public class AttendanceServiceImpl implements AttendanceService {
+public class 	AttendanceServiceImpl implements AttendanceService {
 
 	private final AttendanceRepository attendanceRepository;
 	private final MemberRepository memberRepository;

@@ -1,6 +1,4 @@
 package com.github.backend.config;
-
-
 import com.github.backend.security.jwt.JwtAuthenticationFilter;
 import com.github.backend.security.jwt.JwtAuthenticationProvider;
 import com.github.backend.security.jwt.JwtEntryPoint;

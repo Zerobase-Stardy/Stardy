@@ -1,7 +1,7 @@
 package com.github.backend.web;
 
 
-import com.github.backend.model.constants.MemberStatus;
+import com.github.backend.model.Result;
 import com.github.backend.model.dto.MemberInput;
 import com.github.backend.model.dto.ModifyMember;
 import com.github.backend.model.dto.TokenMemberDto;
@@ -9,18 +9,14 @@ import com.github.backend.model.dto.WithdrawalMember;
 import com.github.backend.persist.entity.Member;
 import com.github.backend.persist.repository.RefreshTokenRepository;
 import com.github.backend.service.MemberService;
-import com.nimbusds.openid.connect.sdk.claims.UserInfo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,32 +26,23 @@ public class MemberController {
     final RefreshTokenRepository refreshTokenRepository;
 
     @GetMapping("/withdrawal")
-    public WithdrawalMember.Response withdrawalMember(@AuthenticationPrincipal TokenMemberDto.MemberInfo memberInfo, HttpServletResponse response) {
-        TokenMemberDto.MemberInfo memberInfo1 = memberInfo;
-
+    public ResponseEntity<Result<?>> withdrawalMember(@AuthenticationPrincipal TokenMemberDto.MemberInfo memberInfo) {
         memberService.Withdrawal(memberInfo.getEmail());
         refreshTokenRepository.deleteByUsername(memberInfo.getEmail());
+        Member afterMember = memberService.loadMemberInfo(memberInfo.getEmail());
 
-        return new WithdrawalMember.Response(
-                response.getStatus(),
-                memberInfo.getEmail(),
-                memberInfo.getNickname(),
-                memberService.loadMemberInfo(memberInfo.getEmail()).getStatus().toString()
-        );
+        WithdrawalMember withdrawalMember = new WithdrawalMember(memberInfo.getEmail(), memberInfo.getNickname(), afterMember.getStatus().toString());
+        return ResponseEntity.ok().body(new Result<>(HttpStatus.OK.value(),true, withdrawalMember));
     }
 
     @PutMapping("/nickname")
-    public ModifyMember.Response modifyMember(@AuthenticationPrincipal TokenMemberDto.MemberInfo memberInfo, MemberInput memberInput ,HttpServletResponse response) {
-
-        System.out.println(memberInfo);
-        System.out.println(memberInput.getNickName());
+    public ResponseEntity<Result<?>> modifyMember(@AuthenticationPrincipal TokenMemberDto.MemberInfo memberInfo, MemberInput memberInput) {
         memberService.modifyNickNameMember(memberInfo.getEmail(), memberInput.getNickName());
+        Member afterMember = memberService.loadMemberInfo(memberInfo.getEmail());
 
-        return new ModifyMember.Response(
-                response.getStatus(),
-                memberInfo.getEmail(),
-                memberService.loadMemberInfo(memberInfo.getEmail()).getNickname()
-        );
+
+        ModifyMember modifyMember = new ModifyMember(memberInfo.getEmail(), afterMember.getNickname());
+        return ResponseEntity.ok().body(new Result<>(HttpStatus.OK.value(),true, modifyMember));
     }
 
 

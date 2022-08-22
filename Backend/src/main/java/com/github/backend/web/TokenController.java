@@ -1,18 +1,16 @@
 package com.github.backend.web;
 
-import com.github.backend.model.constants.MemberStatus;
+import com.github.backend.model.Result;
 import com.github.backend.model.dto.MemberLogout;
 import com.github.backend.model.dto.TokenMemberDto;
-import com.github.backend.model.dto.WithdrawalMember;
 import com.github.backend.persist.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,16 +19,10 @@ public class TokenController {
    final RefreshTokenRepository refreshTokenRepository;
 
     @GetMapping("/logout")
-    public MemberLogout.Response logout(HttpServletRequest request, HttpServletResponse response, @AuthenticationPrincipal TokenMemberDto.MemberInfo memberInfo){
+    public ResponseEntity<Result<?>> logout(@AuthenticationPrincipal TokenMemberDto.MemberInfo memberInfo){
         refreshTokenRepository.deleteByUsername(memberInfo.getEmail());
+        MemberLogout memberLogout  = new MemberLogout(memberInfo.getEmail(),memberInfo.getNickname());
 
-        String memberMail = memberInfo.getEmail();
-        String memberNickName = memberInfo.getNickname();
-
-        return new MemberLogout.Response(
-                response.getStatus(),
-                memberMail,
-                memberNickName
-        );
+        return ResponseEntity.ok().body(new Result<>(HttpStatus.OK.value(),true, memberLogout));
     }
 }
