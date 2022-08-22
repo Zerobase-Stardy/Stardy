@@ -41,22 +41,22 @@ export default function Editor() {
                 });
               }}
             />
-            <input
-              type="button"
-              value="제출"
-              onClick={(e) => {
-                console.log({
-                  title: writing.title,
-                  content: writing.content,
-                  type: channel,
-                });
-              }}
-            ></input>
           </form>
         </Top>
-        <div>{writing.title}</div>
-        <div dangerouslySetInnerHTML={{ __html: writing.content }}></div>
-        <div>{channel}</div>
+
+        <SubmitBtn
+          type="submit"
+          value="제출"
+          onClick={(e) => {
+            e.preventDefault();
+            alert(
+              `title: ${writing.title}
+                  content: ${writing.content}
+                  type: ${channel}`
+            );
+          }}
+        ></SubmitBtn>
+        <CancelBtn type="button" value="취소"></CancelBtn>
       </Wrap>
     </Main>
   );
@@ -76,6 +76,7 @@ const Wrap = styled.div`
 const Top = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 50px;
   gap: 20px;
   h2 {
     width: 100%;
@@ -103,4 +104,26 @@ const Title = styled.input`
   font-size: 16px;
   border: 1px solid #dde0ea;
   margin-bottom: 20px;
+`;
+
+const SubmitBtn = styled.input`
+  width: 144px;
+  height: 48px;
+  color: white;
+  float: left;
+  border-radius: 4px;
+  border: none;
+  font-size: 18px;
+  background-color: #87c3a1;
+  cursor: pointer;
+`;
+
+const CancelBtn = styled.input`
+  width: 144px;
+  height: 48px;
+  float: right;
+  border-radius: 4px;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
 `;
