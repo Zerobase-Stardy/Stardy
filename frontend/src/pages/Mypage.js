@@ -23,12 +23,13 @@ const BodyStyle = styled.div`
 `
   
 const PageCategory = styled.div`
-  width: 35%;
+  box-sizing: border-box;
+  width: 144px;
   font-size: 24px;
   font-weight: bold;
   display: flex;
   flex-direction: column;
-  padding: 5%;
+  padding: 5% 0 0 0;
   border-right: 2px solid gray;
   height: 70vh;
   margin: 5vh;
