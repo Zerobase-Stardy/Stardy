@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -45,8 +44,9 @@ class MemberCourseServiceImplTest {
 	Course course;
 
 	@BeforeEach
-	void beforeAll() {
+	void beforeEach() {
 		member = Member.builder()
+			.id(1L)
 			.email("test@test.com")
 			.point(500)
 			.build();
@@ -62,7 +62,7 @@ class MemberCourseServiceImplTest {
 	@Test
 	void takeCourse_success() {
 		//given
-		given(memberRepository.findByEmail(anyString()))
+		given(memberRepository.findById(anyLong()))
 			.willReturn(Optional.of(member));
 
 		given(courseRepository.findById(anyLong()))
@@ -72,7 +72,7 @@ class MemberCourseServiceImplTest {
 			MemberCourse.class);
 
 		//when
-		memberCourseService.takeCourse(member.getEmail(), course.getId());
+		memberCourseService.takeCourse(member.getId(), course.getId());
 
 		//then
 		verify(memberCourseRepository).save(captor.capture());
@@ -84,13 +84,13 @@ class MemberCourseServiceImplTest {
 	@Test
 	void takeCourse_fail_MemberNotExists() {
 		//given
-		given(memberRepository.findByEmail(anyString()))
+		given(memberRepository.findById(anyLong()))
 			.willReturn(Optional.empty());
 		//when
 
 		//then
 		assertThatThrownBy(
-			() -> memberCourseService.takeCourse(member.getEmail(), course.getId()))
+			() -> memberCourseService.takeCourse(member.getId(), course.getId()))
 			.isInstanceOf(MemberCourseException.class)
 			.hasMessage(MemberCourseErrorCode.MEMBER_NOT_EXISTS.getDescription());
 	}
@@ -99,7 +99,7 @@ class MemberCourseServiceImplTest {
 	@Test
 	void takeCourse_fail_CourseNotExists() {
 		//given
-		given(memberRepository.findByEmail(anyString()))
+		given(memberRepository.findById(anyLong()))
 			.willReturn(Optional.of(member));
 
 		given(courseRepository.findById(anyLong()))
@@ -107,7 +107,7 @@ class MemberCourseServiceImplTest {
 		//when
 		//then
 		assertThatThrownBy(
-			() -> memberCourseService.takeCourse(member.getEmail(), course.getId()))
+			() -> memberCourseService.takeCourse(member.getId(), course.getId()))
 			.isInstanceOf(MemberCourseException.class)
 			.hasMessage(MemberCourseErrorCode.COURSE_NOT_EXISTS.getDescription());
 	}
@@ -116,7 +116,7 @@ class MemberCourseServiceImplTest {
 	@Test
 	void takeCourse_fail_AlreadyMemberCourseExists() {
 		//given
-		given(memberRepository.findByEmail(anyString()))
+		given(memberRepository.findById(anyLong()))
 			.willReturn(Optional.of(member));
 
 		given(courseRepository.findById(anyLong()))
@@ -128,7 +128,7 @@ class MemberCourseServiceImplTest {
 		//when
 		//then
 		assertThatThrownBy(
-			() -> memberCourseService.takeCourse(member.getEmail(), course.getId()))
+			() -> memberCourseService.takeCourse(member.getId(), course.getId()))
 			.isInstanceOf(MemberCourseException.class)
 			.hasMessage(MemberCourseErrorCode.ALREADY_MEMBER_COURSE_EXISTS.getDescription());
 	}
@@ -137,7 +137,7 @@ class MemberCourseServiceImplTest {
 	@Test
 	void takeCourse_fail_NotEnoughPoint() {
 		//given
-		given(memberRepository.findByEmail(anyString()))
+		given(memberRepository.findById(anyLong()))
 			.willReturn(Optional.of(member));
 
 		given(courseRepository.findById(anyLong()))
@@ -151,7 +151,7 @@ class MemberCourseServiceImplTest {
 		//when
 		//then
 		assertThatThrownBy(
-			() -> memberCourseService.takeCourse(member.getEmail(), course.getId()))
+			() -> memberCourseService.takeCourse(member.getId(), course.getId()))
 			.isInstanceOf(MemberCourseException.class)
 			.hasMessage(MemberCourseErrorCode.NOT_ENOUGH_POINT.getDescription());
 	}

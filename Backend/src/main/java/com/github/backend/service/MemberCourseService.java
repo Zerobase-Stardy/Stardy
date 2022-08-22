@@ -2,7 +2,7 @@ package com.github.backend.service;
 
 public interface MemberCourseService {
 
-	void takeCourse(String email, Long courseId);
+	void takeCourse(Long memberId, Long courseId);
 
 	void toggleBookmark(String email, Long memberCourseId);
 }

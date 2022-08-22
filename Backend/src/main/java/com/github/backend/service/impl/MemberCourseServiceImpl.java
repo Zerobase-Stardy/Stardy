@@ -28,9 +28,9 @@ public class MemberCourseServiceImpl implements MemberCourseService {
 
 	@Transactional
 	@Override
-	public void takeCourse(String email, Long courseId) {
+	public void takeCourse(Long memberId, Long courseId) {
 
-		Member member = memberRepository.findByEmail(email)
+		Member member = memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberCourseException(MEMBER_NOT_EXISTS));
 
 		Course course = courseRepository.findById(courseId)
