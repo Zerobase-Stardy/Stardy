@@ -32,7 +32,6 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.headers().frameOptions().disable();
-
 		http.httpBasic().disable()
 			.csrf().disable()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -45,6 +44,9 @@ public class SecurityConfig {
 				.userInfoEndpoint()
 					.userService(oAuth2UserService);
 
+
+
+
 		http.exceptionHandling()
 			.authenticationEntryPoint(jwtEntryPoint);
 
@@ -54,8 +56,9 @@ public class SecurityConfig {
 		http.authenticationProvider(jwtAuthenticationProvider);
 
 		http.authorizeRequests()
-			.anyRequest().permitAll();
-
+				.antMatchers("/member/**" ,"/oauth/logout")
+				.authenticated()
+				.anyRequest().permitAll();
 
 		return http.build();
 	}

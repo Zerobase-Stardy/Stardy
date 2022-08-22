@@ -38,7 +38,6 @@ public class RefreshTokenRepository {
 	}
 
 	public void deleteByUsername(String username) {
-		ValueOperations<String, String> values = redisTemplate.opsForValue();
-		values.getAndDelete(KEY_PREFIX + username);
+		redisTemplate.delete(KEY_PREFIX + username);
 	}
 }

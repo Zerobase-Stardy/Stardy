@@ -11,11 +11,14 @@ import io.jsonwebtoken.lang.Strings;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 @Slf4j
@@ -24,7 +27,7 @@ import org.springframework.stereotype.Component;
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 
 	private final TokenService tokenService;
-
+	private final HttpServletRequest request;
 
 	@Override
 	public Authentication authenticate(Authentication authentication)
@@ -38,6 +41,8 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 		String status = memberInfo.getStatus();
 
 		System.out.println(status);
+		System.out.println(request.getRequestURI());
+
 
 		switch (status) {
 			case "BANNED":
@@ -45,7 +50,15 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 			case "WITHDRAWAL":
 				throw new JwtInvalidException(JwtErrorCode.MEMBER_STATUS_WITHDRAWAL);
 			case "WAIT":
-				throw new JwtInvalidException(JwtErrorCode.MEMBER_STATUS_WAIT);
+				switch (request.getRequestURI()){
+					case "/member/nickname" :
+					case "/member/withdrawal" :
+					case "/oauth/logout":
+						return new JwtAuthenticationToken(memberInfo, "",
+								Arrays.asList(new SimpleGrantedAuthority(memberInfo.getRole())));
+					default:
+						throw new JwtInvalidException(JwtErrorCode.MEMBER_STATUS_WAIT);
+				}
 			default:
 				return new JwtAuthenticationToken(memberInfo, "",
 					Arrays.asList(new SimpleGrantedAuthority(memberInfo.getRole())));

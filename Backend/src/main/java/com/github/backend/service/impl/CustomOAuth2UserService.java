@@ -33,11 +33,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
 		String registrationId = userRequest.getClientRegistration().getRegistrationId();
 		String userNameAttributeName = userRequest.getClientRegistration()
-			.getProviderDetails().getUserInfoEndpoint()
-			.getUserNameAttributeName();
+				.getProviderDetails().getUserInfoEndpoint()
+				.getUserNameAttributeName();
 
 		OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName,
-			oAuth2User.getAttributes());
+				oAuth2User.getAttributes());
 
 		Optional<Member> optionalMember = memberRepository.findByEmail(attributes.getEmail());
 		Member member;
@@ -49,16 +49,16 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		}
 
 		MemberInfo memberInfo = MemberInfo.builder()
-			.id(member.getId())
-			.nickname(member.getNickname())
-			.role(member.getRole().name())
-			.email(member.getEmail())
-			.status(member.getStatus().name())
-			.build();
+				.id(member.getId())
+				.nickname(member.getNickname())
+				.role(member.getRole().name())
+				.email(member.getEmail())
+				.status(member.getStatus().name())
+				.build();
 
 
 		return new CustomOAuth2User(memberInfo,
-			Collections.singleton(new SimpleGrantedAuthority(member.getRole().name())),
-			attributes.getAttributes(), attributes.getNameAttributeKey());
+				Collections.singleton(new SimpleGrantedAuthority(member.getRole().name())),
+				attributes.getAttributes(), attributes.getNameAttributeKey());
 	}
 }

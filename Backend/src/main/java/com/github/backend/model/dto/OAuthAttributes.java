@@ -20,6 +20,7 @@ public class OAuthAttributes {
 	private AuthType authType;
 	private String email;
 
+
 	public static OAuthAttributes of(String registrationId, String usernameAttributeName,
 		Map<String, Object> attributes) {
 		switch (registrationId) {
@@ -64,7 +65,6 @@ public class OAuthAttributes {
 			.status(WAIT)
 			.point(0)
 			.build();
-
 	}
 
 
