@@ -52,8 +52,7 @@ export default function Header(props) {
           </div>
 
           <LinkItem to="/post">Community</LinkItem>
-          <LinkItem to="/mylecture">내 강의실</LinkItem>
-          <input />
+          {/* <LinkItem to="/mylecture">내 강의실</LinkItem> */}
         </HeaderNav>
       </Wrap>
     </HeaderArea>
@@ -73,7 +72,7 @@ const HeaderArea = styled.header`
 const LogoArea = styled.div`
   width: 100%;
   font-size: 32px;
-  text-align: center;
+  text-align: left;
   font-weight: bold;
   color: white;
   margin-bottom: 8px;
@@ -83,6 +82,7 @@ const HeaderNav = styled.div`
   padding: 4px;
   display: flex;
   justify-content: space-between;
+  width: 30%;
 `;
 
 const UserNaviArea = styled.div`
