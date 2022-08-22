@@ -3,16 +3,22 @@ package com.github.backend.service.impl;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import com.github.backend.exception.AttendanceException;
+import com.github.backend.model.dto.AttendanceDto;
+import com.github.backend.model.dto.AttendanceDto.GetRequest;
 import com.github.backend.persist.entity.Attendance;
 import com.github.backend.persist.entity.Member;
 import com.github.backend.persist.repository.AttendanceRepository;
 import com.github.backend.persist.repository.MemberRepository;
 import com.github.backend.type.AttendanceErrorCode;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -95,4 +101,39 @@ class AttendanceServiceImplTest {
 			.isInstanceOf(AttendanceException.class)
 			.hasMessage(AttendanceErrorCode.ALREADY_CHECK_ATTENDANCE.getDescription());
 	}
+
+	@DisplayName("출석체크 리스트 조회 - 성공")
+	@Test
+	void getAttendances_success(){
+	    //given
+		LocalDate time = LocalDate.of(2022, 8, 15);
+
+		GetRequest request = GetRequest.builder()
+			.memberId(1L)
+			.startDate(time.withDayOfMonth(1))
+			.endDate(time.withDayOfMonth(time.lengthOfMonth()))
+			.build();
+
+		ArrayList<Attendance> list = new ArrayList<>();
+
+		for (int i = 0; i < 2; i++) {
+			list.add(Attendance.builder()
+					.member(Member.builder()
+						.id(1L)
+						.build())
+					.attendanceDate(time.plusDays(i))
+				.build());
+		}
+		given(attendanceRepository.findAllByMember_Id(anyLong(), any(), any()))
+			.willReturn(list);
+
+		//when
+		List<AttendanceDto.Info> attendances =
+			attendanceService.getAttendances(request);
+
+		//then
+		assertThat(attendances.size()).isEqualTo(2);
+		assertThat(attendances.get(0).getDate()).isEqualTo(time);
+	}
+
 }

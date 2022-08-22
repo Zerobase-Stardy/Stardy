@@ -1,15 +1,19 @@
 package com.github.backend.service.impl;
 
+import static com.github.backend.model.dto.AttendanceDto.Info;
 import static com.github.backend.type.AttendanceErrorCode.ALREADY_CHECK_ATTENDANCE;
 import static com.github.backend.type.AttendanceErrorCode.MEMBER_NOT_EXISTS;
+import static java.util.stream.Collectors.toList;
 
 import com.github.backend.exception.AttendanceException;
+import com.github.backend.model.dto.AttendanceDto.GetRequest;
 import com.github.backend.persist.entity.Attendance;
 import com.github.backend.persist.entity.Member;
 import com.github.backend.persist.repository.AttendanceRepository;
 import com.github.backend.persist.repository.MemberRepository;
 import com.github.backend.service.AttendanceService;
 import java.time.LocalDate;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +35,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
 		LocalDate today = LocalDate.now();
 
-		if (attendanceRepository.existsByMemberAndAttendanceDate(member,today)) {
+		if (attendanceRepository.existsByMemberAndAttendanceDate(member, today)) {
 			throw new AttendanceException(ALREADY_CHECK_ATTENDANCE);
 		}
 
@@ -41,5 +45,15 @@ public class AttendanceServiceImpl implements AttendanceService {
 			.member(member)
 			.attendanceDate(today)
 			.build());
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public List<Info> getAttendances(GetRequest request) {
+		return attendanceRepository
+			.findAllByMember_Id(request.getMemberId(), request.getStartDate(), request.getEndDate())
+			.stream()
+			.map(Info::of)
+			.collect(toList());
 	}
 }
