@@ -20,10 +20,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -95,7 +93,7 @@ public class AdminServiceTest {
                         Gamer.builder()
                                 .name("유영진")
                                 .race("테란")
-                                .nickName("rush")
+                                .nickname("rush")
                                 .introduce("단단한 테란")
                                 .build()
                 );
@@ -107,7 +105,7 @@ public class AdminServiceTest {
         //then
         assertEquals(gamer.getName(), "유영진");
         assertEquals(gamer.getRace(), "테란");
-        assertEquals(gamer.getNickName(), "rush");
+        assertEquals(gamer.getNickname(), "rush");
         assertEquals(gamer.getIntroduce(), "단단한 테란");
     }
 
@@ -134,7 +132,7 @@ public class AdminServiceTest {
                         Gamer.builder()
                                 .name("유영진")
                                 .race("테란")
-                                .nickName("rush")
+                                .nickname("rush")
                                 .introduce("단단한 테란")
                                 .build()
                 );
@@ -155,7 +153,7 @@ public class AdminServiceTest {
         //then
         assertEquals(1, findGamerList.size());
         assertEquals(gamer.getName(), findGamerList.get(0).getName());
-        assertEquals(gamer.getNickName(), findGamerList.get(0).getNickName());
+        assertEquals(gamer.getNickname(), findGamerList.get(0).getNickname());
         assertEquals(gamer.getRace(), findGamerList.get(0).getRace());
         assertEquals(gamer.getIntroduce(), findGamerList.get(0).getIntroduce());
     }
@@ -168,7 +166,7 @@ public class AdminServiceTest {
                 .id(1L)
                 .name("유영진")
                 .race("테란")
-                .nickName("rush")
+                .nickname("rush")
                 .introduce("단단한 테란")
                 .build();
 
@@ -176,7 +174,7 @@ public class AdminServiceTest {
                 .id(1L)
                 .name("유영진")
                 .race("토스")
-                .nickName("rush")
+                .nickname("rush")
                 .introduce("단단한 테란")
                 .build();
 
@@ -194,7 +192,7 @@ public class AdminServiceTest {
         //then
         assertEquals(compGamer.getName(), updateGamer.getName());
         assertEquals(compGamer.getRace(), updateGamer.getRace());
-        assertEquals(compGamer.getNickName(), updateGamer.getNickName());
+        assertEquals(compGamer.getNickname(), updateGamer.getNickname());
         assertEquals(compGamer.getIntroduce(), updateGamer.getIntroduce());
     }
 
@@ -229,7 +227,7 @@ public class AdminServiceTest {
                 .id(1L)
                 .name("유영진")
                 .race("테란")
-                .nickName("rush")
+                .nickname("rush")
                 .introduce("단단한 테란")
                 .build();
 
@@ -268,7 +266,7 @@ public class AdminServiceTest {
                                 .id(1L)
                                 .name("유영진")
                                 .race("테란")
-                                .nickName("rush")
+                                .nickname("rush")
                                 .introduce("단단한 테란")
                                 .build()
                 );
@@ -347,7 +345,7 @@ public class AdminServiceTest {
                                 .id(1L)
                                 .name("유영진")
                                 .race("테란")
-                                .nickName("rush")
+                                .nickname("rush")
                                 .introduce("단단한 테란")
                                 .build()
                 );
@@ -385,7 +383,7 @@ public class AdminServiceTest {
                                 .id(1L)
                                 .name("유영진")
                                 .race("테란")
-                                .nickName("rush")
+                                .nickname("rush")
                                 .introduce("단단한 테란")
                                 .build()
                 );
@@ -461,7 +459,7 @@ public class AdminServiceTest {
                 .id(1L)
                 .name("유영진")
                 .race("테란")
-                .nickName("rush")
+                .nickname("rush")
                 .introduce("단단한 테란")
                 .build();
 
@@ -557,7 +555,7 @@ public class AdminServiceTest {
                 .id(1L)
                 .name("유영진")
                 .race("테란")
-                .nickName("rush")
+                .nickname("rush")
                 .introduce("단단한 테란")
                 .build();
         given(gamerRepository.findById(anyLong()))

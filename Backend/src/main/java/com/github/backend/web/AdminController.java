@@ -50,7 +50,7 @@ public class AdminController {
         return new RegisterGamer.Response(
                 gamer.getName(),
                 gamer.getRace(),
-                gamer.getNickName(),
+                gamer.getNickname(),
                 gamer.getIntroduce()
         );
     }
