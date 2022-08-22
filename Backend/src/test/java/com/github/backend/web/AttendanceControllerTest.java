@@ -84,7 +84,7 @@ class AttendanceControllerTest {
 
 		for (int i = 0; i < 2; i++) {
 			list.add(Info.builder()
-				.memberId(Long.valueOf(i))
+				.memberId(0L)
 				.date(time.plusDays(i))
 				.build());
 		}
@@ -100,7 +100,9 @@ class AttendanceControllerTest {
 			.andExpect(jsonPath("$.status").value(200))
 			.andExpect(jsonPath("$.success").value(true))
 			.andExpect(jsonPath("$.data[0].memberId").value(0))
-			.andExpect(jsonPath("$.data[1].memberId").value(1));
+			.andExpect(jsonPath("$.data[1].memberId").value(0))
+			.andExpect(jsonPath("$.data[0].date").value(time.plusDays(0).toString()))
+			.andExpect(jsonPath("$.data[1].date").value(time.plusDays(1).toString()));
 	}
 
 
