@@ -26,6 +26,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,6 +134,47 @@ public class AdminServiceTest {
 
         //then
         assertEquals(gamerException.getErrorCode(), GamerErrorCode.EXIST_SAME_GAMER_NICKNAME);
+    }
+
+    @Test
+    @DisplayName("게이머 정보 상세 조회 성공")
+    void testGetGamerInfo(){
+        //given
+        Gamer gamer = Gamer.builder()
+                .id(1L)
+                .name("유영진")
+                .race("테란")
+                .nickname("rush")
+                .introduce("단단한 테란")
+                .build();
+
+        given(gamerRepository.findById(anyLong()))
+                .willReturn(Optional.of(gamer));
+
+        Gamer gamerInfo = adminService.getGamerInfo(gamer.getId());
+
+        //then
+        assertEquals(gamerInfo.getId(), gamer.getId());
+        assertEquals(gamerInfo.getName(), gamer.getName());
+        assertEquals(gamerInfo.getRace(), gamer.getRace());
+        assertEquals(gamerInfo.getNickname(), gamer.getNickname());
+        assertEquals(gamerInfo.getIntroduce(), gamer.getIntroduce());
+    }
+
+    @Test
+    @DisplayName("게이머 정보 상세 조회 실패")
+    void testGetGamerInfoFailed(){
+        //given
+        given(gamerRepository.findById(anyLong()))
+                .willReturn(Optional.empty());
+
+        GamerException gamerException = assertThrows(
+                GamerException.class,
+                () -> adminService.getGamerInfo(1L)
+        ) ;
+
+        //then
+        assertEquals(gamerException.getErrorCode(), GamerErrorCode.NOT_EXIST_GAMER);
     }
 
     @Test
