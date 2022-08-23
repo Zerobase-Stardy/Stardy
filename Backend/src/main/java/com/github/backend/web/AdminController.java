@@ -98,6 +98,15 @@ public class AdminController {
         );
     }
 
+    @DeleteMapping("/gamer/{gamerId}")
+    public ResponseEntity<Result<?>> deleteGamerInfo(
+            @PathVariable("gamerId") @Valid Long gamerId
+    ){
+        adminService.deleteGamer(gamerId);
+
+        return ResponseEntity.ok().body(null);
+    }
+
 
 
     @PostMapping("/course/register")
