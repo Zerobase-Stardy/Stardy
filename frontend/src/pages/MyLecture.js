@@ -42,7 +42,7 @@ const LectureBody = styled.div`
 const VideoPackage = styled.div`
   box-sizing: border-box;
   display: flex;
-  min-width: 450px;
+  width: 390px;
   flex-wrap: wrap;
   margin: 4px 0 4px 0;
 
