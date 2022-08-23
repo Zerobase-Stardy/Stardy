@@ -71,6 +71,20 @@ public class AdminController {
                         .build()
         );
     }
+    @GetMapping("/gamer/{gamerId}")
+    public ResponseEntity<Result<?>> getGamerInfo(
+            @PathVariable("gamerId") Long gamerId){
+
+        Gamer gamer = adminService.getGamerInfo(gamerId);
+
+        return ResponseEntity.ok().body(
+                Result.builder()
+                        .status(200)
+                        .success(true)
+                        .data(gamer)
+                        .build()
+        );
+    }
 
     @GetMapping("/gamer/list")
     public ResponseEntity<Result<?>> getGamerList(SearchGamer searchGamer){

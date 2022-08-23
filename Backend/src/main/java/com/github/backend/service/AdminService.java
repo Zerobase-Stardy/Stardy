@@ -92,6 +92,19 @@ public class AdminService {
     }
 
     /**
+     *
+     * @param gamerId : 게이머 id
+     * @return 게이머 상세 정보
+     */
+    @Transactional
+    public Gamer getGamerInfo(Long gamerId){
+
+        return gamerRepository.findById(gamerId)
+                .orElseThrow(() -> new GamerException(GamerErrorCode.NOT_EXIST_GAMER));
+    }
+
+
+    /**
      * gamer 정보 반환
      * @param searchGamer : gamer 조회 Dto
      * gamer name, nickname, race 이용한 조회 가능
