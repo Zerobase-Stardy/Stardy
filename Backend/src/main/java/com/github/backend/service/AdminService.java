@@ -228,5 +228,17 @@ public class AdminService {
                 .orElseThrow(() -> new CourseException(CourseErrorCode.NOT_EXIST_COURSE));
     }
 
+    /**
+     *
+     * @param courseId : 강의 id
+     */
+    @Transactional
+    public void deleteCourse(Long courseId){
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new CourseException(CourseErrorCode.NOT_EXIST_COURSE));
+
+        courseRepository.delete(course);
+    }
+
 
 }

@@ -30,6 +30,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
@@ -60,9 +61,6 @@ public class AdminControllerTest {
                 .build();
         List<Gamer> gamerList = new ArrayList<>();
         gamerList.add(gamer);
-
-        SearchGamer searchGamer = SearchGamer.builder()
-                .build();
 
         given(adminService.getGamerList(any()))
                 .willReturn(gamerList);

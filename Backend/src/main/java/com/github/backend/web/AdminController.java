@@ -8,6 +8,7 @@ import com.github.backend.persist.entity.Gamer;
 import com.github.backend.persist.repository.querydsl.condition.GamerSearchCondition;
 import com.github.backend.service.AdminService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -122,4 +123,14 @@ public class AdminController {
                 course.getPrice()
         );
     }
+
+    @DeleteMapping("/course/{courseId}")
+    public ResponseEntity<Result<?>> deleteCourseInfo(
+            @PathVariable("courseId") @Valid Long courseId
+    ){
+        adminService.deleteCourse(courseId);
+
+        return ResponseEntity.ok().body(null);
+    }
+
 }
