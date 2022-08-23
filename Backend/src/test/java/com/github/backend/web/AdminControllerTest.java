@@ -325,6 +325,51 @@ public class AdminControllerTest {
     }
 
     @Test
+    @WithMockUser
+    @DisplayName("강의 리스트 조회 성공")
+    void testSuccessGetCourseList() throws Exception {
+        //given
+        Gamer gamer = Gamer.builder()
+                .id(1L)
+                .name("유영진")
+                .race("테란")
+                .nickname("rush")
+                .introduce("단단한 테란")
+                .build();
+
+        Course course = Course.builder()
+                .id(1L)
+                .gamer(gamer)
+                .title("벙커링")
+                .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
+                .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
+                .comment("세상에서 제일 쉬운 8배럭 벙커링 강의")
+                .level("입문")
+                .race("테란")
+                .price(10L)
+                .build();
+
+        List<Course> courseList = new ArrayList<>();
+        courseList.add(course);
+
+        given(adminService.searchCourseList(any()))
+                .willReturn(courseList);
+        //when
+
+        //then
+        mockMvc.perform(get("/admin/course/list"))
+                .andDo(print())
+                .andExpect(jsonPath("$.data[0].title").value(course.getTitle()))
+                .andExpect(jsonPath("$.data[0].videoUrl").value(course.getVideoUrl()))
+                .andExpect(jsonPath("$.data[0].thumbnailUrl").value(course.getThumbnailUrl()))
+                .andExpect(jsonPath("$.data[0].comment").value(course.getComment()))
+                .andExpect(jsonPath("$.data[0].level").value(course.getLevel()))
+                .andExpect(jsonPath("$.data[0].race").value(course.getRace()))
+                .andExpect(jsonPath("$.data[0].price").value(course.getPrice()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     @WithMockUser(roles = "ADMIN")
     @DisplayName("강의 정보 수정 성공")
     void testUpdateCourseInfo() throws Exception{
