@@ -22,7 +22,7 @@ public class AdminController {
     private final AdminService adminService;
 
     @PostMapping("/register")
-    public CreateAdmin.Response registerAdmin(
+    public ResponseEntity<Result<?>> registerAdmin(
             @RequestBody @Valid CreateAdmin.Request request
     ){
         Admin admin = adminService.registerAdmin(
@@ -31,15 +31,22 @@ public class AdminController {
         );
 
         // convert Entity to DTO
-        return new CreateAdmin.Response(
-                admin.getAdminId(),
-                admin.getPassword(),
-                admin.getRole()
+        return ResponseEntity.ok().body(
+                Result.builder()
+                        .status(200)
+                        .success(true)
+                        .data(
+                                new CreateAdmin.Response(
+                                        admin.getAdminId(),
+                                        admin.getPassword(),
+                                        admin.getRole())
+                        )
+                        .build()
         );
     }
 
     @PostMapping("/gamer/register")
-    public RegisterGamer.Response registerGamer(
+    public ResponseEntity<Result<?>> registerGamer(
             @RequestBody @Valid RegisterGamer.Request request
     ){
         Gamer gamer = adminService.registerGamer(
@@ -50,29 +57,76 @@ public class AdminController {
         );
 
         // convert Entity to DTO
-        return new RegisterGamer.Response(
-                gamer.getName(),
-                gamer.getRace(),
-                gamer.getNickname(),
-                gamer.getIntroduce()
+        return ResponseEntity.ok().body(
+                Result.builder()
+                        .status(200)
+                        .success(true)
+                        .data(
+                                new RegisterGamer.Response(
+                                        gamer.getName(),
+                                        gamer.getRace(),
+                                        gamer.getNickname(),
+                                        gamer.getIntroduce())
+                        )
+                        .build()
         );
     }
 
     @GetMapping("/gamer/list")
-    public Result getGamerList(SearchGamer searchGamer){
+    public ResponseEntity<Result<?>> getGamerList(SearchGamer searchGamer){
 
         List<Gamer> gamer = adminService.getGamerList(searchGamer);
 
-        return Result.builder()
-                .status(200)
-                .success(true)
-                .data(gamer)
-                .build();
+        return ResponseEntity.ok().body(
+                Result.builder()
+                        .status(200)
+                        .success(true)
+                        .data(gamer)
+                        .build()
+        );
+    }
+
+    @PutMapping("/gamer/{gamerId}")
+    public ResponseEntity<Result<?>> updateGamerInfo(
+            @PathVariable  Long gamerId,
+            @RequestBody @Valid UpdateGamer.Request request
+    ){
+        Gamer gamer = adminService.updateGamer(
+                    gamerId,
+                request.getName(),
+                request.getRace(),
+                request.getNickname(),
+                request.getIntroduce()
+        );
+
+        return ResponseEntity.ok().body(
+                Result.builder()
+                        .status(200)
+                        .success(true)
+                        .data(
+                                new UpdateGamer.Response(
+                                gamer.getName(),
+                                gamer.getRace(),
+                                gamer.getNickname(),
+                                gamer.getIntroduce())
+                        )
+                        .build()
+        );
+    }
+
+    @DeleteMapping("/gamer/{gamerId}")
+    public ResponseEntity<Result<?>> deleteGamerInfo(
+            @PathVariable("gamerId") @Valid Long gamerId
+    ){
+        adminService.deleteGamer(gamerId);
+
+        return ResponseEntity.ok().body(null);
     }
 
 
+
     @PostMapping("/course/register")
-    public RegisterCourse.Response registerCourse(
+    public ResponseEntity<Result<?>> registerCourse(
             @RequestBody @Valid RegisterCourse.Request request
     ){
         Course course = adminService.registerCourse(
@@ -86,42 +140,64 @@ public class AdminController {
                 request.getPrice()
         );
 
-        return new RegisterCourse.Response(
-                course.getGamer().getName(),
-                course.getTitle(),
-                course.getRace(),
-                course.getLevel(),
-                course.getComment(),
-                course.getPrice()
+        return ResponseEntity.ok().body(
+                Result.builder()
+                        .status(200)
+                        .success(true)
+                        .data(
+                                new RegisterCourse.Response(
+                                course.getGamer().getName(),
+                                course.getTitle(),
+                                course.getRace(),
+                                course.getLevel(),
+                                course.getComment(),
+                                course.getPrice())
+                        )
+                        .build()
         );
     }
 
     @GetMapping("/course/{courseId}")
-    public CourseInfoResponse getCourseInfo(
+    public ResponseEntity<Result<?>> getCourseInfo(
             @PathVariable("courseId") @Valid Long courseId
     ){
-        return CourseInfoResponse.from(
-                adminService.getCourseInfo(courseId)
-        );
+        return ResponseEntity.ok()
+                .body(
+                    Result.builder()
+                            .status(200)
+                            .success(true)
+                            .data(
+                                    CourseInfoResponse.from(
+                                            adminService.getCourseInfo(courseId)))
+                            .build()
+                );
     }
 
     @PutMapping("/course/{courseId}/edit")
-    public UpdateCourse.Response updateCourseInfo(
+    public ResponseEntity<Result<?>> updateCourseInfo(
             @PathVariable("courseId") @Valid Long courseId,
             @RequestBody UpdateCourse.Request request
     ){
 
         Course course = adminService.updateCourseInfo(courseId, request);
-        return new UpdateCourse.Response(
-                course.getGamer().getName(),
-                course.getTitle(),
-                course.getVideoUrl(),
-                course.getThumbnailUrl(),
-                course.getComment(),
-                course.getLevel(),
-                course.getRace(),
-                course.getPrice()
-        );
+        return ResponseEntity.ok()
+                .body(
+                        Result.builder()
+                                .status(200)
+                                .success(true)
+                                .data(
+                                        new UpdateCourse.Response(
+                                            course.getGamer().getName(),
+                                            course.getTitle(),
+                                            course.getVideoUrl(),
+                                            course.getThumbnailUrl(),
+                                            course.getComment(),
+                                            course.getLevel(),
+                                            course.getRace(),
+                                            course.getPrice())
+                                )
+                                .build()
+                );
     }
 
     @DeleteMapping("/course/{courseId}")
