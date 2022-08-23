@@ -15,6 +15,8 @@ import AddPost from "./pages/AddPost";
 import Admin from "./admin/Admin";
 import AdminLogin from "./admin/AdminLogin";
 import AdminSignUp from "./admin/AdminSignUp";
+import Attendance from "./pages/Attendance";
+import Profile from "./pages/Profile";
 
 function App() {
   const [openModal, setOpenModal] = useState(false);
@@ -39,6 +41,11 @@ function App() {
         <Route path={"/admin"} element={<Admin />}></Route>
         <Route path={"/admin/login"} element={<AdminLogin />}></Route>
         <Route path={"/admin/signup"} element={<AdminSignUp />}></Route>
+        <Route path={"mypage"} element={<Mypage />}>
+          <Route path={"profile"} element={<Profile/>}></Route>
+          <Route path={"mylecture"} element={<MyLecture />}></Route>
+          <Route path={"attendance"} element={<Attendance/>}></Route>
+        </Route>
       </Routes>
       <Footer />
       {openModal ? (

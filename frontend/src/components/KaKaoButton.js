@@ -6,7 +6,7 @@ export default function KaKaoButton() {
 
   return (
     <KaKaoWrap>
-    <KaKaoBtn href="/oauth2/authorization/kakao%22%3E카카오 로그인">
+    <KaKaoBtn href="http://52.78.131.208:8080/oauth2/authorization/kakao">
       <Img src={kakaoimg} alt="kakao-login"/>
     </KaKaoBtn>
     </KaKaoWrap>

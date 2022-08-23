@@ -21,7 +21,8 @@ const MenuItems = styled.div`
   width: 7vw;
   height: 20vh;
   position: absolute;
-  left: -32px
+  left: -32px;
+  z-index: 999;
 `
 const ItemsUl = styled.ul`
   width: 80%;
