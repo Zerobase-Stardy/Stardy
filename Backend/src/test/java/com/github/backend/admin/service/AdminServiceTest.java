@@ -670,4 +670,29 @@ public class AdminServiceTest {
         //then
         assertEquals(courseException.getErrorCode(), CourseErrorCode.NOT_EXIST_COURSE);
     }
+
+    @Test
+    @DisplayName("강의 정보 삭제 성공")
+    void testDeleteCourseInfo(){
+        //given
+        Course course = Course.builder()
+                .id(1L)
+                .title("벙커링")
+                .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
+                .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
+                .comment("세상에서 제일 쉬운 8배럭 벙커링 강의")
+                .level("입문")
+                .race("테란")
+                .price(10L)
+                .build();
+
+        given(courseRepository.findById(anyLong()))
+                .willReturn(Optional.of(course));
+
+        //when
+        adminService.deleteCourse(course.getId());
+
+        //then
+        verify(courseRepository).delete(course);
+    }
 }
