@@ -1,15 +1,18 @@
-package com.github.backend.persist.repository.condition;
+package com.github.backend.persist.repository.querydsl.condition;
 
-import com.github.backend.model.constants.GamerSearchType;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class GamerSearchCondition {
-    String content;
-    GamerSearchType gamerSearchType;
+    String name;
+    String nickname;
+    String race;
 
-    public GamerSearchCondition(String content, GamerSearchType gamerSearchType){
-        this.content = content;
-        this.gamerSearchType = gamerSearchType;
+    public GamerSearchCondition(String name, String nickname, String race){
+        this.name = name;
+        this.nickname = nickname;
+        this.race = race;
     }
 }

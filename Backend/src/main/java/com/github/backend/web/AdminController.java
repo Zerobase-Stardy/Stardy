@@ -1,9 +1,11 @@
 package com.github.backend.web;
 
+import com.github.backend.model.Result;
 import com.github.backend.model.dto.*;
 import com.github.backend.persist.entity.Admin;
 import com.github.backend.persist.entity.Course;
 import com.github.backend.persist.entity.Gamer;
+import com.github.backend.persist.repository.querydsl.condition.GamerSearchCondition;
 import com.github.backend.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +44,7 @@ public class AdminController {
         Gamer gamer = adminService.registerGamer(
                 request.getName(),
                 request.getRace(),
-                request.getNickName(),
+                request.getNickname(),
                 request.getIntroduce()
         );
 
@@ -55,11 +57,16 @@ public class AdminController {
         );
     }
 
-    @GetMapping("/list")
-    public SelectGamer.Response getGamerList(){
+    @GetMapping("/gamer/list")
+    public Result getGamerList(SearchGamer searchGamer){
 
-        List<Gamer> gamer = adminService.getGamerList();
-        return new SelectGamer.Response(gamer);
+        List<Gamer> gamer = adminService.getGamerList(searchGamer);
+
+        return Result.builder()
+                .status(200)
+                .success(true)
+                .data(gamer)
+                .build();
     }
 
 

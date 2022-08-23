@@ -10,6 +10,6 @@ public interface GamerRepository extends JpaRepository<Gamer, Long> {
     Optional<Gamer> findByNickName(String nickName);
     boolean existsByNickName(String nickName);
 
-    List<Gamer> findAll();
+
 
 }
