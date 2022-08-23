@@ -192,6 +192,34 @@ public class AdminControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("게이머 상세 조회 성공")
+    void testSuccessGetGamerInfo() throws Exception {
+        //given
+        Gamer gamer = Gamer.builder()
+                .id(1L)
+                .name("유영진")
+                .race("테란")
+                .nickname("rush")
+                .introduce("단단한 테란")
+                .build();
+
+
+        given(adminService.getGamerInfo(anyLong()))
+                .willReturn(gamer);
+        //when
+
+        //then
+        mockMvc.perform(get(String.format("/admin/gamer/%d",gamer.getId())))
+                .andDo(print())
+                .andExpect(jsonPath("$.data.name").value(gamer.getName()))
+                .andExpect(jsonPath("$.data.race").value(gamer.getRace()))
+                .andExpect(jsonPath("$.data.nickname").value(gamer.getNickname()))
+                .andExpect(jsonPath("$.data.introduce").value(gamer.getIntroduce()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     @WithMockUser
     @DisplayName("게이머 리스트 조회 성공")
     void testSuccessGetGamerList() throws Exception {
