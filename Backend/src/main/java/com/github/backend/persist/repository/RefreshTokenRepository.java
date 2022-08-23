@@ -1,12 +1,13 @@
 package com.github.backend.persist.repository;
 
-import java.time.Duration;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
+
+import java.time.Duration;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -38,7 +39,6 @@ public class RefreshTokenRepository {
 	}
 
 	public void deleteByUsername(String username) {
-		ValueOperations<String, String> values = redisTemplate.opsForValue();
-		values.getAndDelete(KEY_PREFIX + username);
+		redisTemplate.delete(KEY_PREFIX + username);
 	}
 }
