@@ -38,7 +38,7 @@ export default function Carousel() {
     infinite: true,
     speed: 1000,
     autoplay: true,
-    autoplaySpeed: 9000,
+    autoplaySpeed: 3000,
     pauseOnHover: false,
     slidesToShow: 1,
     slidesToScroll: 1,
