@@ -70,6 +70,35 @@ public class AdminController {
                 .build();
     }
 
+    @PutMapping("/gamer/{gamerId}")
+    public ResponseEntity<Result<?>> updateGamerInfo(
+            @PathVariable  Long gamerId,
+            @RequestBody @Valid UpdateGamer.Request request
+    ){
+        Gamer gamer = adminService.updateGamer(
+                    gamerId,
+                request.getName(),
+                request.getRace(),
+                request.getNickname(),
+                request.getIntroduce()
+        );
+
+        return ResponseEntity.ok().body(
+                Result.builder()
+                        .status(200)
+                        .success(true)
+                        .data(
+                                new UpdateGamer.Response(
+                                gamer.getName(),
+                                gamer.getRace(),
+                                gamer.getNickname(),
+                                gamer.getIntroduce()
+                        ))
+                        .build()
+        );
+    }
+
+
 
     @PostMapping("/course/register")
     public RegisterCourse.Response registerCourse(
