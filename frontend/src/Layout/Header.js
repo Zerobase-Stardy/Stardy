@@ -83,6 +83,7 @@ const HeaderNav = styled.div`
   display: flex;
   justify-content: space-between;
   width: 30%;
+  min-width: 240px;
 `;
 
 const UserNaviArea = styled.div`

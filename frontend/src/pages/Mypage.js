@@ -25,6 +25,7 @@ const BodyStyle = styled.div`
 const PageCategory = styled.div`
   box-sizing: border-box;
   width: 144px;
+  min-width: 120px;
   font-size: 24px;
   font-weight: bold;
   display: flex;

@@ -53,14 +53,14 @@ const NickName = styled.div`
 `
 
 const Point = styled.div`
-  font-size: 8px;
+  font-size: 12px;
 `
 const Email = styled.div`
   width: 200px;
-  height: 32px;
-  font-size: 12px;
+  height: 36px;
+  font-size: 16px;
   background-color:  #b2b2b2;
-  line-height: 16px;
+  line-height: 18px;
 `
 
 const UserVideo = styled.div`
