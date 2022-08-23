@@ -4,6 +4,7 @@ import com.github.backend.exception.AdminException;
 import com.github.backend.exception.CourseException;
 import com.github.backend.exception.GamerException;
 import com.github.backend.model.constants.Role;
+import com.github.backend.model.dto.SearchGamer;
 import com.github.backend.model.dto.UpdateCourse;
 import com.github.backend.persist.entity.Admin;
 import com.github.backend.persist.entity.Course;
@@ -11,6 +12,7 @@ import com.github.backend.persist.entity.Gamer;
 import com.github.backend.persist.repository.AdminRepository;
 import com.github.backend.persist.repository.CourseRepository;
 import com.github.backend.persist.repository.GamerRepository;
+import com.github.backend.persist.repository.querydsl.GamerSearchRepository;
 import com.github.backend.type.AdminErrorCode;
 import com.github.backend.type.CourseErrorCode;
 import com.github.backend.type.GamerErrorCode;
@@ -27,6 +29,7 @@ public class AdminService {
     private final AdminRepository adminRepository;
     private final GamerRepository gamerRepository;
     private final CourseRepository courseRepository;
+    private final GamerSearchRepository gamerSearchRepository;
 
 
     /**
@@ -77,7 +80,7 @@ public class AdminService {
                 Gamer.builder()
                         .name(name)
                         .race(race)
-                        .nickName(nickname)
+                        .nickname(nickname)
                         .introduce(introduce)
                         .build()
         );
@@ -85,16 +88,21 @@ public class AdminService {
     }
 
     /**
-     * 게이머 전체 정보 반환
+     * gamer 정보 반환
+     * @param searchGamer : gamer 조회 Dto
+     * gamer name, nickname, race 이용한 조회 가능
      */
     @Transactional
-    public List<Gamer> getGamerList(){
-        return gamerRepository.findAll();
+    public List<Gamer> getGamerList(SearchGamer searchGamer){
+
+        return gamerSearchRepository.searchByWhere(
+                searchGamer.toCondition()
+        );
     }
 
 
     private void validateCreateGamer(String nickname) {
-        if (gamerRepository.existsByNickName(nickname)) {
+        if (gamerRepository.existsByNickname(nickname)) {
             throw new GamerException(GamerErrorCode.EXIST_SAME_GAMER_NICKNAME);
         }
     }
@@ -121,7 +129,7 @@ public class AdminService {
 
         gamer.setName(name);
         gamer.setRace(race);
-        gamer.setNickName(nickname);
+        gamer.setNickname(nickname);
         gamer.setIntroduce(introduce);
 
         return gamerRepository.save(gamer);

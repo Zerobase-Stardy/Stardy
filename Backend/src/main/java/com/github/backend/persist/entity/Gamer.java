@@ -30,7 +30,7 @@ public class Gamer extends BaseTimeEntity{
     private String race;
 
     @Column(nullable = false, unique = true)
-    private String nickName;
+    private String nickname;
 
     @Column
     private String introduce;

@@ -37,7 +37,7 @@ public class CourseServiceTest {
                 .id(1L)
                 .name("유영진")
                 .race("테란")
-                .nickName("rush")
+                .nickname("rush")
                 .introduce("단단한 테란")
                 .build();
 

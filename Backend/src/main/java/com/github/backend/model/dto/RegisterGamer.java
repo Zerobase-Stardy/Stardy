@@ -18,7 +18,7 @@ public class RegisterGamer {
         private String race;
 
         @NotNull
-        private String nickName;
+        private String nickname;
 
         @NotNull
         private String introduce;
@@ -32,7 +32,7 @@ public class RegisterGamer {
     public static class Response{
         private String name;
         private String race;
-        private String nickName;
+        private String nickname;
         private String introduce;
 
     }

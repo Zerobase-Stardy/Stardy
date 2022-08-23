@@ -4,6 +4,7 @@ import com.github.backend.exception.AdminException;
 import com.github.backend.exception.CourseException;
 import com.github.backend.exception.GamerException;
 import com.github.backend.model.constants.Role;
+import com.github.backend.model.dto.SearchGamer;
 import com.github.backend.model.dto.UpdateCourse;
 import com.github.backend.persist.entity.Admin;
 import com.github.backend.persist.entity.Course;
@@ -11,6 +12,7 @@ import com.github.backend.persist.entity.Gamer;
 import com.github.backend.persist.repository.AdminRepository;
 import com.github.backend.persist.repository.CourseRepository;
 import com.github.backend.persist.repository.GamerRepository;
+import com.github.backend.persist.repository.querydsl.GamerSearchRepository;
 import com.github.backend.service.AdminService;
 import com.github.backend.type.AdminErrorCode;
 import com.github.backend.type.CourseErrorCode;
@@ -20,14 +22,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.ArgumentMatchers.*;
@@ -43,6 +45,9 @@ public class AdminServiceTest {
 
     @Mock
     private GamerRepository gamerRepository;
+
+    @Mock
+    private GamerSearchRepository gamerSearchRepository;
 
     @Mock
     private AdminRepository adminRepository;
@@ -95,7 +100,7 @@ public class AdminServiceTest {
                         Gamer.builder()
                                 .name("유영진")
                                 .race("테란")
-                                .nickName("rush")
+                                .nickname("rush")
                                 .introduce("단단한 테란")
                                 .build()
                 );
@@ -107,7 +112,7 @@ public class AdminServiceTest {
         //then
         assertEquals(gamer.getName(), "유영진");
         assertEquals(gamer.getRace(), "테란");
-        assertEquals(gamer.getNickName(), "rush");
+        assertEquals(gamer.getNickname(), "rush");
         assertEquals(gamer.getIntroduce(), "단단한 테란");
     }
 
@@ -115,7 +120,7 @@ public class AdminServiceTest {
     @DisplayName("게이머 등록 실패 - 중복 사용자")
     void testRegisterGamerFailed(){
         //given
-        given(gamerRepository.existsByNickName(anyString()))
+        given(gamerRepository.existsByNickname(anyString()))
                 .willReturn(true);
         //when
         GamerException gamerException = assertThrows(GamerException.class,
@@ -129,36 +134,117 @@ public class AdminServiceTest {
     @DisplayName("게이머 목록 조회 성공")
     void testGetGamerList(){
         //given
-        given(gamerRepository.save(any()))
-                .willReturn(
-                        Gamer.builder()
-                                .name("유영진")
-                                .race("테란")
-                                .nickName("rush")
-                                .introduce("단단한 테란")
-                                .build()
-                );
+        Gamer gamer = Gamer.builder()
+                .name("유영진")
+                .race("테란")
+                .nickname("rush")
+                .introduce("단단한 테란")
+                .build();
 
+        List<Gamer> gamers = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            gamers.add(gamer);
+        }
 
-        Gamer gamer = adminService.registerGamer(
-                "유영진","테란","rush","단단한 테란"
-        );
+        SearchGamer searchGamer = SearchGamer.builder()
+                .name(gamer.getName())
+                .race(gamer.getRace())
+                .nickname(gamer.getNickname())
+                .build();
 
-        List<Gamer> gamerList = new ArrayList<>();
-        gamerList.add(gamer);
-        given(gamerRepository.findAll())
-                .willReturn(gamerList);
+        given(gamerSearchRepository.searchByWhere(any()))
+                .willReturn(gamers);
 
         //when
-        List<Gamer> findGamerList = gamerRepository.findAll();
+        List<Gamer> findGamerList = adminService.getGamerList(searchGamer);
 
         //then
-        assertEquals(1, findGamerList.size());
+        assertEquals(2, findGamerList.size());
         assertEquals(gamer.getName(), findGamerList.get(0).getName());
-        assertEquals(gamer.getNickName(), findGamerList.get(0).getNickName());
+        assertEquals(gamer.getNickname(), findGamerList.get(0).getNickname());
         assertEquals(gamer.getRace(), findGamerList.get(0).getRace());
         assertEquals(gamer.getIntroduce(), findGamerList.get(0).getIntroduce());
     }
+
+    @Test
+    @DisplayName("게이머 이름 검색 조회 성공")
+    void testGetGamerNameList(){
+        //given
+        List<Gamer> gamers = new ArrayList<>();
+        Gamer gamer = Gamer.builder()
+                .name("유영진")
+                .build();
+
+        for (int i = 0; i < 2; i++) {
+            gamers.add(gamer);
+        }
+        given(gamerSearchRepository.searchByWhere(any()))
+                .willReturn(gamers);
+
+        SearchGamer searchGamer = SearchGamer.builder()
+                .name(gamer.getName())
+                .build();
+
+        //when
+        List<Gamer> gamerNameList = adminService.getGamerList(searchGamer);
+
+        //then
+        assertEquals(gamerNameList.size(), 2);
+        assertEquals(gamerNameList.get(0).getName(), gamer.getName());
+    }
+
+    @Test
+    @DisplayName("게이머 종족 검색 조회 성공")
+    void testGetGamerRaceList(){
+        //given
+        List<Gamer> gamers = new ArrayList<>();
+        Gamer gamer = Gamer.builder()
+                .race("테란")
+                .build();
+
+        for (int i = 0; i < 2; i++) {
+            gamers.add(gamer);
+        }
+        SearchGamer searchGamer = SearchGamer.builder()
+                .name(gamer.getName())
+                .build();
+
+        given(gamerSearchRepository.searchByWhere(any()))
+                .willReturn(gamers);
+
+        //when
+        List<Gamer> gamerNameList = adminService.getGamerList(searchGamer);
+
+        //then
+        assertEquals(gamerNameList.size(), 2);
+        assertEquals(gamerNameList.get(0).getRace(), gamer.getRace());
+    }
+
+    @Test
+    @DisplayName("게이머 닉네임 검색 조회 성공")
+    void testGetGamerNickNameList(){
+        //given
+        List<Gamer> gamers = new ArrayList<>();
+        Gamer gamer = Gamer.builder()
+                .nickname("rush")
+                .build();
+
+        gamers.add(gamer);
+        SearchGamer searchGamer = SearchGamer.builder()
+                .nickname(gamer.getNickname())
+                .build();
+
+        given(gamerSearchRepository.searchByWhere(any()))
+                .willReturn(gamers);
+        //when
+        List<Gamer> gamerNameList = adminService.getGamerList(searchGamer);
+
+        //then
+        assertEquals(gamerNameList.size(), 1);
+        assertEquals(gamerNameList.get(0).getNickname(), gamer.getNickname());
+    }
+
+
 
     @Test
     @DisplayName("게이머 정보 수정 성공")
@@ -168,7 +254,7 @@ public class AdminServiceTest {
                 .id(1L)
                 .name("유영진")
                 .race("테란")
-                .nickName("rush")
+                .nickname("rush")
                 .introduce("단단한 테란")
                 .build();
 
@@ -176,7 +262,7 @@ public class AdminServiceTest {
                 .id(1L)
                 .name("유영진")
                 .race("토스")
-                .nickName("rush")
+                .nickname("rush")
                 .introduce("단단한 테란")
                 .build();
 
@@ -194,9 +280,10 @@ public class AdminServiceTest {
         //then
         assertEquals(compGamer.getName(), updateGamer.getName());
         assertEquals(compGamer.getRace(), updateGamer.getRace());
-        assertEquals(compGamer.getNickName(), updateGamer.getNickName());
+        assertEquals(compGamer.getNickname(), updateGamer.getNickname());
         assertEquals(compGamer.getIntroduce(), updateGamer.getIntroduce());
     }
+
 
     @Test
     @DisplayName("게이머 정보 수정 실패 - 해당하는 게이머를 찾을 수 없음")
@@ -229,7 +316,7 @@ public class AdminServiceTest {
                 .id(1L)
                 .name("유영진")
                 .race("테란")
-                .nickName("rush")
+                .nickname("rush")
                 .introduce("단단한 테란")
                 .build();
 
@@ -268,7 +355,7 @@ public class AdminServiceTest {
                                 .id(1L)
                                 .name("유영진")
                                 .race("테란")
-                                .nickName("rush")
+                                .nickname("rush")
                                 .introduce("단단한 테란")
                                 .build()
                 );
@@ -347,7 +434,7 @@ public class AdminServiceTest {
                                 .id(1L)
                                 .name("유영진")
                                 .race("테란")
-                                .nickName("rush")
+                                .nickname("rush")
                                 .introduce("단단한 테란")
                                 .build()
                 );
@@ -385,7 +472,7 @@ public class AdminServiceTest {
                                 .id(1L)
                                 .name("유영진")
                                 .race("테란")
-                                .nickName("rush")
+                                .nickname("rush")
                                 .introduce("단단한 테란")
                                 .build()
                 );
@@ -461,7 +548,7 @@ public class AdminServiceTest {
                 .id(1L)
                 .name("유영진")
                 .race("테란")
-                .nickName("rush")
+                .nickname("rush")
                 .introduce("단단한 테란")
                 .build();
 
@@ -557,7 +644,7 @@ public class AdminServiceTest {
                 .id(1L)
                 .name("유영진")
                 .race("테란")
-                .nickName("rush")
+                .nickname("rush")
                 .introduce("단단한 테란")
                 .build();
         given(gamerRepository.findById(anyLong()))
