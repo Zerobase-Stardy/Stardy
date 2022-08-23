@@ -1,6 +1,8 @@
 package com.github.backend.web;
 
 import com.github.backend.model.Result;
+import com.github.backend.model.dto.MemberInput;
+import com.github.backend.model.dto.ModifyMember;
 import com.github.backend.model.dto.TokenMemberDto;
 import com.github.backend.model.dto.WithdrawalMember;
 import com.github.backend.persist.entity.Member;
@@ -11,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,6 +32,16 @@ public class MemberController {
 
         WithdrawalMember withdrawalMember = new WithdrawalMember(memberInfo.getEmail(), afterMember.getNickname(), afterMember.getStatus().toString());
         return ResponseEntity.ok().body(new Result<>(HttpStatus.OK.value(),true, withdrawalMember));
+    }
+
+    @PutMapping("/nickname")
+    public ResponseEntity<Result<?>> modifyMember(@AuthenticationPrincipal TokenMemberDto.MemberInfo memberInfo, MemberInput memberInput) {
+        memberService.modifyNickNameMember(memberInfo.getEmail(), memberInput.getNickName());
+        Member afterMember = memberService.loadMemberInfo(memberInfo.getEmail());
+
+
+        ModifyMember modifyMember = new ModifyMember(memberInfo.getEmail(), afterMember.getNickname());
+        return ResponseEntity.ok().body(new Result<>(HttpStatus.OK.value(),true, modifyMember));
     }
 
 

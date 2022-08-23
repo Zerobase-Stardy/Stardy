@@ -34,6 +34,26 @@ public class MemberServiceImp implements MemberService {
 
     @Override
     @Transactional
+    public void modifyNickNameMember(String email, String nickName) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+
+        Member member = optionalMember.get();
+
+        memberRepository.save(
+                Member.builder()
+                        .email(member.getEmail())
+                        .id(member.getId())
+                        .nickname(nickName)
+                        .point(member.getPoint())
+                        .authType(member.getAuthType())
+                        .role(member.getRole())
+                        .status(MemberStatus.PERMITTED)
+                        .build()
+        );
+    }
+
+    @Override
+    @Transactional
     public void Withdrawal(String email ) {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
 
