@@ -1,18 +1,17 @@
-import React, {useEffect, useRef} from 'react'
-import styled from 'styled-components';
-import {RiCloseLine} from 'react-icons/ri'
-import GoogleButton from './GoogleButton';
-import KaKaoButton from './KaKaoButton';
-
+import React, { useEffect, useRef } from "react";
+import styled from "styled-components";
+import { RiCloseLine } from "react-icons/ri";
+import GoogleButton from "./GoogleButton";
+import KaKaoButton from "./KaKaoButton";
+import { Link } from "react-router-dom";
 
 export default function Login(props) {
   const loginRef = useRef();
-  const {toggle,openModal} = props;
+  const { toggle, openModal } = props;
 
-
-  function handleClickOutside(event){
-    if(openModal && !loginRef.current.contains(event.target)){
-      toggle()
+  function handleClickOutside(event) {
+    if (openModal && !loginRef.current.contains(event.target)) {
+      toggle();
     }
   }
   useEffect(() => {
@@ -25,70 +24,83 @@ export default function Login(props) {
   return (
     <Modal>
       <LoginArea ref={loginRef}>
-       <CloseBtn> <RiCloseLine onClick={toggle}/></CloseBtn>
+        <CloseBtn>
+          {" "}
+          <RiCloseLine onClick={toggle} />
+        </CloseBtn>
         <h1>LOGIN</h1>
-        <ButtonArea>      
+        <ButtonArea>
           <GoogleButton />
-        <KaKaoButton />
+          <KaKaoButton />
         </ButtonArea>
-  
+
+        <AdminZone>
+          <Link to="/admin/login" onClick={toggle}>
+            관리자 로그인
+          </Link>
+        </AdminZone>
       </LoginArea>
     </Modal>
-  )
+  );
 }
 
-const Modal= styled.div`
-position: fixed;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-width: 100%;
-height: 100vh;
-background-color: rgba(0, 0, 0, 0.85);
-`
+const Modal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+`;
 
 const LoginArea = styled.div`
-position: fixed;
-border-radius: 10px;
-top: 45%;
-left: 50%;
-transform: translate(-50%, -50%);
-width: 400px;
-height: 400px;
-background-color: white;
-padding: 30px;
-text-align: center;
-background-color: rgba(120,120,120,0.8);
-color : white;
+  position: fixed;
+  border-radius: 10px;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  background-color: white;
+  padding: 30px;
+  text-align: center;
+  background-color: rgba(120, 120, 120, 0.8);
+  color: white;
 
-
-;
-
-h1{
-  font-size: 24px;
-  font-weight: bold;
-}
-`
+  h1 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+`;
 
 const CloseBtn = styled.div`
-width: 100%;
-text-align: right;
-font-size: 24px;
+  width: 100%;
+  text-align: right;
+  font-size: 24px;
 
-svg
-{
-  cursor: pointer;
+  svg {
+    cursor: pointer;
 
-  &:hover{
-    color: black;
+    &:hover {
+      color: black;
+    }
   }
-}
-`
+`;
 
 const ButtonArea = styled.div`
-width: 100%;
-display:  grid;
-margin-top: 50px;
-gap: 20px;
-`
+  width: 100%;
+  display: grid;
+  margin-top: 50px;
+  gap: 20px;
+`;
+
+const AdminZone = styled.div`
+  margin-top: 30px;
+  font-size: 13px;
+  width: 100%;
+  padding-left: 20px;
+  display: flex;
+  gap: 10px;
+`;
