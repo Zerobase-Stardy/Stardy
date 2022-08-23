@@ -157,6 +157,20 @@ public class AdminController {
         );
     }
 
+    @GetMapping("/course/list")
+    public ResponseEntity<Result<?>> getCourseList(SearchCourse searchCourse){
+
+        List<Course> Course = adminService.searchCourseList(searchCourse);
+
+        return ResponseEntity.ok().body(
+                Result.builder()
+                        .status(200)
+                        .success(true)
+                        .data(Course)
+                        .build()
+        );
+    }
+
     @GetMapping("/course/{courseId}")
     public ResponseEntity<Result<?>> getCourseInfo(
             @PathVariable("courseId") @Valid Long courseId

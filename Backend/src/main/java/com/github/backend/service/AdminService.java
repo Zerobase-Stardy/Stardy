@@ -4,6 +4,7 @@ import com.github.backend.exception.AdminException;
 import com.github.backend.exception.CourseException;
 import com.github.backend.exception.GamerException;
 import com.github.backend.model.constants.Role;
+import com.github.backend.model.dto.SearchCourse;
 import com.github.backend.model.dto.SearchGamer;
 import com.github.backend.model.dto.UpdateCourse;
 import com.github.backend.persist.entity.Admin;
@@ -12,7 +13,9 @@ import com.github.backend.persist.entity.Gamer;
 import com.github.backend.persist.repository.AdminRepository;
 import com.github.backend.persist.repository.CourseRepository;
 import com.github.backend.persist.repository.GamerRepository;
+import com.github.backend.persist.repository.querydsl.CourseSearchRepository;
 import com.github.backend.persist.repository.querydsl.GamerSearchRepository;
+import com.github.backend.persist.repository.querydsl.condition.CourseSearchCondition;
 import com.github.backend.type.AdminErrorCode;
 import com.github.backend.type.CourseErrorCode;
 import com.github.backend.type.GamerErrorCode;
@@ -30,6 +33,7 @@ public class AdminService {
     private final GamerRepository gamerRepository;
     private final CourseRepository courseRepository;
     private final GamerSearchRepository gamerSearchRepository;
+    private final CourseSearchRepository courseSearchRepository;
 
 
     /**
@@ -226,6 +230,15 @@ public class AdminService {
 
         return courseRepository.findById(courseId)
                 .orElseThrow(() -> new CourseException(CourseErrorCode.NOT_EXIST_COURSE));
+    }
+
+    @Transactional
+    public List<Course> searchCourseList(SearchCourse searchCourse){
+
+        return courseSearchRepository.searchByWhere(
+                searchCourse.toCondition()
+        );
+
     }
 
     /**

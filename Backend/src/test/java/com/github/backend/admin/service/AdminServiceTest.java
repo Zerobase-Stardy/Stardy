@@ -4,6 +4,7 @@ import com.github.backend.exception.AdminException;
 import com.github.backend.exception.CourseException;
 import com.github.backend.exception.GamerException;
 import com.github.backend.model.constants.Role;
+import com.github.backend.model.dto.SearchCourse;
 import com.github.backend.model.dto.SearchGamer;
 import com.github.backend.model.dto.UpdateCourse;
 import com.github.backend.persist.entity.Admin;
@@ -12,6 +13,7 @@ import com.github.backend.persist.entity.Gamer;
 import com.github.backend.persist.repository.AdminRepository;
 import com.github.backend.persist.repository.CourseRepository;
 import com.github.backend.persist.repository.GamerRepository;
+import com.github.backend.persist.repository.querydsl.CourseSearchRepository;
 import com.github.backend.persist.repository.querydsl.GamerSearchRepository;
 import com.github.backend.service.AdminService;
 import com.github.backend.type.AdminErrorCode;
@@ -48,6 +50,9 @@ public class AdminServiceTest {
 
     @Mock
     private GamerSearchRepository gamerSearchRepository;
+
+    @Mock
+    private CourseSearchRepository courseSearchRepository;
 
     @Mock
     private AdminRepository adminRepository;
@@ -460,6 +465,91 @@ public class AdminServiceTest {
                 ));
         //then
         assertEquals(courseException.getErrorCode(), CourseErrorCode.EXIST_SAME_TITLE);
+    }
+
+    @Test
+    @DisplayName("강의 제목 검색 조회 성공")
+    void testGetCourseTitleList(){
+        //given
+        List<Course> courses = new ArrayList<>();
+        Course course = Course.builder()
+                .title("단단한 벙커링")
+                .build();
+
+        for (int i = 0; i < 2; i++) {
+            courses.add(course);
+        }
+        given(courseSearchRepository.searchByWhere(any()))
+                .willReturn(courses);
+
+        SearchCourse searchCourse = SearchCourse.
+                builder()
+                .title(course.getTitle())
+                .build();
+
+        //when
+        List<Course> courseList = adminService.searchCourseList(searchCourse);
+
+        //then
+        assertEquals(courseList.size(), 2);
+        assertEquals(courseList.get(0).getTitle(), course.getTitle());
+    }
+
+    @Test
+    @DisplayName("강의 level 조회 성공")
+    void testGetCourseLevelList(){
+        //given
+        List<Course> courses = new ArrayList<>();
+        Course course = Course.builder()
+                .level("입문")
+                .build();
+
+        for (int i = 0; i < 2; i++) {
+            courses.add(course);
+        }
+        given(courseSearchRepository.searchByWhere(any()))
+                .willReturn(courses);
+
+        SearchCourse searchCourse = SearchCourse.
+                builder()
+                .level(course.getLevel())
+                .build();
+
+        //when
+        List<Course> courseList = adminService.searchCourseList(searchCourse);
+
+        //then
+        assertEquals(courseList.size(), 2);
+        assertEquals(courseList.get(0).getLevel(), course.getLevel());
+    }
+
+
+    @Test
+    @DisplayName("강의 종족 조회 성공")
+    void testGetCourseRaceList(){
+        //given
+        List<Course> courses = new ArrayList<>();
+        Course course = Course.builder()
+                .race("테란")
+                .build();
+
+        for (int i = 0; i < 2; i++) {
+            courses.add(course);
+        }
+        given(courseSearchRepository.searchByWhere(any()))
+                .willReturn(courses);
+
+        SearchCourse searchCourse = SearchCourse.
+                builder()
+                .race(course.getRace())
+                .build();
+
+        //when
+        List<Course> courseList = adminService.searchCourseList(searchCourse);
+
+        //then
+        assertEquals(courseList.size(), 2);
+        assertEquals(courseList.get(0).getRace(), course.getRace());
     }
 
     @Test
