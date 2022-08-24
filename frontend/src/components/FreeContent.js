@@ -17,6 +17,7 @@ export default function FreeContent() {
   useEffect(() => {
     axios
       .get("https://jsonplaceholder.typicode.com/posts")
+
       .then((res) => setFreeBoard(res.data));
   }, []);
 
