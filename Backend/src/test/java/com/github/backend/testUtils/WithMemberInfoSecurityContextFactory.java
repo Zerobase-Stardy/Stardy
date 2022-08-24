@@ -1,6 +1,6 @@
 package com.github.backend.testUtils;
 
-import com.github.backend.model.dto.TokenMemberDto.MemberInfo;
+import com.github.backend.dto.common.TokenMemberDto.MemberInfo;
 import java.util.Collections;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

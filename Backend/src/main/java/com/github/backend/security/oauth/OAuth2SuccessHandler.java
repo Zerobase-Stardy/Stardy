@@ -1,11 +1,11 @@
 package com.github.backend.security.oauth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.backend.model.Result;
-import com.github.backend.model.dto.CustomOAuth2User;
-import com.github.backend.model.dto.TokenMemberDto.MemberInfo;
-import com.github.backend.model.dto.TokenMemberDto.Tokens;
-import com.github.backend.service.impl.TokenService;
+import com.github.backend.dto.common.Result;
+import com.github.backend.dto.common.CustomOAuth2User;
+import com.github.backend.dto.common.TokenMemberDto.MemberInfo;
+import com.github.backend.dto.common.TokenMemberDto.Tokens;
+import com.github.backend.service.common.impl.TokenService;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
