@@ -16,7 +16,7 @@ public class CourseUnlockController {
 
 	private final MyCourseUnlockService myCourseUnlockService;
 
-	@PostMapping("/course/{courseId}/unlock")
+	@PostMapping("/courses/{courseId}/unlock")
 	public ResponseEntity<Result<?>> unlockCourse(@AuthenticationPrincipal MemberInfo memberInfo, @PathVariable Long courseId) {
 
 		myCourseUnlockService.unlockCourse(memberInfo.getId(),courseId);
