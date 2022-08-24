@@ -33,7 +33,7 @@ public class MemberController {
 	public ResponseEntity<Result<?>> changeNickname(@AuthenticationPrincipal MemberInfo memberInfo,
 		@RequestBody @Valid Request request) {
 		memberInfoManagementService.editNickname(memberInfo.getEmail(), request.getNickname());
-		return ResponseEntity.ok().body(new Result<>(HttpStatus.OK.value(), true, ""));
+		return ResponseEntity.ok().body(new Result<>(HttpStatus.OK.value(), true, null));
 	}
 
 
