@@ -3,7 +3,7 @@ package com.github.backend.admin.service;
 import com.github.backend.dto.gamer.SearchGamer;
 import com.github.backend.persist.gamer.Gamer;
 import com.github.backend.persist.gamer.repository.GamerRepository;
-import com.github.backend.persist.course.repository.querydsl.GamerSearchRepository;
+import com.github.backend.persist.gamer.repository.querydsl.GamerSearchRepository;
 import com.github.backend.service.gamer.impl.GamerService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

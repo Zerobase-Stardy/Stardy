@@ -21,6 +21,8 @@ import com.github.backend.service.common.impl.CustomOAuth2UserService;
 import com.github.backend.testUtils.WithMemberInfo;
 import java.time.LocalDate;
 import java.util.ArrayList;
+
+import com.github.backend.web.member.controller.AttendanceController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
