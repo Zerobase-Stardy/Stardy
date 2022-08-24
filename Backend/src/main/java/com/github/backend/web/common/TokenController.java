@@ -1,8 +1,8 @@
 package com.github.backend.web.common;
 
+import com.github.backend.dto.common.MemberInfo;
 import com.github.backend.dto.common.Result;
 import com.github.backend.dto.member.MemberLogout;
-import com.github.backend.dto.common.TokenMemberDto;
 import com.github.backend.persist.common.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ public class TokenController {
    final RefreshTokenRepository refreshTokenRepository;
 
     @GetMapping("/logout")
-    public ResponseEntity<Result<?>> logout(@AuthenticationPrincipal TokenMemberDto.MemberInfo memberInfo){
+    public ResponseEntity<Result<?>> logout(@AuthenticationPrincipal MemberInfo memberInfo){
         refreshTokenRepository.deleteByUsername(memberInfo.getEmail());
         MemberLogout memberLogout  = new MemberLogout(memberInfo.getEmail(),memberInfo.getNickname());
 

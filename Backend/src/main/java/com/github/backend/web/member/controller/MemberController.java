@@ -1,8 +1,8 @@
 package com.github.backend.web.member.controller;
 
 import static com.github.backend.dto.member.MemberWithdrawalDto.Request;
-import static com.github.backend.dto.common.TokenMemberDto.MemberInfo;
 
+import com.github.backend.dto.common.MemberInfo;
 import com.github.backend.dto.common.Result;
 import com.github.backend.service.member.MemberInfoManagementService;
 import javax.validation.Valid;

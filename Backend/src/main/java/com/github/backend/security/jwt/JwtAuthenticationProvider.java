@@ -1,11 +1,14 @@
 package com.github.backend.security.jwt;
 
 
+import com.github.backend.dto.common.AdminInfo;
+import com.github.backend.dto.common.MemberInfo;
 import com.github.backend.exception.common.JwtInvalidException;
-import com.github.backend.dto.common.TokenMemberDto.MemberInfo;
-import com.github.backend.service.common.impl.TokenService;
 import com.github.backend.exception.common.code.JwtErrorCode;
+import com.github.backend.service.common.impl.TokenService;
 import io.jsonwebtoken.Claims;
+import java.util.Arrays;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -13,9 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 
 
 @Slf4j
@@ -33,15 +33,16 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 		Claims claims =
 				tokenService.parseAccessToken(((JwtAuthenticationToken) authentication).getJwt());
 
-		MemberInfo memberInfo = MemberInfo.of(claims);
+		if (claims.get(JwtInfo.KEY_ROLES,String.class).equals("ROLE_ADMIN")) {
 
-		String status = memberInfo.getStatus();
+			AdminInfo info = AdminInfo.of(claims);
+			return new JwtAuthenticationToken(AdminInfo.of(claims), "",
+				Arrays.asList(new SimpleGrantedAuthority(info.getRole())));
+		}
 
-		System.out.println(status);
-		System.out.println(request.getRequestURI());
+		MemberInfo info = MemberInfo.of(claims);
 
-
-		switch (status) {
+		switch (info.getStatus()) {
 			case "BANNED":
 				throw new JwtInvalidException(JwtErrorCode.MEMBER_STATUS_BANNED);
 			case "WITHDRAWAL":
@@ -51,15 +52,16 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 					case "/member/nickname" :
 					case "/member/withdrawal" :
 					case "/oauth/logout":
-						return new JwtAuthenticationToken(memberInfo, "",
-								Arrays.asList(new SimpleGrantedAuthority(memberInfo.getRole())));
+						return new JwtAuthenticationToken(info, "",
+							Arrays.asList(new SimpleGrantedAuthority(info.getRole())));
 					default:
 						throw new JwtInvalidException(JwtErrorCode.MEMBER_STATUS_WAIT);
 				}
 			default:
-				return new JwtAuthenticationToken(memberInfo, "",
-						Arrays.asList(new SimpleGrantedAuthority(memberInfo.getRole())));
+				return new JwtAuthenticationToken(info, "",
+					Arrays.asList(new SimpleGrantedAuthority(info.getRole())));
 		}
+
 	}
 
 	@Override

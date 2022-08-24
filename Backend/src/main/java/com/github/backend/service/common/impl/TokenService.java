@@ -1,18 +1,13 @@
 package com.github.backend.service.common.impl;
 
-import static com.github.backend.dto.common.TokenMemberDto.MemberInfo;
 import static com.github.backend.dto.common.TokenMemberDto.Tokens;
-import static com.github.backend.security.jwt.JwtInfo.KEY_EMAIL;
-import static com.github.backend.security.jwt.JwtInfo.KEY_ID;
-import static com.github.backend.security.jwt.JwtInfo.KEY_NICKNAME;
-import static com.github.backend.security.jwt.JwtInfo.KEY_ROLES;
-import static com.github.backend.security.jwt.JwtInfo.KEY_STATUS;
 import static javax.management.timer.Timer.ONE_MINUTE;
 
+import com.github.backend.dto.common.LoginInfo;
 import com.github.backend.exception.common.JwtInvalidException;
+import com.github.backend.exception.common.code.JwtErrorCode;
 import com.github.backend.persist.common.repository.RefreshTokenRepository;
 import com.github.backend.security.jwt.JwtInfo;
-import com.github.backend.exception.common.code.JwtErrorCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -35,38 +30,32 @@ public class TokenService {
 
 	private final JwtInfo jwtInfo;
 
-	public Tokens issueAllToken(MemberInfo memberInfo) {
+	public Tokens issueAllToken(LoginInfo loginInfo) {
 		return Tokens.builder()
-			.accessToken(issueAccessToken(memberInfo))
-			.refreshToken(issueRefreshToken(memberInfo))
+			.accessToken(issueAccessToken(loginInfo))
+			.refreshToken(issueRefreshToken(loginInfo))
 			.build();
 	}
 
-	private String issueAccessToken(MemberInfo memberInfo) {
-		return createToken(memberInfo, jwtInfo.getEncodedAccessKey(),
+	private String issueAccessToken(LoginInfo loginInfo) {
+		return createToken(loginInfo, jwtInfo.getEncodedAccessKey(),
 			jwtInfo.getAccessTokenExpiredMin());
 	}
 
-	private String issueRefreshToken(MemberInfo memberInfo) {
-		String refreshToken = createToken(memberInfo, jwtInfo.getEncodedRefreshKey(),
+	private String issueRefreshToken(LoginInfo loginInfo) {
+		String refreshToken = createToken(loginInfo, jwtInfo.getEncodedRefreshKey(),
 			jwtInfo.getRefreshTokenExpiredMin());
 
-		refreshTokenRepository.save(memberInfo.getEmail(), refreshToken, Duration.ofMinutes(
+		refreshTokenRepository.save(loginInfo.getEmail(), refreshToken, Duration.ofMinutes(
 			jwtInfo.getRefreshTokenExpiredMin()));
 
 		return refreshToken;
 	}
 
-	private String createToken(MemberInfo memberInfo, byte[] encodedSecretKey,int expiredMin) {
+	private String createToken(LoginInfo loginInfo, byte[] encodedSecretKey,int expiredMin) {
 		Date now = new Date();
 
-		Claims claims = Jwts.claims();
-
-		claims.put(KEY_ID, memberInfo.getId());
-		claims.put(KEY_EMAIL, memberInfo.getEmail());
-		claims.put(KEY_NICKNAME, memberInfo.getNickname());
-		claims.put(KEY_STATUS, memberInfo.getStatus());
-		claims.put(KEY_ROLES, memberInfo.getRole());
+		Claims claims = loginInfo.toClaims();
 
 		return Jwts.builder()
 			.setClaims(claims)
