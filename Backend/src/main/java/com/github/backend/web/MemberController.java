@@ -1,19 +1,18 @@
 package com.github.backend.web;
 
+import static com.github.backend.model.dto.MemberWithdrawalDto.Request;
+import static com.github.backend.model.dto.TokenMemberDto.MemberInfo;
+
 import com.github.backend.model.Result;
-import com.github.backend.model.dto.MemberInput;
-import com.github.backend.model.dto.ModifyMember;
-import com.github.backend.model.dto.TokenMemberDto;
-import com.github.backend.model.dto.WithdrawalMember;
-import com.github.backend.persist.entity.Member;
-import com.github.backend.persist.repository.RefreshTokenRepository;
-import com.github.backend.service.MemberService;
+import com.github.backend.service.MemberInfoManagementService;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,28 +20,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/member")
 public class MemberController {
-    final MemberService memberService;
-    final RefreshTokenRepository refreshTokenRepository;
 
-    @GetMapping("/withdrawal")
-    public ResponseEntity<Result<?>> withdrawalMember(@AuthenticationPrincipal TokenMemberDto.MemberInfo memberInfo) {
-        memberService.Withdrawal(memberInfo.getEmail());
-        refreshTokenRepository.deleteByUsername(memberInfo.getEmail());
-        Member afterMember = memberService.loadMemberInfo(memberInfo.getEmail());
+	private final MemberInfoManagementService memberInfoManagementService;
 
-        WithdrawalMember withdrawalMember = new WithdrawalMember(memberInfo.getEmail(), afterMember.getNickname(), afterMember.getStatus().toString());
-        return ResponseEntity.ok().body(new Result<>(HttpStatus.OK.value(),true, withdrawalMember));
-    }
+	@GetMapping("/withdrawal")
+	public ResponseEntity<Result<?>> withdrawal(@AuthenticationPrincipal MemberInfo memberInfo) {
+		memberInfoManagementService.withdrawal(memberInfo.getEmail());
+		return ResponseEntity.ok().body(new Result<>(HttpStatus.OK.value(), true, null));
+	}
 
-    @PutMapping("/nickname")
-    public ResponseEntity<Result<?>> modifyMember(@AuthenticationPrincipal TokenMemberDto.MemberInfo memberInfo, MemberInput memberInput) {
-        memberService.modifyNickNameMember(memberInfo.getEmail(), memberInput.getNickName());
-        Member afterMember = memberService.loadMemberInfo(memberInfo.getEmail());
-
-
-        ModifyMember modifyMember = new ModifyMember(memberInfo.getEmail(), afterMember.getNickname());
-        return ResponseEntity.ok().body(new Result<>(HttpStatus.OK.value(),true, modifyMember));
-    }
+	@PatchMapping("/nickname")
+	public ResponseEntity<Result<?>> changeNickname(@AuthenticationPrincipal MemberInfo memberInfo,
+		@RequestBody @Valid Request request) {
+		memberInfoManagementService.editNickname(memberInfo.getEmail(), request.getNickname());
+		return ResponseEntity.ok().body(new Result<>(HttpStatus.OK.value(), true, ""));
+	}
 
 
 }
