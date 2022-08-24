@@ -9,7 +9,7 @@ public class RegisterGamer {
     @Getter
     @Setter
     @AllArgsConstructor
-    public static class Request{
+    public static class Request {
 
         @NotNull
         private String name;
@@ -29,7 +29,7 @@ public class RegisterGamer {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class Response{
+    public static class Response {
         private String name;
         private String race;
         private String nickname;

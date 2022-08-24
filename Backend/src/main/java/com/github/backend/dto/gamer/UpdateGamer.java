@@ -1,18 +1,15 @@
 package com.github.backend.dto.gamer;
 
+import lombok.*;
+
 import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 public class UpdateGamer {
 
     @Getter
     @Setter
     @AllArgsConstructor
-    public static class Request{
+    public static class Request {
 
         @NotNull
         private String name;
@@ -32,7 +29,7 @@ public class UpdateGamer {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class Response{
+    public static class Response {
         private String name;
         private String race;
         private String nickname;

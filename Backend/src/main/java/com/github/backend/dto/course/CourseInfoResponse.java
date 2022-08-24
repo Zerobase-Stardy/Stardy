@@ -21,7 +21,7 @@ public class CourseInfoResponse {
     private Long price;
 
 
-    public static CourseInfoResponse from(Course course){
+    public static CourseInfoResponse from(Course course) {
 
 
         return CourseInfoResponse.builder()

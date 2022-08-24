@@ -1,8 +1,8 @@
 package com.github.backend.service.member.impl;
 
-import com.github.backend.persist.member.type.MemberStatus;
-import com.github.backend.persist.member.Member;
 import com.github.backend.persist.common.repository.RefreshTokenRepository;
+import com.github.backend.persist.member.Member;
+import com.github.backend.persist.member.type.MemberStatus;
 import com.github.backend.service.member.MemberInfoManagementService;
 import com.github.backend.service.member.MemberService;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,5 @@
 package com.github.backend.service.memberCourse.impl;
 
-import static com.github.backend.exception.memberCourse.code.MemberCourseErrorCode.MEMBER_COURSE_NOT_EXISTS;
-
 import com.github.backend.exception.memberCourse.MemberCourseException;
 import com.github.backend.persist.member.Member;
 import com.github.backend.persist.memberCourse.MemberCourse;
@@ -10,6 +8,8 @@ import com.github.backend.service.memberCourse.MemberCourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.github.backend.exception.memberCourse.code.MemberCourseErrorCode.MEMBER_COURSE_NOT_EXISTS;
 
 @RequiredArgsConstructor
 @Service

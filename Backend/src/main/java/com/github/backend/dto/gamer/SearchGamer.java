@@ -14,7 +14,7 @@ public class SearchGamer {
     private String nickname;
 
 
-    public GamerSearchCondition toCondition(){
+    public GamerSearchCondition toCondition() {
         return GamerSearchCondition.builder()
                 .name(getName())
                 .race(getRace())

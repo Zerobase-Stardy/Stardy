@@ -10,7 +10,7 @@ public class UpdateCourse {
     @Getter
     @Setter
     @AllArgsConstructor
-    public static class Request{
+    public static class Request {
 
         @NotNull
         @Min(1)
@@ -43,7 +43,7 @@ public class UpdateCourse {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class Response{
+    public static class Response {
         private String gamerName;
         private String title;
         private String videoUrl;

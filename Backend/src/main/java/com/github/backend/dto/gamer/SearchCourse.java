@@ -14,7 +14,7 @@ public class SearchCourse {
     private String race;
 
 
-    public CourseSearchCondition toCondition(){
+    public CourseSearchCondition toCondition() {
         return CourseSearchCondition.builder()
                 .title(getTitle())
                 .level(getLevel())

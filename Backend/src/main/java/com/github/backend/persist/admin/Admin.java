@@ -1,7 +1,7 @@
 package com.github.backend.persist.admin;
 
-import com.github.backend.persist.member.type.Role;
 import com.github.backend.persist.common.BaseTimeEntity;
+import com.github.backend.persist.member.type.Role;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 

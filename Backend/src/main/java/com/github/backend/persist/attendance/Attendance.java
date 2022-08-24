@@ -3,20 +3,13 @@ package com.github.backend.persist.attendance;
 
 import com.github.backend.persist.common.BaseTimeEntity;
 import com.github.backend.persist.member.Member;
-import java.time.LocalDate;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.time.LocalDate;
 
 
 @Getter

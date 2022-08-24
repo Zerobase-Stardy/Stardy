@@ -18,10 +18,11 @@ import com.github.backend.persist.gamer.Gamer;
 import com.github.backend.persist.gamer.repository.GamerRepository;
 import com.github.backend.persist.gamer.repository.querydsl.GamerSearchRepository;
 import com.github.backend.persist.member.type.Role;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor

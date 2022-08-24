@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 public class Result<T> {
-	private Integer status;
-	private boolean success;
-	private T data;
+    private Integer status;
+    private boolean success;
+    private T data;
 
 }

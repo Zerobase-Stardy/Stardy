@@ -1,30 +1,23 @@
 package com.github.backend.service.common.impl;
 
-import static com.github.backend.dto.common.TokenMemberDto.MemberInfo;
-import static com.github.backend.dto.common.TokenMemberDto.Tokens;
-import static com.github.backend.security.jwt.JwtInfo.KEY_EMAIL;
-import static com.github.backend.security.jwt.JwtInfo.KEY_ID;
-import static com.github.backend.security.jwt.JwtInfo.KEY_NICKNAME;
-import static com.github.backend.security.jwt.JwtInfo.KEY_ROLES;
-import static com.github.backend.security.jwt.JwtInfo.KEY_STATUS;
-import static javax.management.timer.Timer.ONE_MINUTE;
-
 import com.github.backend.exception.common.JwtInvalidException;
+import com.github.backend.exception.common.code.JwtErrorCode;
 import com.github.backend.persist.common.repository.RefreshTokenRepository;
 import com.github.backend.security.jwt.JwtInfo;
-import com.github.backend.exception.common.code.JwtErrorCode;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
-import java.time.Duration;
-import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.time.Duration;
+import java.util.Date;
+
+import static com.github.backend.dto.common.TokenMemberDto.MemberInfo;
+import static com.github.backend.dto.common.TokenMemberDto.Tokens;
+import static com.github.backend.security.jwt.JwtInfo.*;
+import static javax.management.timer.Timer.ONE_MINUTE;
 
 @Slf4j
 @RequiredArgsConstructor

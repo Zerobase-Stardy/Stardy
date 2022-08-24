@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ErrorResult {
 
-	private String errorCode;
-	private String errorDescription;
+    private String errorCode;
+    private String errorDescription;
 
 }

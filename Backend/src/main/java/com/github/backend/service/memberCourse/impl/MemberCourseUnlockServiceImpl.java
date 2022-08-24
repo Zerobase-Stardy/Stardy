@@ -1,7 +1,5 @@
 package com.github.backend.service.memberCourse.impl;
 
-import static com.github.backend.exception.memberCourse.code.MemberCourseErrorCode.ALREADY_MEMBER_COURSE_EXISTS;
-
 import com.github.backend.exception.course.CourseException;
 import com.github.backend.exception.course.code.CourseErrorCode;
 import com.github.backend.exception.member.MemberException;
@@ -17,6 +15,8 @@ import com.github.backend.service.memberCourse.MemberCourseUnlockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.github.backend.exception.memberCourse.code.MemberCourseErrorCode.ALREADY_MEMBER_COURSE_EXISTS;
 
 @RequiredArgsConstructor
 @Service

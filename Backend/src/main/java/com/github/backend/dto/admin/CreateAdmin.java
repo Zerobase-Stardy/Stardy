@@ -10,7 +10,7 @@ public class CreateAdmin {
     @Getter
     @Setter
     @AllArgsConstructor
-    public static class Request{
+    public static class Request {
         @NotNull
         private String adminId;
 
@@ -24,7 +24,7 @@ public class CreateAdmin {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class Response{
+    public static class Response {
         private String adminId;
         private String password;
         private Role role;
