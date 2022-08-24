@@ -51,4 +51,12 @@ public class Member extends BaseTimeEntity{
 	public void decreasePoint(long amount) {
 		this.point -= amount;
 	}
+
+	public void changeNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public void changeStatus(MemberStatus status) {
+		this.status = status;
+	}
 }
