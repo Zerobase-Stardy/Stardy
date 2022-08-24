@@ -1,0 +1,73 @@
+package com.github.backend.web.memberCourse.controller;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.backend.config.SecurityConfig;
+import com.github.backend.security.jwt.JwtAuthenticationProvider;
+import com.github.backend.security.jwt.JwtEntryPoint;
+import com.github.backend.security.oauth.OAuth2SuccessHandler;
+import com.github.backend.service.common.impl.CustomOAuth2UserService;
+import com.github.backend.service.memberCourse.MemberCourseUnlockService;
+import com.github.backend.testUtils.WithMemberInfo;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.test.web.servlet.MockMvc;
+
+@WebMvcTest(value = MemberCourseController.class
+	, includeFilters = {
+	@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)})
+class MemberCourseControllerTest {
+
+	@Autowired
+	MockMvc mockMvc;
+
+	@Autowired
+	ObjectMapper objectMapper;
+
+	@MockBean
+	JwtAuthenticationProvider jwtAuthenticationProvider;
+	@MockBean
+	JwtEntryPoint jwtEntryPoint;
+	@MockBean
+	OAuth2SuccessHandler oAuth2SuccessHandler;
+	@MockBean
+	CustomOAuth2UserService customOAuth2UserService;
+
+	@MockBean
+	MemberCourseUnlockService memberCourseUnlockService;
+
+
+	@WithMemberInfo
+	@Test
+	void unlockCourse() throws Exception {
+		doNothing().when(memberCourseUnlockService).unlockCourse(anyLong(),anyLong());
+
+		ArgumentCaptor<Long> memberIdCaptor = ArgumentCaptor.forClass(Long.class);
+		ArgumentCaptor<Long> courseIdCaptor = ArgumentCaptor.forClass(Long.class);
+
+		//when
+		//then
+		mockMvc.perform(post("/course/1/unlock"))
+			.andDo(print())
+			.andExpect(jsonPath("$.status").value(200))
+			.andExpect(jsonPath("$.success").value(true));
+
+		verify(memberCourseUnlockService).unlockCourse(memberIdCaptor.capture(),
+			courseIdCaptor.capture());
+
+		assertThat(memberIdCaptor.getValue()).isEqualTo(1L);
+		assertThat(courseIdCaptor.getValue()).isEqualTo(1L);
+	}
+}

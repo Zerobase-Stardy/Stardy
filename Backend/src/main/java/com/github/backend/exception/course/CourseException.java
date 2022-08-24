@@ -13,6 +13,7 @@ public class CourseException extends RuntimeException{
     private String errorMessage;
 
     public CourseException(CourseErrorCode errorCode){
+        super(errorCode.getDescription());
         this.errorCode = errorCode;
         this.errorMessage = errorCode.getDescription();
     }

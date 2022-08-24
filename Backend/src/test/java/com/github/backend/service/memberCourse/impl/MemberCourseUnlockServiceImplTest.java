@@ -1,22 +1,24 @@
-package com.github.backend.service.impl;
+package com.github.backend.service.memberCourse.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+import com.github.backend.exception.course.CourseException;
+import com.github.backend.exception.course.code.CourseErrorCode;
+import com.github.backend.exception.member.MemberException;
+import com.github.backend.exception.member.code.MemberErrorCode;
 import com.github.backend.exception.memberCourse.MemberCourseException;
-import com.github.backend.persist.course.Course;
-import com.github.backend.persist.member.Member;
-import com.github.backend.persist.memberCourse.MemberCourse;
-import com.github.backend.persist.course.repository.CourseRepository;
-import com.github.backend.persist.memberCourse.repository.MemberCourseRepository;
-import com.github.backend.persist.member.repository.MemberRepository;
 import com.github.backend.exception.memberCourse.code.MemberCourseErrorCode;
-import com.github.backend.service.memberCourse.impl.MemberCourseServiceImpl;
+import com.github.backend.persist.course.Course;
+import com.github.backend.persist.course.repository.CourseRepository;
+import com.github.backend.persist.member.Member;
+import com.github.backend.persist.member.repository.MemberRepository;
+import com.github.backend.persist.memberCourse.MemberCourse;
+import com.github.backend.persist.memberCourse.repository.MemberCourseRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +30,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class MemberCourseServiceImplTest {
+class MemberCourseUnlockServiceImplTest {
 
 	@Mock
 	MemberRepository memberRepository;
@@ -40,14 +42,15 @@ class MemberCourseServiceImplTest {
 	MemberCourseRepository memberCourseRepository;
 
 	@InjectMocks
-	MemberCourseServiceImpl memberCourseService;
+	MemberCourseUnlockServiceImpl memberCourseUnlockService;
 
 	Member member;
 	Course course;
 
 	@BeforeEach
-	void beforeAll() {
+	void beforeEach() {
 		member = Member.builder()
+			.id(1L)
 			.email("test@test.com")
 			.point(500)
 			.build();
@@ -63,7 +66,7 @@ class MemberCourseServiceImplTest {
 	@Test
 	void takeCourse_success() {
 		//given
-		given(memberRepository.findByEmail(anyString()))
+		given(memberRepository.findById(anyLong()))
 			.willReturn(Optional.of(member));
 
 		given(courseRepository.findById(anyLong()))
@@ -73,7 +76,7 @@ class MemberCourseServiceImplTest {
 			MemberCourse.class);
 
 		//when
-		memberCourseService.takeCourse(member.getEmail(), course.getId());
+		memberCourseUnlockService.unlockCourse(member.getId(), course.getId());
 
 		//then
 		verify(memberCourseRepository).save(captor.capture());
@@ -85,22 +88,22 @@ class MemberCourseServiceImplTest {
 	@Test
 	void takeCourse_fail_MemberNotExists() {
 		//given
-		given(memberRepository.findByEmail(anyString()))
+		given(memberRepository.findById(anyLong()))
 			.willReturn(Optional.empty());
 		//when
 
 		//then
 		assertThatThrownBy(
-			() -> memberCourseService.takeCourse(member.getEmail(), course.getId()))
-			.isInstanceOf(MemberCourseException.class)
-			.hasMessage(MemberCourseErrorCode.MEMBER_NOT_EXISTS.getDescription());
+			() -> memberCourseUnlockService.unlockCourse(member.getId(), course.getId()))
+			.isInstanceOf(MemberException.class)
+			.hasMessage(MemberErrorCode.MEMBER_NOT_EXISTS.getDescription());
 	}
 
 	@DisplayName("강의 구매 실패 - 강의가 존재하지 않을 때")
 	@Test
 	void takeCourse_fail_CourseNotExists() {
 		//given
-		given(memberRepository.findByEmail(anyString()))
+		given(memberRepository.findById(anyLong()))
 			.willReturn(Optional.of(member));
 
 		given(courseRepository.findById(anyLong()))
@@ -108,16 +111,16 @@ class MemberCourseServiceImplTest {
 		//when
 		//then
 		assertThatThrownBy(
-			() -> memberCourseService.takeCourse(member.getEmail(), course.getId()))
-			.isInstanceOf(MemberCourseException.class)
-			.hasMessage(MemberCourseErrorCode.COURSE_NOT_EXISTS.getDescription());
+			() -> memberCourseUnlockService.unlockCourse(member.getId(), course.getId()))
+			.isInstanceOf(CourseException.class)
+			.hasMessage(CourseErrorCode.NOT_EXIST_COURSE.getDescription());
 	}
 
 	@DisplayName("강의 구매 실패 - 이미 구매한 강의인 경우")
 	@Test
 	void takeCourse_fail_AlreadyMemberCourseExists() {
 		//given
-		given(memberRepository.findByEmail(anyString()))
+		given(memberRepository.findById(anyLong()))
 			.willReturn(Optional.of(member));
 
 		given(courseRepository.findById(anyLong()))
@@ -129,16 +132,16 @@ class MemberCourseServiceImplTest {
 		//when
 		//then
 		assertThatThrownBy(
-			() -> memberCourseService.takeCourse(member.getEmail(), course.getId()))
+			() -> memberCourseUnlockService.unlockCourse(member.getId(), course.getId()))
 			.isInstanceOf(MemberCourseException.class)
 			.hasMessage(MemberCourseErrorCode.ALREADY_MEMBER_COURSE_EXISTS.getDescription());
 	}
 
-	@DisplayName("강의 구매 실패 - 회원이 존재하지 않을 때")
+	@DisplayName("강의 구매 실패 - 포인트가 부족할 때")
 	@Test
 	void takeCourse_fail_NotEnoughPoint() {
 		//given
-		given(memberRepository.findByEmail(anyString()))
+		given(memberRepository.findById(anyLong()))
 			.willReturn(Optional.of(member));
 
 		given(courseRepository.findById(anyLong()))
@@ -152,64 +155,9 @@ class MemberCourseServiceImplTest {
 		//when
 		//then
 		assertThatThrownBy(
-			() -> memberCourseService.takeCourse(member.getEmail(), course.getId()))
-			.isInstanceOf(MemberCourseException.class)
-			.hasMessage(MemberCourseErrorCode.NOT_ENOUGH_POINT.getDescription());
+			() -> memberCourseUnlockService.unlockCourse(member.getId(), course.getId()))
+			.isInstanceOf(MemberException.class)
+			.hasMessage(MemberErrorCode.MEMBER_NOT_ENOUGH_POINT.getDescription());
 	}
 
-	@DisplayName("강의 즐겨찾기 성공")
-	@Test
-	void toggleBookmark_success() {
-		//given
-		MemberCourse memberCourse = MemberCourse.builder()
-			.id(1L)
-			.member(member)
-			.bookmark(false)
-			.build();
-
-		given(memberCourseRepository.findWithMemberById(anyLong()))
-			.willReturn(Optional.of(memberCourse));
-
-		//when
-		memberCourseService.toggleBookmark(member.getEmail(), 1L);
-
-		//then
-		assertThat(memberCourse.isBookmark()).isTrue();
-	}
-
-	@DisplayName("강의 즐겨찾기 실패 - MemberCourse가 존재하지 않을 때")
-	@Test
-	void toggleBookmark_fail_MemberCourseNotExists() {
-		//given
-		given(memberCourseRepository.findWithMemberById(anyLong()))
-			.willReturn(Optional.empty());
-
-		//when
-		//then
-		assertThatThrownBy(
-			() -> memberCourseService.toggleBookmark(member.getEmail(), 1L))
-			.isInstanceOf(MemberCourseException.class)
-			.hasMessage(MemberCourseErrorCode.MEMBER_COURSE_NOT_EXISTS.getDescription());
-	}
-
-	@DisplayName("강의 즐겨찾기 실패 - MemberCourse의 이메일과 요청자의 이메일이 일치하지 않을 때")
-	@Test
-	void toggleBookmark_fail_MemberCourseNotExists_EmailIncorrect() {
-		//given
-		MemberCourse memberCourse = MemberCourse.builder()
-			.id(1L)
-			.member(member)
-			.bookmark(false)
-			.build();
-
-		given(memberCourseRepository.findWithMemberById(anyLong()))
-			.willReturn(Optional.of(memberCourse));
-
-		//when
-		//then
-		assertThatThrownBy(
-			() -> memberCourseService.toggleBookmark("incorrectEmail", 1L))
-			.isInstanceOf(MemberCourseException.class)
-			.hasMessage(MemberCourseErrorCode.MEMBER_COURSE_NOT_EXISTS.getDescription());
-	}
 }
