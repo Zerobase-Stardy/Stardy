@@ -1,27 +1,36 @@
 package com.github.backend.web;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.backend.config.SecurityConfig;
 import com.github.backend.dto.admin.CreateAdmin;
 import com.github.backend.dto.course.RegisterCourse;
-import com.github.backend.dto.gamer.RegisterGamer;
 import com.github.backend.dto.course.UpdateCourse;
+import com.github.backend.dto.gamer.RegisterGamer;
 import com.github.backend.dto.gamer.UpdateGamer;
-import com.github.backend.model.dto.*;
+import com.github.backend.persist.admin.Admin;
+import com.github.backend.persist.course.Course;
 import com.github.backend.persist.gamer.Gamer;
+import com.github.backend.persist.member.type.Role;
 import com.github.backend.security.jwt.JwtAuthenticationProvider;
 import com.github.backend.security.jwt.JwtEntryPoint;
 import com.github.backend.security.oauth.OAuth2SuccessHandler;
+import com.github.backend.service.admin.impl.AdminService;
 import com.github.backend.service.common.impl.CustomOAuth2UserService;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.backend.persist.member.type.Role;
-import com.github.backend.persist.admin.Admin;
-import com.github.backend.persist.course.Course;
-import com.github.backend.service.admin.impl.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -31,16 +40,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
-
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-@WebMvcTest(value = AdminController.class,
+@WebMvcTest(value = com.github.backend.web.AdminController.class,
         includeFilters = {
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)}
 )

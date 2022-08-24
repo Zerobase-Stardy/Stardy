@@ -9,7 +9,6 @@ import com.github.backend.dto.gamer.SearchGamer;
 import com.github.backend.dto.course.UpdateCourse;
 import com.github.backend.dto.gamer.UpdateGamer;
 import com.github.backend.dto.common.Result;
-import com.github.backend.model.dto.*;
 import com.github.backend.persist.admin.Admin;
 import com.github.backend.persist.course.Course;
 import com.github.backend.persist.gamer.Gamer;
