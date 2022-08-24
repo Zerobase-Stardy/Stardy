@@ -256,5 +256,6 @@ const FolderBtn = styled.button`
 const LectureArea = styled.div`
   width: 80%;
   margin: 0 auto;
+  min-height: 1200px;
   padding-top: 50px;
 `;
