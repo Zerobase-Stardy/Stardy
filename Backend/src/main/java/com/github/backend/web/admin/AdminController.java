@@ -1,4 +1,4 @@
-package com.github.backend.web;
+package com.github.backend.web.admin;
 
 import com.github.backend.dto.course.CourseInfoResponse;
 import com.github.backend.dto.admin.CreateAdmin;

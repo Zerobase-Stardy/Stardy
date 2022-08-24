@@ -27,6 +27,7 @@ import com.github.backend.security.jwt.JwtEntryPoint;
 import com.github.backend.security.oauth.OAuth2SuccessHandler;
 import com.github.backend.service.admin.impl.AdminService;
 import com.github.backend.service.common.impl.CustomOAuth2UserService;
+import com.github.backend.web.admin.AdminController;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +41,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(value = com.github.backend.web.AdminController.class,
+@WebMvcTest(value = AdminController.class,
         includeFilters = {
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)}
 )

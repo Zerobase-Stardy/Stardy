@@ -19,6 +19,7 @@ import com.github.backend.security.oauth.OAuth2SuccessHandler;
 import com.github.backend.service.attendance.AttendanceService;
 import com.github.backend.service.common.impl.CustomOAuth2UserService;
 import com.github.backend.testUtils.WithMemberInfo;
+import com.github.backend.web.member.controller.AttendanceController;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.test.web.servlet.MockMvc;
-
 
 @WebMvcTest(value = AttendanceController.class
 	, includeFilters = {

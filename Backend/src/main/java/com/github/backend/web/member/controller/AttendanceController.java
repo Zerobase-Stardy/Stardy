@@ -1,4 +1,4 @@
-package com.github.backend.web;
+package com.github.backend.web.member.controller;
 
 import com.github.backend.dto.common.Result;
 import com.github.backend.dto.attendance.AttendanceDto;
