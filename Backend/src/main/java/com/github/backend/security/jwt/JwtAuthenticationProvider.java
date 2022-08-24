@@ -1,10 +1,10 @@
 package com.github.backend.security.jwt;
 
 
-import com.github.backend.exception.JwtInvalidException;
-import com.github.backend.model.dto.TokenMemberDto.MemberInfo;
-import com.github.backend.service.impl.TokenService;
-import com.github.backend.type.JwtErrorCode;
+import com.github.backend.exception.common.JwtInvalidException;
+import com.github.backend.dto.common.TokenMemberDto.MemberInfo;
+import com.github.backend.service.common.impl.TokenService;
+import com.github.backend.exception.common.code.JwtErrorCode;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

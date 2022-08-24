@@ -11,13 +11,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.backend.config.SecurityConfig;
-import com.github.backend.model.dto.AttendanceDto.GetRequest;
-import com.github.backend.model.dto.AttendanceDto.Info;
+import com.github.backend.dto.attendance.AttendanceDto.GetRequest;
+import com.github.backend.dto.attendance.AttendanceDto.Info;
 import com.github.backend.security.jwt.JwtAuthenticationProvider;
 import com.github.backend.security.jwt.JwtEntryPoint;
 import com.github.backend.security.oauth.OAuth2SuccessHandler;
-import com.github.backend.service.AttendanceService;
-import com.github.backend.service.impl.CustomOAuth2UserService;
+import com.github.backend.service.attendance.AttendanceService;
+import com.github.backend.service.common.impl.CustomOAuth2UserService;
 import com.github.backend.testUtils.WithMemberInfo;
 import java.time.LocalDate;
 import java.util.ArrayList;

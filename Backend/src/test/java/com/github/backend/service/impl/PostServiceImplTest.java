@@ -6,10 +6,11 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import com.github.backend.persist.entity.Member;
-import com.github.backend.persist.entity.Post;
-import com.github.backend.persist.repository.MemberRepository;
-import com.github.backend.persist.repository.PostRepository;
+import com.github.backend.persist.member.Member;
+import com.github.backend.persist.post.Post;
+import com.github.backend.persist.member.repository.MemberRepository;
+import com.github.backend.persist.post.repository.PostRepository;
+import com.github.backend.service.post.impl.PostServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +31,7 @@ public class PostServiceImplTest {
     PostRepository postRepository;
 
     @InjectMocks
-    PostServiceImpl postService;
+	PostServiceImpl postService;
 
     @DisplayName("게시판 등록 성공")
     @Test

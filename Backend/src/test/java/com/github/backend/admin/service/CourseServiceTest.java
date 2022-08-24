@@ -1,11 +1,11 @@
 package com.github.backend.admin.service;
 
-import com.github.backend.exception.CourseException;
-import com.github.backend.persist.entity.Course;
-import com.github.backend.persist.entity.Gamer;
-import com.github.backend.persist.repository.CourseRepository;
-import com.github.backend.service.CourseService;
-import com.github.backend.type.CourseErrorCode;
+import com.github.backend.exception.course.CourseException;
+import com.github.backend.persist.course.Course;
+import com.github.backend.persist.gamer.Gamer;
+import com.github.backend.persist.course.repository.CourseRepository;
+import com.github.backend.service.course.impl.CourseService;
+import com.github.backend.exception.course.code.CourseErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
