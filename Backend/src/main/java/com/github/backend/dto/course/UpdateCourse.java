@@ -9,6 +9,7 @@ public class UpdateCourse {
 
     @Getter
     @Setter
+    @Builder
     @AllArgsConstructor
     public static class Request {
 

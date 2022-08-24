@@ -1,17 +1,13 @@
 package com.github.backend.web.admin;
 
-import com.github.backend.dto.course.CourseInfoResponse;
+import com.github.backend.dto.admin.RegisterAdminOutputDto;
+import com.github.backend.dto.course.CourseInfoOutputDto;
 import com.github.backend.dto.admin.CreateAdmin;
 import com.github.backend.dto.course.RegisterCourse;
-import com.github.backend.dto.gamer.RegisterGamer;
-import com.github.backend.dto.gamer.SearchCourse;
-import com.github.backend.dto.gamer.SearchGamer;
+import com.github.backend.dto.gamer.*;
 import com.github.backend.dto.course.UpdateCourse;
-import com.github.backend.dto.gamer.UpdateGamer;
 import com.github.backend.dto.common.Result;
-import com.github.backend.persist.admin.Admin;
 import com.github.backend.persist.course.Course;
-import com.github.backend.persist.gamer.Gamer;
 import com.github.backend.service.admin.impl.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,16 +18,16 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin")
+@RequestMapping("/admin-management")
 public class AdminController {
 
     private final AdminService adminService;
 
-    @PostMapping("/register")
+    @PostMapping("/admin")
     public ResponseEntity<Result<?>> registerAdmin(
             @RequestBody @Valid CreateAdmin.Request request
     ){
-        Admin admin = adminService.registerAdmin(
+        RegisterAdminOutputDto.Info adminInfo = adminService.registerAdmin(
                 request.getAdminId(),
                 request.getPassword()
         );
@@ -41,39 +37,23 @@ public class AdminController {
                 Result.builder()
                         .status(200)
                         .success(true)
-                        .data(
-                                new CreateAdmin.Response(
-                                        admin.getAdminId(),
-                                        admin.getPassword(),
-                                        admin.getRole())
-                        )
+                        .data(adminInfo)
                         .build()
         );
     }
 
-    @PostMapping("/gamer/register")
+    @PostMapping("/gamer")
     public ResponseEntity<Result<?>> registerGamer(
             @RequestBody @Valid RegisterGamer.Request request
     ){
-        Gamer gamer = adminService.registerGamer(
-                request.getName(),
-                request.getRace(),
-                request.getNickname(),
-                request.getIntroduce()
-        );
+        RegisterGamerOutputDto.Info gamerInfo = adminService.registerGamer(request);
 
         // convert Entity to DTO
         return ResponseEntity.ok().body(
                 Result.builder()
                         .status(200)
                         .success(true)
-                        .data(
-                                new RegisterGamer.Response(
-                                        gamer.getName(),
-                                        gamer.getRace(),
-                                        gamer.getNickname(),
-                                        gamer.getIntroduce())
-                        )
+                        .data(gamerInfo)
                         .build()
         );
     }
@@ -81,27 +61,27 @@ public class AdminController {
     public ResponseEntity<Result<?>> getGamerInfo(
             @PathVariable("gamerId") Long gamerId){
 
-        Gamer gamer = adminService.getGamerInfo(gamerId);
+        GamerInfoOutputDto.Info gamerInfo = adminService.getGamerInfo(gamerId);
 
         return ResponseEntity.ok().body(
                 Result.builder()
                         .status(200)
                         .success(true)
-                        .data(gamer)
+                        .data(gamerInfo)
                         .build()
         );
     }
 
-    @GetMapping("/gamer/list")
+    @GetMapping("/gamers")
     public ResponseEntity<Result<?>> getGamerList(SearchGamer searchGamer){
 
-        List<Gamer> gamer = adminService.getGamerList(searchGamer);
+        List<GamerInfoOutputDto.Info> gamersInfo = adminService.getGamerList(searchGamer);
 
         return ResponseEntity.ok().body(
                 Result.builder()
                         .status(200)
                         .success(true)
-                        .data(gamer)
+                        .data(gamersInfo)
                         .build()
         );
     }
@@ -111,25 +91,16 @@ public class AdminController {
             @PathVariable  Long gamerId,
             @RequestBody @Valid UpdateGamer.Request request
     ){
-        Gamer gamer = adminService.updateGamer(
-                    gamerId,
-                request.getName(),
-                request.getRace(),
-                request.getNickname(),
-                request.getIntroduce()
+        GamerInfoOutputDto.Info gamerInfo = adminService.updateGamer(
+                gamerId,
+                request
         );
 
         return ResponseEntity.ok().body(
                 Result.builder()
                         .status(200)
                         .success(true)
-                        .data(
-                                new UpdateGamer.Response(
-                                gamer.getName(),
-                                gamer.getRace(),
-                                gamer.getNickname(),
-                                gamer.getIntroduce())
-                        )
+                        .data(gamerInfo)
                         .build()
         );
     }
@@ -138,49 +109,38 @@ public class AdminController {
     public ResponseEntity<Result<?>> deleteGamerInfo(
             @PathVariable("gamerId") @Valid Long gamerId
     ){
-        adminService.deleteGamer(gamerId);
-
-        return ResponseEntity.ok().body(null);
-    }
-
-
-
-    @PostMapping("/course/register")
-    public ResponseEntity<Result<?>> registerCourse(
-            @RequestBody @Valid RegisterCourse.Request request
-    ){
-        Course course = adminService.registerCourse(
-                request.getGamerId(),
-                request.getTitle(),
-                request.getVideoUrl(),
-                request.getThumbnailUrl(),
-                request.getComment(),
-                request.getLevel(),
-                request.getRace(),
-                request.getPrice()
-        );
+        GamerInfoOutputDto.Info gamerInfo = adminService.deleteGamer(gamerId);
 
         return ResponseEntity.ok().body(
                 Result.builder()
                         .status(200)
                         .success(true)
-                        .data(
-                                new RegisterCourse.Response(
-                                course.getGamer().getName(),
-                                course.getTitle(),
-                                course.getRace(),
-                                course.getLevel(),
-                                course.getComment(),
-                                course.getPrice())
-                        )
+                        .data(gamerInfo)
                         .build()
         );
     }
 
-    @GetMapping("/course/list")
+
+
+    @PostMapping("/course")
+    public ResponseEntity<Result<?>> registerCourse(
+            @RequestBody @Valid RegisterCourse.Request request
+    ){
+        CourseInfoOutputDto.Info courseInfo = adminService.registerCourse(request);
+
+        return ResponseEntity.ok().body(
+                Result.builder()
+                        .status(200)
+                        .success(true)
+                        .data(courseInfo)
+                        .build()
+        );
+    }
+
+    @GetMapping("/courses")
     public ResponseEntity<Result<?>> getCourseList(SearchCourse searchCourse){
 
-        List<Course> Course = adminService.searchCourseList(searchCourse);
+        List<CourseInfoOutputDto.Info> Course = adminService.searchCourseList(searchCourse);
 
         return ResponseEntity.ok().body(
                 Result.builder()
@@ -200,36 +160,24 @@ public class AdminController {
                     Result.builder()
                             .status(200)
                             .success(true)
-                            .data(
-                                    CourseInfoResponse.from(
-                                            adminService.getCourseInfo(courseId)))
+                            .data(adminService.getCourseInfo(courseId))
                             .build()
                 );
     }
 
-    @PutMapping("/course/{courseId}/edit")
+    @PutMapping("/course/{courseId}")
     public ResponseEntity<Result<?>> updateCourseInfo(
             @PathVariable("courseId") @Valid Long courseId,
             @RequestBody UpdateCourse.Request request
     ){
 
-        Course course = adminService.updateCourseInfo(courseId, request);
+        CourseInfoOutputDto.Info courseInfo = adminService.updateCourseInfo(courseId, request);
         return ResponseEntity.ok()
                 .body(
                         Result.builder()
                                 .status(200)
                                 .success(true)
-                                .data(
-                                        new UpdateCourse.Response(
-                                            course.getGamer().getName(),
-                                            course.getTitle(),
-                                            course.getVideoUrl(),
-                                            course.getThumbnailUrl(),
-                                            course.getComment(),
-                                            course.getLevel(),
-                                            course.getRace(),
-                                            course.getPrice())
-                                )
+                                .data(courseInfo)
                                 .build()
                 );
     }
@@ -238,9 +186,15 @@ public class AdminController {
     public ResponseEntity<Result<?>> deleteCourseInfo(
             @PathVariable("courseId") @Valid Long courseId
     ){
-        adminService.deleteCourse(courseId);
+        CourseInfoOutputDto.Info courseInfo = adminService.deleteCourse(courseId);
 
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(
+                Result.builder()
+                        .status(200)
+                        .success(true)
+                        .data(courseInfo)
+                        .build()
+        );
     }
 
 }

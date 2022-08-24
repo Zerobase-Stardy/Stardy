@@ -9,24 +9,14 @@ public class CreateAdmin {
 
     @Getter
     @Setter
-    @AllArgsConstructor
-    public static class Request {
-        @NotNull
-        private String adminId;
-
-        @NotNull
-        private String password;
-
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Builder
-    public static class Response {
+    @AllArgsConstructor
+    public static class Request{
+        @NotNull
         private String adminId;
+
+        @NotNull
         private String password;
-        private Role role;
+
     }
 }

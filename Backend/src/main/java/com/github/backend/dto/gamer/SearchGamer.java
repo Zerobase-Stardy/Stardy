@@ -1,9 +1,8 @@
 package com.github.backend.dto.gamer;
 
 import com.github.backend.persist.gamer.repository.querydsl.condition.GamerSearchCondition;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
+
 
 @Getter
 @Builder

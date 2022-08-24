@@ -8,6 +8,7 @@ public class RegisterGamer {
 
     @Getter
     @Setter
+    @Builder
     @AllArgsConstructor
     public static class Request {
 

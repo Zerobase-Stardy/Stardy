@@ -1,16 +1,20 @@
 package com.github.backend.dto.course;
 
-import lombok.*;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public class RegisterCourse {
 
     @Getter
     @Setter
+    @Builder
     @AllArgsConstructor
-    public static class Request {
+    public static class Request{
 
         @NotNull
         @Min(1)
@@ -38,18 +42,4 @@ public class RegisterCourse {
         private Long price;
     }
 
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    public static class Response {
-        private String gamerName;
-        private String title;
-        private String race;
-        private String level;
-        private String comment;
-        private Long price;
-
-    }
 }

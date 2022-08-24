@@ -1,5 +1,6 @@
 package com.github.backend.persist.gamer.repository.querydsl;
 
+
 import static com.github.backend.persist.gamer.QGamer.gamer;
 import static org.springframework.util.StringUtils.hasText;
 
