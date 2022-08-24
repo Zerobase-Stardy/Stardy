@@ -11,6 +11,7 @@ public class UpdateGamer {
 
     @Getter
     @Setter
+    @Builder
     @AllArgsConstructor
     public static class Request{
 
@@ -27,15 +28,4 @@ public class UpdateGamer {
         private String introduce;
     }
 
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    public static class Response{
-        private String name;
-        private String race;
-        private String nickname;
-        private String introduce;
-    }
 }
