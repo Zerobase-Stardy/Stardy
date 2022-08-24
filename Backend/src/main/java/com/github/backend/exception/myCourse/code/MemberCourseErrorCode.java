@@ -1,4 +1,4 @@
-package com.github.backend.exception.memberCourse.code;
+package com.github.backend.exception.myCourse.code;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
