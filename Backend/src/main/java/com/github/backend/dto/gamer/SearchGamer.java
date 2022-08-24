@@ -1,6 +1,6 @@
 package com.github.backend.dto.gamer;
 
-import com.github.backend.persist.course.repository.querydsl.condition.GamerSearchCondition;
+import com.github.backend.persist.gamer.repository.querydsl.condition.GamerSearchCondition;
 import lombok.*;
 
 @Getter
