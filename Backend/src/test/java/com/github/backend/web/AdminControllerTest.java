@@ -2,16 +2,20 @@ package com.github.backend.web;
 
 import com.github.backend.config.SecurityConfig;
 import com.github.backend.dto.admin.CreateAdmin;
+import com.github.backend.dto.admin.RegisterAdminOutputDto;
+import com.github.backend.dto.course.CourseInfoOutputDto;
 import com.github.backend.dto.course.RegisterCourse;
+import com.github.backend.dto.gamer.GamerInfoOutputDto;
 import com.github.backend.dto.gamer.RegisterGamer;
 import com.github.backend.dto.course.UpdateCourse;
+import com.github.backend.dto.gamer.RegisterGamerOutputDto;
 import com.github.backend.dto.gamer.UpdateGamer;
-import com.github.backend.model.dto.*;
 import com.github.backend.persist.gamer.Gamer;
 import com.github.backend.security.jwt.JwtAuthenticationProvider;
 import com.github.backend.security.jwt.JwtEntryPoint;
 import com.github.backend.security.oauth.OAuth2SuccessHandler;
 import com.github.backend.service.common.impl.CustomOAuth2UserService;
+import com.github.backend.web.admin.AdminController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -78,19 +82,21 @@ public class AdminControllerTest {
                 .role(Role.ROLE_ADMIN)
                 .build();
         given(adminService.registerAdmin(anyString(), anyString()))
-                .willReturn(admin);
+                .willReturn(RegisterAdminOutputDto.Info.of(admin));
         //when
 
         //then
-        mockMvc.perform(post("/admin/register")
+        mockMvc.perform(post("/admin-management/admin")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(
-                                new CreateAdmin.Request(admin.getAdminId(), admin.getPassword())
+                                CreateAdmin.Request.builder()
+                                        .adminId(admin.getAdminId())
+                                        .password(admin.getPassword())
+                                        .build()
                         ))
                 ).andDo(print())
                 .andExpect(jsonPath("$.data.adminId").value(admin.getAdminId()))
                 .andExpect(jsonPath("$.data.password").value(admin.getPassword()))
-                .andExpect(jsonPath("$.data.role").value(admin.getRole().name()))
                 .andExpect(status().isOk());
     }
 
@@ -106,27 +112,22 @@ public class AdminControllerTest {
                 .introduce("단단한 테란")
                 .build();
 
-        given(adminService.registerGamer(
-                anyString(),
-                anyString(),
-                anyString(),
-                anyString()))
-                .willReturn(gamer);
+        given(adminService.registerGamer(any()))
+                .willReturn(RegisterGamerOutputDto.Info.of(gamer));
 
         //when
 
         //then
-        mockMvc.perform(post("/admin/gamer/register")
+        mockMvc.perform(post("/admin-management/gamer")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(
-                                new RegisterGamer.Request(
-                                        gamer.getName(),
-                                        gamer.getRace(),
-                                        gamer.getNickname(),
-                                        gamer.getIntroduce()
-                                )
-                        ))
-                ).andDo(print())
+                                RegisterGamer.Request.builder()
+                                        .name(gamer.getName())
+                                        .race(gamer.getRace())
+                                        .nickname(gamer.getNickname())
+                                        .introduce(gamer.getIntroduce())
+                                .build()
+                        ))).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.name").value(gamer.getName()))
                 .andExpect(jsonPath("$.data.race").value(gamer.getRace()))
@@ -157,25 +158,21 @@ public class AdminControllerTest {
 
 
         given(adminService.updateGamer(
-                anyLong(),
-                anyString(),
-                anyString(),
-                anyString(),
-                anyString()
-        )).willReturn(updateGamer);
+                anyLong(), any()
+        )).willReturn(GamerInfoOutputDto.Info.of(updateGamer));
 
         //when
 
         //then
-        mockMvc.perform(put(String.format("/admin/gamer/%d", gamer.getId()))
+        mockMvc.perform(put(String.format("/admin-management/gamer/%d", gamer.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(
-                                    new UpdateGamer.Request (
-                                        gamer.getName(),
-                                        gamer.getRace(),
-                                        gamer.getNickname(),
-                                        gamer.getIntroduce()
-                                    )
+                                UpdateGamer.Request.builder()
+                                        .name(gamer.getName())
+                                        .race(gamer.getRace())
+                                        .nickname(gamer.getNickname())
+                                        .introduce(gamer.getIntroduce())
+                                        .build()
                         )))
                 .andDo(print())
                 .andExpect(jsonPath("$.data.name").value(updateGamer.getName()))
@@ -200,11 +197,11 @@ public class AdminControllerTest {
 
 
         given(adminService.getGamerInfo(anyLong()))
-                .willReturn(gamer);
+                .willReturn(GamerInfoOutputDto.Info.of(gamer));
         //when
 
         //then
-        mockMvc.perform(get(String.format("/admin/gamer/%d",gamer.getId())))
+        mockMvc.perform(get(String.format("/admin-management/gamer/%d",gamer.getId())))
                 .andDo(print())
                 .andExpect(jsonPath("$.data.name").value(gamer.getName()))
                 .andExpect(jsonPath("$.data.race").value(gamer.getRace()))
@@ -224,15 +221,15 @@ public class AdminControllerTest {
                 .nickname("rush")
                 .introduce("단단한 테란")
                 .build();
-        List<Gamer> gamerList = new ArrayList<>();
-        gamerList.add(gamer);
+        List<GamerInfoOutputDto.Info> gamerList = new ArrayList<>();
+        gamerList.add(GamerInfoOutputDto.Info.of(gamer));
 
         given(adminService.getGamerList(any()))
                 .willReturn(gamerList);
         //when
 
         //then
-        mockMvc.perform(get("/admin/gamer/list"))
+        mockMvc.perform(get("/admin-management/gamers"))
                 .andDo(print())
                 .andExpect(jsonPath("$.data[0].name").value(gamer.getName()))
                 .andExpect(jsonPath("$.data[0].race").value(gamer.getRace()))
@@ -264,35 +261,27 @@ public class AdminControllerTest {
                 .race("테란")
                 .price(10L)
                 .build();
-        given(adminService.registerCourse(
-                    anyLong(),
-                    anyString(),
-                    anyString(),
-                    anyString(),
-                    anyString(),
-                    anyString(),
-                    anyString(),
-                    anyLong()
-                ))
-                .willReturn(course);
+
+        given(adminService.registerCourse(any()))
+                .willReturn(CourseInfoOutputDto.Info.of(course));
         //when
 
         //then
-        mockMvc.perform(post("/admin/course/register")
+        mockMvc.perform(post("/admin-management/course")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(
-                                new RegisterCourse.Request(
-                                        course.getGamer().getId(),
-                                        course.getTitle(),
-                                        course.getVideoUrl(),
-                                        course.getThumbnailUrl(),
-                                        course.getComment(),
-                                        course.getLevel(),
-                                        course.getRace(),
-                                        course.getPrice()
+                                 RegisterCourse.Request.builder()
+                                         .gamerId(course.getGamer().getId())
+                                         .title(course.getTitle())
+                                         .videoUrl(course.getVideoUrl())
+                                         .thumbnailUrl(course.getThumbnailUrl())
+                                         .comment(course.getComment())
+                                         .level(course.getLevel())
+                                         .race(course.getRace())
+                                         .price(course.getPrice())
+                                         .build()
                                 )
-                        ))
-                ).andDo(print())
+                        )).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.gamerName").value(course.getGamer().getName()))
                 .andExpect(jsonPath("$.data.title").value(course.getTitle()))
@@ -328,13 +317,13 @@ public class AdminControllerTest {
                 .build();
 
         given(adminService.getCourseInfo(anyLong()))
-                .willReturn(course);
+                .willReturn(CourseInfoOutputDto.Info.of(course));
         //when
 
         //then
-        mockMvc.perform(get(String.format("/admin/course/%d", course.getId())))
+        mockMvc.perform(get(String.format("/admin-management/course/%d", course.getId())))
                 .andDo(print())
-                .andExpect(jsonPath("$.data.courseId").value(course.getId()))
+                .andExpect(jsonPath("$.data.id").value(course.getId()))
                 .andExpect(jsonPath("$.data.gamerName").value(course.getGamer().getName()))
                 .andExpect(jsonPath("$.data.title").value(course.getTitle()))
                 .andExpect(jsonPath("$.data.videoUrl").value(course.getVideoUrl()))
@@ -371,15 +360,15 @@ public class AdminControllerTest {
                 .price(10L)
                 .build();
 
-        List<Course> courseList = new ArrayList<>();
-        courseList.add(course);
+        List<CourseInfoOutputDto.Info> courseList = new ArrayList<>();
+        courseList.add(CourseInfoOutputDto.Info.of(course));
 
         given(adminService.searchCourseList(any()))
                 .willReturn(courseList);
         //when
 
         //then
-        mockMvc.perform(get("/admin/course/list"))
+        mockMvc.perform(get("/admin-management/courses"))
                 .andDo(print())
                 .andExpect(jsonPath("$.data[0].title").value(course.getTitle()))
                 .andExpect(jsonPath("$.data[0].videoUrl").value(course.getVideoUrl()))
@@ -428,39 +417,27 @@ public class AdminControllerTest {
                 .price(20L)
                 .build();
 
-        UpdateCourse.Request request =
-                new UpdateCourse.Request(
-                        1L,
-                        "벙커링",
-                        "https://www.youtube.com/watch?v=2rpu0f-qog4",
-                        "https://img.youtube.com/vi/2rpu0f-qog4/default.jpg",
-                        "심화 8배럭 벙커링 강의",
-                        "고급",
-                        "테란",
-                        20L
-                );
+        UpdateCourse.Request request = UpdateCourse.Request.builder()
+                .gamerId(gamer.getId())
+                .title(updateCourse.getTitle())
+                .videoUrl(updateCourse.getVideoUrl())
+                .thumbnailUrl(updateCourse.getThumbnailUrl())
+                .comment(updateCourse.getComment())
+                .level(updateCourse.getLevel())
+                .race(updateCourse.getRace())
+                .price(updateCourse.getPrice())
+                .build();
 
         given(adminService.updateCourseInfo(anyLong(), any()))
-                .willReturn(updateCourse);
+                .willReturn(CourseInfoOutputDto.Info.of(updateCourse));
 
         //when
 
 
         //then
-        mockMvc.perform(put(String.format("/admin/course/%d/edit", course.getId()))
+        mockMvc.perform(put(String.format("/admin-management/course/%d", course.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(
-                                new UpdateCourse.Request(
-                                        updateCourse.getGamer().getId(),
-                                        updateCourse.getTitle(),
-                                        updateCourse.getVideoUrl(),
-                                        updateCourse.getThumbnailUrl(),
-                                        updateCourse.getComment(),
-                                        updateCourse.getLevel(),
-                                        updateCourse.getRace(),
-                                        updateCourse.getPrice()
-                                )
-                        )))
+                        .content(objectMapper.writeValueAsString(request)))
                 .andDo(print())
                 .andExpect(jsonPath("$.data.gamerName").value(updateCourse.getGamer().getName()))
                 .andExpect(jsonPath("$.data.title").value(updateCourse.getTitle()))
