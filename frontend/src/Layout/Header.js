@@ -33,7 +33,8 @@ export default function Header(props) {
     });
   };
 
-  if (locationNow.pathname.includes("admin")) return null;
+  if (locationNow.pathname.includes("admin") || locationNow.pathname.includes("classRoom") ) return null;
+
   return (
     <HeaderArea>
       <Wrap>

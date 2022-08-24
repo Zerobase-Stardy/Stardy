@@ -17,7 +17,7 @@ import {
 
 export default function Footer() {
   const locationNow = useLocation();
-  if (locationNow.pathname.includes("admin")) return null;
+  if (locationNow.pathname.includes("admin") || locationNow.pathname.includes("classRoom") ) return null;
 
   return (
     <footer>
