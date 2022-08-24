@@ -1,4 +1,4 @@
-package com.github.backend.web;
+package com.github.backend.web.member.controller;
 
 import static com.github.backend.dto.member.MemberWithdrawalDto.Request;
 import static com.github.backend.dto.common.TokenMemberDto.MemberInfo;

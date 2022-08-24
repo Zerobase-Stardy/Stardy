@@ -1,4 +1,4 @@
-package com.github.backend.web.common.controller;
+package com.github.backend.web.common;
 
 import com.github.backend.dto.common.Result;
 import com.github.backend.dto.member.MemberLogout;

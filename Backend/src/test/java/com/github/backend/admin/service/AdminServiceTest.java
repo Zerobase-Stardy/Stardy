@@ -1,42 +1,41 @@
 package com.github.backend.admin.service;
 
-import com.github.backend.exception.admin.AdminException;
-import com.github.backend.exception.course.CourseException;
-import com.github.backend.exception.gamer.GamerException;
-import com.github.backend.persist.member.type.Role;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+
+import com.github.backend.dto.course.UpdateCourse;
 import com.github.backend.dto.gamer.SearchCourse;
 import com.github.backend.dto.gamer.SearchGamer;
-import com.github.backend.dto.course.UpdateCourse;
-import com.github.backend.persist.admin.Admin;
-import com.github.backend.persist.course.Course;
-import com.github.backend.persist.gamer.Gamer;
-import com.github.backend.persist.admin.repository.AdminRepository;
-import com.github.backend.persist.course.repository.CourseRepository;
-import com.github.backend.persist.gamer.repository.GamerRepository;
-import com.github.backend.persist.course.repository.querydsl.CourseSearchRepository;
-import com.github.backend.persist.course.repository.querydsl.GamerSearchRepository;
-import com.github.backend.service.admin.impl.AdminService;
+import com.github.backend.exception.admin.AdminException;
 import com.github.backend.exception.admin.code.AdminErrorCode;
+import com.github.backend.exception.course.CourseException;
 import com.github.backend.exception.course.code.CourseErrorCode;
 import com.github.backend.exception.gamer.GamerErrorCode;
+import com.github.backend.exception.gamer.GamerException;
+import com.github.backend.persist.admin.Admin;
+import com.github.backend.persist.admin.repository.AdminRepository;
+import com.github.backend.persist.course.Course;
+import com.github.backend.persist.course.repository.CourseRepository;
+import com.github.backend.persist.course.repository.querydsl.CourseSearchRepository;
+import com.github.backend.persist.gamer.Gamer;
+import com.github.backend.persist.gamer.repository.GamerRepository;
+import com.github.backend.persist.gamer.repository.querydsl.GamerSearchRepository;
+import com.github.backend.persist.member.type.Role;
+import com.github.backend.service.admin.impl.AdminService;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class AdminServiceTest {

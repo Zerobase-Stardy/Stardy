@@ -1,5 +1,7 @@
 package com.github.backend.persist.member;
 
+import com.github.backend.exception.member.MemberException;
+import com.github.backend.exception.member.code.MemberErrorCode;
 import com.github.backend.persist.common.type.AuthType;
 import com.github.backend.persist.member.type.MemberStatus;
 import com.github.backend.persist.member.type.Role;
@@ -50,6 +52,9 @@ public class Member extends BaseTimeEntity {
 	}
 
 	public void decreasePoint(long amount) {
+		if (point < amount) {
+			throw new MemberException(MemberErrorCode.MEMBER_NOT_ENOUGH_POINT);
+		}
 		this.point -= amount;
 	}
 
