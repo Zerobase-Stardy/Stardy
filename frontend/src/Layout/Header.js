@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import Logo from "../favicon.ico";
+import { useLocation } from "react-router-dom";
 import NavHoverMenu from "../components/NavHoverMenu";
 
 const LinkItem = ({ active, children, to }) => (
@@ -16,6 +16,7 @@ const LinkItem = ({ active, children, to }) => (
 );
 
 export default function Header(props) {
+  const locationNow = useLocation();
   const [visible, setVisible] = useState({
     display: "none",
   });
@@ -31,6 +32,8 @@ export default function Header(props) {
       display: "none",
     });
   };
+
+  if (locationNow.pathname.includes("admin")) return null;
   return (
     <HeaderArea>
       <Wrap>
@@ -39,7 +42,7 @@ export default function Header(props) {
         </LogoArea>
         <UserNaviArea>
           <Login onClick={props.toggle}> Login </Login> |{" "}
-          <LinkItem to="/mypage"> My Page </LinkItem>
+          <LinkItem to="/mypage/profile"> My Page </LinkItem>
         </UserNaviArea>
         <HeaderNav>
           <LinkItem to="/progamer">Pro-gamer</LinkItem>
