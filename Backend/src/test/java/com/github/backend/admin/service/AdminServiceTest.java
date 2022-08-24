@@ -1,11 +1,14 @@
 package com.github.backend.admin.service;
 
+import com.github.backend.dto.admin.RegisterAdminOutputDto;
+import com.github.backend.dto.course.CourseInfoOutputDto;
+import com.github.backend.dto.course.RegisterCourse;
+import com.github.backend.dto.gamer.*;
 import com.github.backend.exception.admin.AdminException;
 import com.github.backend.exception.course.CourseException;
 import com.github.backend.exception.gamer.GamerException;
+import com.github.backend.persist.gamer.repository.querydsl.GamerSearchRepository;
 import com.github.backend.persist.member.type.Role;
-import com.github.backend.dto.gamer.SearchCourse;
-import com.github.backend.dto.gamer.SearchGamer;
 import com.github.backend.dto.course.UpdateCourse;
 import com.github.backend.persist.admin.Admin;
 import com.github.backend.persist.course.Course;
@@ -14,7 +17,6 @@ import com.github.backend.persist.admin.repository.AdminRepository;
 import com.github.backend.persist.course.repository.CourseRepository;
 import com.github.backend.persist.gamer.repository.GamerRepository;
 import com.github.backend.persist.course.repository.querydsl.CourseSearchRepository;
-import com.github.backend.persist.course.repository.querydsl.GamerSearchRepository;
 import com.github.backend.service.admin.impl.AdminService;
 import com.github.backend.exception.admin.code.AdminErrorCode;
 import com.github.backend.exception.course.code.CourseErrorCode;
@@ -30,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.ArgumentMatchers.*;
@@ -63,23 +64,23 @@ public class AdminServiceTest {
     @DisplayName("관리자 계정 생성 성공")
     void testCreateAdmin(){
         //given
+        Admin admin = Admin.builder()
+                .adminId("admin1234")
+                .password("password")
+                .role(Role.ROLE_ADMIN)
+                .build();
+
         given(adminRepository.save(any()))
-                .willReturn(
-                        Admin.builder()
-                                .adminId("admin1234")
-                                .password("password")
-                                .role(Role.ROLE_ADMIN)
-                                .build()
-                );
+                .willReturn(admin);
+
         //when
-        Admin compareAdmin = adminService.registerAdmin(
+        RegisterAdminOutputDto.Info adminInfo = adminService.registerAdmin(
                 "admin1234","password"
         );
 
         //then
-        assertEquals(compareAdmin.getAdminId(), "admin1234");
-        assertEquals(compareAdmin.getPassword(), "password");
-        assertEquals(compareAdmin.getRole(), Role.ROLE_ADMIN);
+        assertEquals(adminInfo.getAdminId(), admin.getAdminId());
+        assertEquals(adminInfo.getPassword(), admin.getPassword());
     }
 
     @Test
@@ -99,25 +100,30 @@ public class AdminServiceTest {
     @DisplayName("게이머 등록 성공")
     void testRegisterGamer(){
         //given
+        Gamer gamer = Gamer.builder()
+                .name("유영진")
+                .race("테란")
+                .nickname("rush")
+                .introduce("단단한 테란")
+                .build();
         given(gamerRepository.save(any()))
-                .willReturn(
-                        Gamer.builder()
-                                .name("유영진")
-                                .race("테란")
-                                .nickname("rush")
-                                .introduce("단단한 테란")
-                                .build()
-                );
+                .willReturn(gamer);
         //when
 
-        Gamer gamer = adminService.registerGamer(
-                "유영진","테란","rush","단단한 테란"
+        RegisterGamerOutputDto.Info gamerInfo = adminService.registerGamer(
+                RegisterGamer.Request.builder()
+                        .name(gamer.getName())
+                        .race(gamer.getRace())
+                        .nickname(gamer.getNickname())
+                        .introduce(gamer.getIntroduce())
+                        .build()
         );
+
         //then
-        assertEquals(gamer.getName(), "유영진");
-        assertEquals(gamer.getRace(), "테란");
-        assertEquals(gamer.getNickname(), "rush");
-        assertEquals(gamer.getIntroduce(), "단단한 테란");
+        assertEquals(gamerInfo.getName(), gamer.getName());
+        assertEquals(gamerInfo.getRace(), gamer.getRace());
+        assertEquals(gamerInfo.getNickname(), gamer.getNickname());
+        assertEquals(gamerInfo.getIntroduce(), gamer.getIntroduce());
     }
 
     @Test
@@ -128,7 +134,12 @@ public class AdminServiceTest {
                 .willReturn(true);
         //when
         GamerException gamerException = assertThrows(GamerException.class,
-                () -> adminService.registerGamer("유영진","테란","rush","단단한 테란"));
+                () -> adminService.registerGamer(
+                        RegisterGamer.Request.builder()
+                                .nickname("rush")
+                                .build()
+                )
+        );
 
         //then
         assertEquals(gamerException.getErrorCode(), GamerErrorCode.EXIST_SAME_GAMER_NICKNAME);
@@ -149,7 +160,7 @@ public class AdminServiceTest {
         given(gamerRepository.findById(anyLong()))
                 .willReturn(Optional.of(gamer));
 
-        Gamer gamerInfo = adminService.getGamerInfo(gamer.getId());
+        GamerInfoOutputDto.Info gamerInfo = adminService.getGamerInfo(gamer.getId());
 
         //then
         assertEquals(gamerInfo.getId(), gamer.getId());
@@ -201,7 +212,7 @@ public class AdminServiceTest {
                 .willReturn(gamers);
 
         //when
-        List<Gamer> findGamerList = adminService.getGamerList(searchGamer);
+        List<GamerInfoOutputDto.Info> findGamerList = adminService.getGamerList(searchGamer);
 
         //then
         assertEquals(2, findGamerList.size());
@@ -231,7 +242,7 @@ public class AdminServiceTest {
                 .build();
 
         //when
-        List<Gamer> gamerNameList = adminService.getGamerList(searchGamer);
+        List<GamerInfoOutputDto.Info> gamerNameList = adminService.getGamerList(searchGamer);
 
         //then
         assertEquals(gamerNameList.size(), 2);
@@ -258,11 +269,11 @@ public class AdminServiceTest {
                 .willReturn(gamers);
 
         //when
-        List<Gamer> gamerNameList = adminService.getGamerList(searchGamer);
+        List<GamerInfoOutputDto.Info> gamerRaceList = adminService.getGamerList(searchGamer);
 
         //then
-        assertEquals(gamerNameList.size(), 2);
-        assertEquals(gamerNameList.get(0).getRace(), gamer.getRace());
+        assertEquals(gamerRaceList.size(), 2);
+        assertEquals(gamerRaceList.get(0).getRace(), gamer.getRace());
     }
 
     @Test
@@ -282,11 +293,11 @@ public class AdminServiceTest {
         given(gamerSearchRepository.searchByWhere(any()))
                 .willReturn(gamers);
         //when
-        List<Gamer> gamerNameList = adminService.getGamerList(searchGamer);
+        List<GamerInfoOutputDto.Info> gamerNicknameList = adminService.getGamerList(searchGamer);
 
         //then
-        assertEquals(gamerNameList.size(), 1);
-        assertEquals(gamerNameList.get(0).getNickname(), gamer.getNickname());
+        assertEquals(gamerNicknameList.size(), 1);
+        assertEquals(gamerNicknameList.get(0).getNickname(), gamer.getNickname());
     }
 
 
@@ -318,15 +329,21 @@ public class AdminServiceTest {
                 .willReturn(updateGamer);
         //when
 
-        Gamer compGamer = adminService.updateGamer(
-                1L, "유영진", "토스", "rush", "단단한 테란"
+        GamerInfoOutputDto.Info gamerInfo = adminService.updateGamer(
+                gamer.getId(),
+                UpdateGamer.Request.builder()
+                        .name(updateGamer.getName())
+                        .race(updateGamer.getRace())
+                        .nickname(updateGamer.getNickname())
+                        .introduce(updateGamer.getIntroduce())
+                        .build()
         );
 
         //then
-        assertEquals(compGamer.getName(), updateGamer.getName());
-        assertEquals(compGamer.getRace(), updateGamer.getRace());
-        assertEquals(compGamer.getNickname(), updateGamer.getNickname());
-        assertEquals(compGamer.getIntroduce(), updateGamer.getIntroduce());
+        assertEquals(gamerInfo.getName(), updateGamer.getName());
+        assertEquals(gamerInfo.getRace(), updateGamer.getRace());
+        assertEquals(gamerInfo.getNickname(), updateGamer.getNickname());
+        assertEquals(gamerInfo.getIntroduce(), updateGamer.getIntroduce());
     }
 
 
@@ -342,10 +359,7 @@ public class AdminServiceTest {
         GamerException gamerException = assertThrows(
                 GamerException.class, () -> adminService.updateGamer(
                         1L,
-                        "유영진",
-                        "테란",
-                        "rush",
-                        "단단한 테란"
+                        UpdateGamer.Request.builder().build()
                 ));
 
         //then
@@ -369,10 +383,15 @@ public class AdminServiceTest {
                 .willReturn(Optional.of(gamer));
 
         //when
-        adminService.deleteGamer(gamer.getId());
+        GamerInfoOutputDto.Info gamerInfo = adminService.deleteGamer(gamer.getId());
 
         //then
         verify(gamerRepository).delete(gamer);
+        assertEquals(gamerInfo.getId(), gamer.getId());
+        assertEquals(gamerInfo.getName(), gamer.getName());
+        assertEquals(gamerInfo.getRace(), gamer.getRace());
+        assertEquals(gamerInfo.getNickname(), gamer.getNickname());
+        assertEquals(gamerInfo.getIntroduce(), gamer.getIntroduce());
     }
 
     @Test
@@ -394,19 +413,13 @@ public class AdminServiceTest {
     @DisplayName("강의 등록 성공")
     void testRegisterCourse(){
         //given
-        given(gamerRepository.save(any()))
-                .willReturn(
-                        Gamer.builder()
-                                .id(1L)
-                                .name("유영진")
-                                .race("테란")
-                                .nickname("rush")
-                                .introduce("단단한 테란")
-                                .build()
-                );
-        Gamer gamer = adminService.registerGamer(
-                "유영진","테란","rush","단단한 테란"
-        );
+        Gamer gamer = Gamer.builder()
+                .id(1L)
+                .name("유영진")
+                .race("테란")
+                .nickname("rush")
+                .introduce("단단한 테란")
+                .build();
 
         given(gamerRepository.findById(anyLong()))
                 .willReturn(Optional.of(gamer));
@@ -414,38 +427,41 @@ public class AdminServiceTest {
         given(courseRepository.existsByTitle(anyString()))
                 .willReturn(false);
 
+        Course course =  Course.builder()
+                .gamer(gamer)
+                .title("벙커링")
+                .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
+                .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
+                .comment("세상에서 제일 쉬운 8배럭 벙커링 강의")
+                .level("입문")
+                .race("테란")
+                .price(10L)
+                .build();
+
         given(courseRepository.save(any()))
-                .willReturn(
-                        Course.builder()
-                                .gamer(gamer)
-                                .title("벙커링")
-                                .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
-                                .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
-                                .comment("세상에서 제일 쉬운 8배럭 벙커링 강의")
-                                .level("입문")
-                                .race("테란")
-                                .price(10L)
-                                .build()
-                );
+                .willReturn(course);
         //when
-        Course course = adminService.registerCourse(
-                gamer.getId(),
-                "벙커링",
-                "https://www.youtube.com/watch?v=2rpu0f-qog4"
-                ,"https://img.youtube.com/vi/2rpu0f-qog4/default.jpg"
-                ,"세상에서 제일 쉬운 8배럭 벙커링 강의"
-                ,"입문"
-                ,"테란"
-                ,10L
+        CourseInfoOutputDto.Info courseInfo = adminService.registerCourse(
+                RegisterCourse.Request.builder()
+                        .gamerId(course.getGamer().getId())
+                        .title(course.getTitle())
+                        .videoUrl(course.getVideoUrl())
+                        .thumbnailUrl(course.getThumbnailUrl())
+                        .comment(course.getComment())
+                        .level(course.getLevel())
+                        .race(course.getRace())
+                        .price(course.getPrice())
+                        .build()
         );
         //then
-        assertEquals(course.getTitle(), "벙커링");
-        assertEquals(course.getVideoUrl(), "https://www.youtube.com/watch?v=2rpu0f-qog4");
-        assertEquals(course.getThumbnailUrl(), "https://img.youtube.com/vi/2rpu0f-qog4/default.jpg");
-        assertEquals(course.getComment(), "세상에서 제일 쉬운 8배럭 벙커링 강의");
-        assertEquals(course.getLevel(), "입문");
-        assertEquals(course.getRace(), "테란");
-        assertEquals(course.getPrice(), 10L);
+        assertEquals(courseInfo.getTitle(), course.getTitle());
+        assertEquals(courseInfo.getVideoUrl(), course.getVideoUrl());
+        assertEquals(courseInfo.getThumbnailUrl(), course.getThumbnailUrl());
+        assertEquals(courseInfo.getComment(), course.getComment());
+        assertEquals(courseInfo.getLevel(), course.getLevel());
+        assertEquals(courseInfo.getRace(), course.getRace());
+        assertEquals(courseInfo.getPrice(), course.getPrice());
+
     }
 
     @Test
@@ -457,14 +473,9 @@ public class AdminServiceTest {
         //when
         CourseException courseException = assertThrows(CourseException.class,
                 ()-> adminService.registerCourse(
-                        1L,
-                        "벙커링",
-                        "https://www.youtube.com/watch?v=2rpu0f-qog4"
-                        ,"https://img.youtube.com/vi/2rpu0f-qog4/default.jpg"
-                        ,"세상에서 제일 쉬운 8배럭 벙커링 강의"
-                        ,"입문"
-                        ,"테란"
-                        ,10L
+                        RegisterCourse.Request.builder()
+                                .gamerId(1L)
+                                .build()
                 ));
         //then
         assertEquals(courseException.getErrorCode(), CourseErrorCode.NOT_EXIST_GAMER);
@@ -473,19 +484,13 @@ public class AdminServiceTest {
     @DisplayName("강의 등록 실패 - 해당 하는 이름의 강좌명이 이미 존재.")
     void testRegisterCourseFailedExistsTitle(){
         //given
-        given(gamerRepository.save(any()))
-                .willReturn(
-                        Gamer.builder()
-                                .id(1L)
-                                .name("유영진")
-                                .race("테란")
-                                .nickname("rush")
-                                .introduce("단단한 테란")
-                                .build()
-                );
-        Gamer gamer = adminService.registerGamer(
-                "유영진","테란","rush","단단한 테란"
-        );
+        Gamer gamer = Gamer.builder()
+                .id(1L)
+                .name("유영진")
+                .race("테란")
+                .nickname("rush")
+                .introduce("단단한 테란")
+                .build();
 
         given(gamerRepository.findById(anyLong()))
                 .willReturn(Optional.of(gamer));
@@ -494,14 +499,10 @@ public class AdminServiceTest {
         //when
         CourseException courseException = assertThrows(CourseException.class,
                 ()-> adminService.registerCourse(
-                        1L,
-                        "벙커링",
-                        "https://www.youtube.com/watch?v=2rpu0f-qog4"
-                        ,"https://img.youtube.com/vi/2rpu0f-qog4/default.jpg"
-                        ,"세상에서 제일 쉬운 8배럭 벙커링 강의"
-                        ,"입문"
-                        ,"테란"
-                        ,10L
+                        RegisterCourse.Request.builder()
+                                .gamerId(gamer.getId())
+                                .title("")
+                                .build()
                 ));
         //then
         assertEquals(courseException.getErrorCode(), CourseErrorCode.EXIST_SAME_TITLE);
@@ -512,8 +513,20 @@ public class AdminServiceTest {
     void testGetCourseTitleList(){
         //given
         List<Course> courses = new ArrayList<>();
+        Gamer gamer = Gamer.builder()
+                .id(1L)
+                .name("유영진")
+                .build();
+
         Course course = Course.builder()
-                .title("단단한 벙커링")
+                .gamer(gamer)
+                .title("벙커링")
+                .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
+                .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
+                .comment("세상에서 제일 쉬운 8배럭 벙커링 강의")
+                .level("입문")
+                .race("테란")
+                .price(10L)
                 .build();
 
         for (int i = 0; i < 2; i++) {
@@ -528,7 +541,7 @@ public class AdminServiceTest {
                 .build();
 
         //when
-        List<Course> courseList = adminService.searchCourseList(searchCourse);
+        List<CourseInfoOutputDto.Info> courseList = adminService.searchCourseList(searchCourse);
 
         //then
         assertEquals(courseList.size(), 2);
@@ -540,8 +553,20 @@ public class AdminServiceTest {
     void testGetCourseLevelList(){
         //given
         List<Course> courses = new ArrayList<>();
+        Gamer gamer = Gamer.builder()
+                .id(1L)
+                .name("유영진")
+                .build();
+
         Course course = Course.builder()
+                .gamer(gamer)
+                .title("벙커링")
+                .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
+                .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
+                .comment("세상에서 제일 쉬운 8배럭 벙커링 강의")
                 .level("입문")
+                .race("테란")
+                .price(10L)
                 .build();
 
         for (int i = 0; i < 2; i++) {
@@ -556,7 +581,7 @@ public class AdminServiceTest {
                 .build();
 
         //when
-        List<Course> courseList = adminService.searchCourseList(searchCourse);
+        List<CourseInfoOutputDto.Info> courseList = adminService.searchCourseList(searchCourse);
 
         //then
         assertEquals(courseList.size(), 2);
@@ -569,8 +594,20 @@ public class AdminServiceTest {
     void testGetCourseRaceList(){
         //given
         List<Course> courses = new ArrayList<>();
+        Gamer gamer = Gamer.builder()
+                .id(1L)
+                .name("유영진")
+                .build();
+
         Course course = Course.builder()
+                .gamer(gamer)
+                .title("벙커링")
+                .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
+                .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
+                .comment("세상에서 제일 쉬운 8배럭 벙커링 강의")
+                .level("입문")
                 .race("테란")
+                .price(10L)
                 .build();
 
         for (int i = 0; i < 2; i++) {
@@ -585,7 +622,7 @@ public class AdminServiceTest {
                 .build();
 
         //when
-        List<Course> courseList = adminService.searchCourseList(searchCourse);
+        List<CourseInfoOutputDto.Info> courseList = adminService.searchCourseList(searchCourse);
 
         //then
         assertEquals(courseList.size(), 2);
@@ -596,59 +633,34 @@ public class AdminServiceTest {
     @DisplayName("강의 정보 조회 성공")
     void testGetCourseInfo(){
         //given
-        given(gamerRepository.save(any()))
-                .willReturn(
-                        Gamer.builder()
-                                .id(1L)
-                                .name("유영진")
-                                .race("테란")
-                                .nickname("rush")
-                                .introduce("단단한 테란")
-                                .build()
-                );
-        Gamer gamer = adminService.registerGamer(
-                "유영진","테란","rush","단단한 테란"
-        );
+        Gamer gamer = Gamer.builder()
+                .id(1L)
+                .name("유영진")
+                .race("테란")
+                .nickname("rush")
+                .introduce("단단한 테란")
+                .build();
 
-        given(gamerRepository.findById(anyLong()))
-                .willReturn(Optional.of(gamer));
-
-        given(courseRepository.existsByTitle(anyString()))
-                .willReturn(false);
-
-        given(courseRepository.save(any()))
-                .willReturn(
-                        Course.builder()
-                                .id(1L)
-                                .gamer(gamer)
-                                .title("벙커링")
-                                .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
-                                .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
-                                .comment("세상에서 제일 쉬운 8배럭 벙커링 강의")
-                                .level("입문")
-                                .race("테란")
-                                .price(10L)
-                                .build()
-                );
-        Course course = adminService.registerCourse(
-                gamer.getId(),
-                "벙커링",
-                "https://www.youtube.com/watch?v=2rpu0f-qog4"
-                ,"https://img.youtube.com/vi/2rpu0f-qog4/default.jpg"
-                ,"세상에서 제일 쉬운 8배럭 벙커링 강의"
-                ,"입문"
-                ,"테란"
-                ,10L
-        );
+        Course course = Course.builder()
+                .id(1L)
+                .gamer(gamer)
+                .title("벙커링")
+                .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
+                .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
+                .comment("세상에서 제일 쉬운 8배럭 벙커링 강의")
+                .level("입문")
+                .race("테란")
+                .price(10L)
+                .build();
 
         given(courseRepository.findById(anyLong()))
                 .willReturn(Optional.of(course));
         //when
-        Course courseInfo = adminService.getCourseInfo(course.getId());
+        CourseInfoOutputDto.Info courseInfo = adminService.getCourseInfo(course.getId());
 
         //then
         assertEquals(course.getId(), courseInfo.getId());
-        assertEquals(course.getGamer().getName(), courseInfo.getGamer().getName());
+        assertEquals(course.getGamer().getName(), courseInfo.getGamerName());
         assertEquals(course.getTitle(), courseInfo.getTitle());
         assertEquals(course.getVideoUrl(), courseInfo.getVideoUrl());
         assertEquals(course.getThumbnailUrl(), courseInfo.getThumbnailUrl());
@@ -696,6 +708,7 @@ public class AdminServiceTest {
 
         Course updateCourse = Course.builder()
                 .id(1L)
+                .gamer(gamer)
                 .title("벙커링")
                 .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
                 .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
@@ -715,29 +728,28 @@ public class AdminServiceTest {
                 .willReturn(updateCourse);
 
         UpdateCourse.Request request =
-                new UpdateCourse.Request(
-                        1L,
-                        "벙커링",
-                        "https://www.youtube.com/watch?v=2rpu0f-qog4",
-                        "https://img.youtube.com/vi/2rpu0f-qog4/default.jpg",
-                        "심화 8배럭 벙커링 강의",
-                        "고급",
-                        "테란",
-                        20L
-                );
+                 UpdateCourse.Request.builder()
+                         .gamerId(gamer.getId())
+                         .title(updateCourse.getTitle())
+                         .videoUrl(updateCourse.getVideoUrl())
+                         .comment(updateCourse.getComment())
+                         .level(updateCourse.getLevel())
+                         .race(updateCourse.getRace())
+                         .price(updateCourse.getPrice())
+                         .build();
 
         //when
-        Course compCourse = adminService.updateCourseInfo(course.getId(), request);
+        CourseInfoOutputDto.Info updateCourseInfo = adminService.updateCourseInfo(course.getId(), request);
 
         //then
-        assertEquals(updateCourse.getId(), compCourse.getId());
-        assertEquals(updateCourse.getTitle(), compCourse.getTitle());
-        assertEquals(updateCourse.getVideoUrl(), compCourse.getVideoUrl());
-        assertEquals(updateCourse.getThumbnailUrl(), compCourse.getThumbnailUrl());
-        assertEquals(updateCourse.getComment(), compCourse.getComment());
-        assertEquals(updateCourse.getLevel(), compCourse.getLevel());
-        assertEquals(updateCourse.getRace(), compCourse.getRace());
-        assertEquals(updateCourse.getGamer(), compCourse.getGamer());
+        assertEquals(updateCourse.getId(), updateCourseInfo.getId());
+        assertEquals(updateCourse.getTitle(), updateCourseInfo.getTitle());
+        assertEquals(updateCourse.getVideoUrl(), updateCourseInfo.getVideoUrl());
+        assertEquals(updateCourse.getThumbnailUrl(), updateCourseInfo.getThumbnailUrl());
+        assertEquals(updateCourse.getComment(), updateCourseInfo.getComment());
+        assertEquals(updateCourse.getLevel(), updateCourseInfo.getLevel());
+        assertEquals(updateCourse.getRace(), updateCourseInfo.getRace());
+        assertEquals(updateCourse.getGamer().getName(), updateCourseInfo.getGamerName());
     }
 
     @Test
@@ -805,8 +817,13 @@ public class AdminServiceTest {
     @DisplayName("강의 정보 삭제 성공")
     void testDeleteCourseInfo(){
         //given
+        Gamer gamer = Gamer.builder()
+                .name("유영진")
+                .build();
+
         Course course = Course.builder()
                 .id(1L)
+                .gamer(gamer)
                 .title("벙커링")
                 .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
                 .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
@@ -820,9 +837,10 @@ public class AdminServiceTest {
                 .willReturn(Optional.of(course));
 
         //when
-        adminService.deleteCourse(course.getId());
+        CourseInfoOutputDto.Info courseInfo = adminService.deleteCourse(course.getId());
 
         //then
         verify(courseRepository).delete(course);
+        assertEquals(courseInfo.getId(), course.getId());
     }
 }
