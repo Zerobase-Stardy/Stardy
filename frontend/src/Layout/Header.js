@@ -33,7 +33,8 @@ export default function Header(props) {
     });
   };
 
-  if (locationNow.pathname.includes("admin")) return null;
+  if (locationNow.pathname.includes("admin") || locationNow.pathname.includes("classRoom") ) return null;
+
   return (
     <HeaderArea>
       <Wrap>
@@ -42,7 +43,7 @@ export default function Header(props) {
         </LogoArea>
         <UserNaviArea>
           <Login onClick={props.toggle}> Login </Login> |{" "}
-          <LinkItem to="/mypage"> My Page </LinkItem>
+          <LinkItem to="/mypage/profile"> My Page </LinkItem>
         </UserNaviArea>
         <HeaderNav>
           <LinkItem to="/progamer">Pro-gamer</LinkItem>
