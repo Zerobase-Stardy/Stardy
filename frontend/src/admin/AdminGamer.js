@@ -3,7 +3,6 @@ import styled from "styled-components";
 import axios from "axios";
 import Page from "../components/Page";
 import { ThreeDots } from "react-loader-spinner";
-import { Link } from "react-router-dom";
 
 export default function AdminGamer() {
   const [gamers, setGamers] = useState([]);
@@ -20,10 +19,17 @@ export default function AdminGamer() {
     nickName: "",
     introduce: "",
   });
+
   useEffect(() => {
     axios
-      .get("https://jsonplaceholder.typicode.com/users")
-      .then((res) => setGamers(res.data));
+      .get("/admin-management/gamers")
+      .then((response) => {
+        console.log(response.data.data);
+        setGamers(...gamers, response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   useEffect(() => {
@@ -37,8 +43,12 @@ export default function AdminGamer() {
     setCurrentpage(e);
   };
 
+  //axios Delete
+
   function deleteHandler(id) {
     setGamers(gamers.filter((e) => e.id !== id));
+
+    axios.delete(`/admin-management/gamers/${id}`);
   }
 
   //Input 핸들러
@@ -49,7 +59,7 @@ export default function AdminGamer() {
     });
   }
 
-  //제출 핸들러
+  //axios Post 핸들러  put gamers 넘겨주면 됨
   function submitHandler(e) {
     e.preventDefault();
     const gamer = {
@@ -67,8 +77,22 @@ export default function AdminGamer() {
       nickName: "",
       introduce: "",
     });
+    axios
+      .post("/admin-management/gamer", {
+        name: inputs.name,
+        race: inputs.race,
+        nickname: inputs.nickName,
+        introduce: inputs.introduce,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
+  //axios Put
   function updateHandler(id) {
     setGamers(
       gamers.map((gamer) =>
@@ -91,6 +115,19 @@ export default function AdminGamer() {
       nickName: "",
       introduce: "",
     });
+    axios
+      .put(`/admin-management/gamer/${id}`, {
+        name: inputs.name,
+        race: inputs.race,
+        nickname: inputs.nickName,
+        introduce: inputs.introduce,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   return (
