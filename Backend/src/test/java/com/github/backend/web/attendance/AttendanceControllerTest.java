@@ -19,11 +19,11 @@ import com.github.backend.security.oauth.OAuth2SuccessHandler;
 import com.github.backend.service.attendance.AttendanceService;
 import com.github.backend.service.common.impl.CustomOAuth2UserService;
 import com.github.backend.testUtils.WithMemberInfo;
-import com.github.backend.web.member.controller.AttendanceController;
+import com.github.backend.web.attendance.AttendanceController;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import com.github.backend.web.member.controller.AttendanceController;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -55,6 +55,7 @@ class AttendanceControllerTest {
 	@MockBean
 	AttendanceService attendanceService;
 
+	@DisplayName("출석 체크 성공")
 	@WithMemberInfo
 	@Test
 	void checkDailyAttendance_success() throws Exception {
@@ -63,12 +64,13 @@ class AttendanceControllerTest {
 
 		//when
 		//then
-		mockMvc.perform(post("/member/attendance"))
+		mockMvc.perform(post("/members/me/attendances/daily"))
 			.andDo(print())
 			.andExpect(jsonPath("$.status").value(200))
 			.andExpect(jsonPath("$.success").value(true));
 	}
 
+	@DisplayName("출석 리스트 조회 성공")
 	@WithMemberInfo
 	@Test
 	void getAttendances_success() throws Exception {
@@ -96,7 +98,7 @@ class AttendanceControllerTest {
 
 		//when
 		//then
-		mockMvc.perform(get("/member/attendance")
+		mockMvc.perform(get("/members/me/attendances")
 				.content(objectMapper.writeValueAsString(request)))
 			.andDo(print())
 			.andExpect(jsonPath("$.status").value(200))

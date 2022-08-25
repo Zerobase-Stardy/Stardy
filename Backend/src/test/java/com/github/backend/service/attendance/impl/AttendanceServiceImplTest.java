@@ -11,6 +11,8 @@ import static org.mockito.Mockito.verify;
 import com.github.backend.exception.attendance.AttendanceException;
 import com.github.backend.dto.attendance.AttendanceDto;
 import com.github.backend.dto.attendance.AttendanceDto.GetRequest;
+import com.github.backend.exception.member.MemberException;
+import com.github.backend.exception.member.code.MemberErrorCode;
 import com.github.backend.persist.attendance.Attendance;
 import com.github.backend.persist.member.Member;
 import com.github.backend.persist.attendance.repository.AttendanceRepository;
@@ -84,8 +86,8 @@ class AttendanceServiceImplTest {
 	    //when
 		//then
 		assertThatThrownBy(() -> attendanceService.checkTodayAttendance("test@test.com"))
-			.isInstanceOf(AttendanceException.class)
-			.hasMessage(AttendanceErrorCode.MEMBER_NOT_EXISTS.getDescription());
+			.isInstanceOf(MemberException.class)
+			.hasMessage(MemberErrorCode.MEMBER_NOT_EXISTS.getDescription());
 	}
 
 	@DisplayName("출석체크 실패 - 이미 출석을 한 경우")
