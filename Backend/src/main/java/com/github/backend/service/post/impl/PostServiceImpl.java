@@ -20,16 +20,20 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public void registerPost(String email, String title, String content, String boardKind) {
+    public void registerPost(String email, String title, String content, String boardKind, String imagePath) {
 
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new PostException(PostErrorCode.MEMBER_NOT_EXISTS));
+
+
+
 
         postRepository.save(Post.builder()
                         .member(member)
                         .title(title)
                         .content(content)
                         .boardKind(boardKind)
+                        .imagePath(imagePath)
                 .build());
     }
 }
