@@ -2,8 +2,8 @@ package com.github.backend.service.common.impl;
 
 
 import com.github.backend.dto.common.CustomOAuth2User;
+import com.github.backend.dto.common.MemberInfo;
 import com.github.backend.dto.common.OAuthAttributes;
-import com.github.backend.dto.common.TokenMemberDto.MemberInfo;
 import com.github.backend.persist.member.Member;
 import com.github.backend.persist.member.repository.MemberRepository;
 import java.util.Collections;

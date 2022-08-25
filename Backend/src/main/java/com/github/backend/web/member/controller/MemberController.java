@@ -1,5 +1,7 @@
 package com.github.backend.web.member.controller;
 
+import static com.github.backend.dto.member.MemberWithdrawalDto.Request;
+import com.github.backend.dto.common.MemberInfo;
 import com.github.backend.dto.common.Result;
 import com.github.backend.service.member.MemberInfoManagementService;
 import lombok.RequiredArgsConstructor;
