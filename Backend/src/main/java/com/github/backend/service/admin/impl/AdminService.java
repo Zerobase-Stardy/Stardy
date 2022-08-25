@@ -1,5 +1,6 @@
 package com.github.backend.service.admin.impl;
 
+import com.github.backend.dto.admin.LogoutAdminOutputDto;
 import com.github.backend.dto.admin.RegisterAdminOutputDto;
 import com.github.backend.dto.common.AdminInfo;
 import com.github.backend.dto.common.Tokens;
@@ -14,6 +15,7 @@ import com.github.backend.exception.gamer.GamerErrorCode;
 import com.github.backend.exception.gamer.GamerException;
 import com.github.backend.persist.admin.Admin;
 import com.github.backend.persist.admin.repository.AdminRepository;
+import com.github.backend.persist.common.repository.RefreshTokenRepository;
 import com.github.backend.persist.course.Course;
 import com.github.backend.persist.course.repository.CourseRepository;
 import com.github.backend.persist.course.repository.querydsl.CourseSearchRepository;
@@ -41,6 +43,7 @@ public class AdminService {
     private final CourseRepository courseRepository;
     private final GamerSearchRepository gamerSearchRepository;
     private final CourseSearchRepository courseSearchRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     private final TokenService tokenService;
 
@@ -296,6 +299,14 @@ public class AdminService {
                         .build().toClaims()
         ));
 
+    }
+
+    @Transactional
+    public LogoutAdminOutputDto.Info logoutAdmin(AdminInfo adminInfo){
+
+        refreshTokenRepository.deleteByUsername(adminInfo.getEmail());
+
+        return LogoutAdminOutputDto.Info.of(adminInfo);
     }
 
     private void validateLoginAdmin(Admin admin, String password) {
