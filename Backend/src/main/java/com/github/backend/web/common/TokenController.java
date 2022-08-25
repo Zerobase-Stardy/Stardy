@@ -2,8 +2,6 @@ package com.github.backend.web.common;
 
 import com.github.backend.dto.common.MemberInfo;
 import com.github.backend.dto.common.Result;
-import com.github.backend.dto.member.MemberLogout;
-import com.github.backend.dto.common.TokenMemberDto;
 import com.github.backend.persist.common.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

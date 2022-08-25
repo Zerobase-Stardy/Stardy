@@ -1,7 +1,7 @@
 package com.github.backend.web.myCourse.controller;
 
+import com.github.backend.dto.common.MemberInfo;
 import com.github.backend.dto.common.Result;
-import com.github.backend.dto.common.TokenMemberDto.MemberInfo;
 import com.github.backend.dto.myCourse.BookMarkToggleDto;
 import com.github.backend.dto.myCourse.MyCourseSearchDto.Info;
 import com.github.backend.dto.myCourse.MyCourseSearchDto.Request;
