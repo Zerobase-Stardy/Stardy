@@ -42,6 +42,7 @@ export default function AdminLecture() {
 
   function deleteHandler(id) {
     setLectures(lectures.filter((e) => e.id !== id));
+    axios.delete(`/admin-management/course/${id}`);
   }
 
   //텍스트 변경 핸들러

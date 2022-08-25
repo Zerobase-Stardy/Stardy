@@ -24,7 +24,7 @@ export default function AdminGamer() {
     axios
       .get("/admin-management/gamers")
       .then((response) => {
-        console.log(response.data.data);
+        console.log(response);
         setGamers(...gamers, response.data.data);
       })
       .catch((error) => {
@@ -48,7 +48,7 @@ export default function AdminGamer() {
   function deleteHandler(id) {
     setGamers(gamers.filter((e) => e.id !== id));
 
-    axios.delete(`/admin-management/gamers/${id}`);
+    axios.delete(`/admin-management/gamer/${id}`);
   }
 
   //Input 핸들러
