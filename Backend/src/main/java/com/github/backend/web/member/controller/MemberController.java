@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import static com.github.backend.dto.common.TokenMemberDto.MemberInfo;
-import static com.github.backend.dto.member.MemberWithdrawalDto.Request;
 
 @RestController
 @RequiredArgsConstructor
