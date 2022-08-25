@@ -31,6 +31,7 @@ public class MemberController {
 		);
 	}
 
+
 	@PatchMapping("/nickname")
 	public ResponseEntity<Result<?>> changeNickname(@AuthenticationPrincipal MemberInfo memberInfo,
 		@RequestBody @Valid Request request) {
