@@ -59,7 +59,7 @@ class CourseUnlockControllerTest {
 
 		//when
 		//then
-		mockMvc.perform(post("/course/1/unlock"))
+		mockMvc.perform(post("/courses/1/unlock"))
 			.andDo(print())
 			.andExpect(jsonPath("$.status").value(200))
 			.andExpect(jsonPath("$.success").value(true));
