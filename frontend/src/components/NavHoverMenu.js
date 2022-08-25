@@ -1,14 +1,29 @@
 import styled from 'styled-components';
+import { Link } from "react-router-dom";
+
 
 
 
 export default function NavHoverMenu(props){
+
+
+  const LinkItem = ({ children, to}) => (
+    <Link to={to}> 
+      <HoverEffect>
+      {" "}{children}{" "}
+      </HoverEffect>
+    </Link>
+  );
+
+      
+
+
     return(
         <MenuItems style={props.style}>
             <ItemsUl>
-                    <li style={{cursor: "pointer", textAlign: "center" }}>저그</li>
-                    <li style={{cursor: "pointer", textAlign: "center" }}>테란</li>
-                    <li style={{cursor: "pointer", textAlign: "center" }}>프로토스</li>
+                    <li> <LinkItem to="/races/terran"> 테란 </LinkItem> </li>
+                    <li> <LinkItem to="/races/protoss"> 프로토스 </LinkItem> </li>
+                    <li> <LinkItem to="/races/zerg"> 저그 </LinkItem> </li>
             </ItemsUl>
         </MenuItems>
     )
@@ -32,4 +47,12 @@ const ItemsUl = styled.ul`
   flex-direction: column;
   padding: 4px 0 4px 12px;
   margin: 0;
+`
+const HoverEffect = styled.div`
+cursor: pointer; 
+text-align: center;
+  &:hover{  
+    color : white;
+    font-weight: bold;
+  }
 `

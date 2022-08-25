@@ -49,7 +49,7 @@ export default function Header(props) {
           <LinkItem to="/progamer">Pro-gamer</LinkItem>
 
           <div onMouseOver={seeDropDown} onMouseLeave={deleteDrop}>
-            <LinkItem to="/races">
+            <LinkItem to="/races/terran">
               Races
               <NavHoverMenu style={visible} />
             </LinkItem>
