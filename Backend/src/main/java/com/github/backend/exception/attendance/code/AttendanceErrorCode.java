@@ -6,8 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum AttendanceErrorCode {
-	ALREADY_CHECK_ATTENDANCE("이미 출석체크를 완료하였습니다."),
-	MEMBER_NOT_EXISTS("존재하지 않는 회원입니다.");
-
+	ALREADY_CHECK_ATTENDANCE("이미 출석체크를 완료하였습니다.");
 	private final String description;
 }
