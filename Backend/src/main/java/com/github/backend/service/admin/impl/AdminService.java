@@ -1,6 +1,8 @@
 package com.github.backend.service.admin.impl;
 
 import com.github.backend.dto.admin.RegisterAdminOutputDto;
+import com.github.backend.dto.common.AdminInfo;
+import com.github.backend.dto.common.Tokens;
 import com.github.backend.dto.course.CourseInfoOutputDto;
 import com.github.backend.dto.course.RegisterCourse;
 import com.github.backend.dto.gamer.*;
@@ -21,9 +23,7 @@ import com.github.backend.persist.gamer.repository.querydsl.GamerSearchRepositor
 import com.github.backend.persist.member.type.Role;
 import com.github.backend.dto.course.UpdateCourse;
 
-import com.github.backend.exception.admin.code.AdminErrorCode;
-import com.github.backend.exception.course.code.CourseErrorCode;
-import com.github.backend.exception.gamer.GamerErrorCode;
+import com.github.backend.service.common.impl.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +41,8 @@ public class AdminService {
     private final CourseRepository courseRepository;
     private final GamerSearchRepository gamerSearchRepository;
     private final CourseSearchRepository courseSearchRepository;
+
+    private final TokenService tokenService;
 
 
     /**
@@ -274,6 +276,34 @@ public class AdminService {
 
         return CourseInfoOutputDto.Info.of(course);
     }
+
+    /**
+     *
+     * @param adminId : admin 로그인 ID
+     * @param password : admin 비밀번호
+     */
+    @Transactional
+    public Tokens loginAdmin(String adminId, String password){
+        Admin admin = adminRepository.findByAdminId(adminId)
+                .orElseThrow(() -> new AdminException(AdminErrorCode.NOT_EXIST_ADMIN_ID));
+        validateLoginAdmin(admin, password);
+
+        return tokenService.issueAllToken(
+                AdminInfo.of(
+                    AdminInfo.builder()
+                        .email(admin.getAdminId())
+                        .role(admin.getRole().name())
+                        .build().toClaims()
+        ));
+
+    }
+
+    private void validateLoginAdmin(Admin admin, String password) {
+        if (!admin.getPassword().equals(password)){
+            throw new AdminException(AdminErrorCode.PASSWORD_IS_WRONG);
+        }
+    }
+
 
 
 }
