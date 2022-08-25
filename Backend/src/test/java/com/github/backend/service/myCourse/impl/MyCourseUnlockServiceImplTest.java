@@ -11,14 +11,14 @@ import com.github.backend.exception.course.CourseException;
 import com.github.backend.exception.course.code.CourseErrorCode;
 import com.github.backend.exception.member.MemberException;
 import com.github.backend.exception.member.code.MemberErrorCode;
-import com.github.backend.exception.myCourse.MemberCourseException;
-import com.github.backend.exception.myCourse.code.MemberCourseErrorCode;
+import com.github.backend.exception.myCourse.MyCourseException;
+import com.github.backend.exception.myCourse.code.MyCourseErrorCode;
 import com.github.backend.persist.course.Course;
 import com.github.backend.persist.course.repository.CourseRepository;
 import com.github.backend.persist.member.Member;
 import com.github.backend.persist.member.repository.MemberRepository;
 import com.github.backend.persist.myCourse.MyCourse;
-import com.github.backend.persist.myCourse.repository.MemberCourseRepository;
+import com.github.backend.persist.myCourse.repository.MyCourseRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -39,7 +39,7 @@ class MyCourseUnlockServiceImplTest {
 	CourseRepository courseRepository;
 
 	@Mock
-	MemberCourseRepository memberCourseRepository;
+	MyCourseRepository myCourseRepository;
 
 	@InjectMocks
 	MyCourseUnlockServiceImpl memberCourseUnlockService;
@@ -79,7 +79,7 @@ class MyCourseUnlockServiceImplTest {
 		memberCourseUnlockService.unlockCourse(member.getId(), course.getId());
 
 		//then
-		verify(memberCourseRepository).save(captor.capture());
+		verify(myCourseRepository).save(captor.capture());
 		assertThat(member.getPoint()).isEqualTo(0);
 		assertThat(captor.getValue().isBookmark()).isFalse();
 	}
@@ -126,15 +126,15 @@ class MyCourseUnlockServiceImplTest {
 		given(courseRepository.findById(anyLong()))
 			.willReturn(Optional.of(course));
 
-		given(memberCourseRepository.existsByMemberAndCourse(any(), any()))
+		given(myCourseRepository.existsByMemberAndCourse(any(), any()))
 			.willReturn(true);
 
 		//when
 		//then
 		assertThatThrownBy(
 			() -> memberCourseUnlockService.unlockCourse(member.getId(), course.getId()))
-			.isInstanceOf(MemberCourseException.class)
-			.hasMessage(MemberCourseErrorCode.ALREADY_MEMBER_COURSE_EXISTS.getDescription());
+			.isInstanceOf(MyCourseException.class)
+			.hasMessage(MyCourseErrorCode.ALREADY_MY_COURSE_EXISTS.getDescription());
 	}
 
 	@DisplayName("강의 구매 실패 - 포인트가 부족할 때")
@@ -147,7 +147,7 @@ class MyCourseUnlockServiceImplTest {
 		given(courseRepository.findById(anyLong()))
 			.willReturn(Optional.of(course));
 
-		given(memberCourseRepository.existsByMemberAndCourse(any(), any()))
+		given(myCourseRepository.existsByMemberAndCourse(any(), any()))
 			.willReturn(false);
 
 		course.setPrice(600L);
