@@ -41,7 +41,8 @@ public class MyCourse {
 
 	private boolean bookmark;
 
-	public void toggleBookmark() {
+	public boolean toggleBookmark() {
 		this.bookmark = !this.bookmark;
+		return this.bookmark;
 	}
 }
