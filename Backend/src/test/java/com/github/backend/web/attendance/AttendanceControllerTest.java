@@ -1,4 +1,4 @@
-package com.github.backend.web;
+package com.github.backend.web.attendance;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
