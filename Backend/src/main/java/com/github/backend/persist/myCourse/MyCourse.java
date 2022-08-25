@@ -1,4 +1,4 @@
-package com.github.backend.persist.memberCourse;
+package com.github.backend.persist.myCourse;
 
 import com.github.backend.persist.course.Course;
 import com.github.backend.persist.member.Member;
@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Table(uniqueConstraints = {
 	@UniqueConstraint(name = "member_course_check",
 		columnNames = {"member_id","course_id"})})
-public class MemberCourse {
+public class MyCourse {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +41,9 @@ public class MemberCourse {
 
 	private boolean bookmark;
 
-	public void toggleBookmark() {
+	public boolean toggleBookmark() {
 		this.bookmark = !this.bookmark;
+		return this.bookmark;
+
 	}
 }

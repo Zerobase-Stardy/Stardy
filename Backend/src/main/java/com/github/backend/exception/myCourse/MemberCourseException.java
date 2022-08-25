@@ -1,6 +1,6 @@
-package com.github.backend.exception.memberCourse;
+package com.github.backend.exception.myCourse;
 
-import com.github.backend.exception.memberCourse.code.MemberCourseErrorCode;
+import com.github.backend.exception.myCourse.code.MemberCourseErrorCode;
 import lombok.Getter;
 
 @Getter
