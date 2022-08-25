@@ -1,6 +1,7 @@
 package com.github.backend.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.backend.dto.common.ErrorResult;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,11 +23,15 @@ public class JwtEntryPoint implements AuthenticationEntryPoint {
 		AuthenticationException authException) throws IOException, ServletException {
 		setResponse(response);
 
-		/**
-		 *  여기 응답 반환값 Result<커스텀응답객체>로 반환하도록 설정해야합니다.
-		 */
+		String code = (String)request.getAttribute("errorCode");
+		String message = (String)request.getAttribute("errorMessage");
 
-		response.getWriter().write(objectMapper.writeValueAsString(request.getAttribute("exception")));
+		ErrorResult result = ErrorResult.builder()
+			.errorCode(code)
+			.errorDescription(message)
+			.build();
+
+		response.getWriter().write(objectMapper.writeValueAsString(result));
 	}
 
 	private void setResponse(HttpServletResponse response) {

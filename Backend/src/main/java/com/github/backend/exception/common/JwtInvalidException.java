@@ -1,8 +1,10 @@
 package com.github.backend.exception.common;
 
 import com.github.backend.exception.common.code.JwtErrorCode;
+import lombok.Getter;
 import org.springframework.security.core.AuthenticationException;
 
+@Getter
 public class JwtInvalidException extends AuthenticationException {
 
 	private JwtErrorCode errorCode;

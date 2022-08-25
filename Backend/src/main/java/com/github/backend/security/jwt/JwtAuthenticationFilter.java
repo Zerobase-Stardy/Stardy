@@ -1,7 +1,8 @@
 package com.github.backend.security.jwt;
 
-import static com.github.backend.security.jwt.JwtInfo.*;
+import static com.github.backend.security.jwt.JwtInfo.BEARER_PREFIX;
 
+import com.github.backend.exception.common.JwtInvalidException;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -43,7 +44,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 			} catch (AuthenticationException e) {
 				SecurityContextHolder.clearContext();
-				request.setAttribute("exception",e.getMessage());
+				JwtInvalidException ex = (JwtInvalidException) e;
+
+				request.setAttribute("errorCode",ex.getErrorCode().name());
+				request.setAttribute("errorMessage",ex.getErrorMessage());
 			}
 		}
 	}
