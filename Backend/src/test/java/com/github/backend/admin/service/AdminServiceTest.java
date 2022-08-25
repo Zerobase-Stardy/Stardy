@@ -1,6 +1,7 @@
 package com.github.backend.admin.service;
 
 import com.github.backend.dto.admin.RegisterAdminOutputDto;
+import com.github.backend.dto.common.Tokens;
 import com.github.backend.dto.course.CourseInfoOutputDto;
 import com.github.backend.dto.course.RegisterCourse;
 import com.github.backend.dto.gamer.*;
@@ -10,6 +11,8 @@ import com.github.backend.exception.course.CourseException;
 import com.github.backend.exception.course.code.CourseErrorCode;
 import com.github.backend.exception.gamer.GamerErrorCode;
 import com.github.backend.exception.gamer.GamerException;
+import com.github.backend.persist.gamer.Gamer;
+import com.github.backend.persist.gamer.repository.GamerRepository;
 import com.github.backend.persist.gamer.repository.querydsl.GamerSearchRepository;
 import com.github.backend.persist.member.type.Role;
 import com.github.backend.dto.course.UpdateCourse;
@@ -22,6 +25,9 @@ import com.github.backend.service.admin.impl.AdminService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import com.github.backend.service.common.impl.TokenService;
+import jdk.nashorn.internal.parser.Token;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -59,6 +65,9 @@ public class AdminServiceTest {
     @Mock
     private AdminRepository adminRepository;
 
+    @Mock
+    private TokenService tokenService;
+
     @InjectMocks
     private AdminService adminService;
 
@@ -91,6 +100,8 @@ public class AdminServiceTest {
         //given
         given(adminRepository.existsByAdminId(anyString()))
                 .willReturn(true);
+
+
         //when
         AdminException adminException = assertThrows(AdminException.class,
                 () -> adminService.registerAdmin("admin1234","password"));
@@ -845,4 +856,71 @@ public class AdminServiceTest {
         verify(courseRepository).delete(course);
         assertEquals(courseInfo.getId(), course.getId());
     }
+
+    @Test
+    @DisplayName("Admin 로그인 성공")
+    void testLoginAdmin(){
+        //given
+        Admin admin = Admin.builder()
+                .adminId("admin")
+                .password("password")
+                .role(Role.ROLE_ADMIN)
+                .build();
+
+        given(adminRepository.findByAdminId(anyString()))
+                .willReturn(Optional.of(admin));
+
+        Tokens tokens = Tokens.builder()
+                .accessToken("access")
+                .refreshToken("refresh")
+                .build();
+
+        given(tokenService.issueAllToken(any()))
+                .willReturn(tokens);
+
+        //when
+        Tokens compTokens = adminService.loginAdmin(admin.getAdminId(), admin.getPassword());
+
+        //then
+        assertEquals(compTokens.getAccessToken(), tokens.getAccessToken());
+        assertEquals(compTokens.getRefreshToken(), tokens.getRefreshToken());
+    }
+
+
+    @Test
+    @DisplayName("어드민 로그인 실패 - 아이디를 찾을 수 없음")
+    void testLoginAdminFailedNotFoundId(){
+        //given
+        given(adminRepository.findByAdminId(anyString()))
+                .willReturn(Optional.empty());
+        //when
+        AdminException adminException = assertThrows(AdminException.class,
+                () -> adminService.loginAdmin("", ""));
+
+        //then
+        assertEquals(adminException.getErrorCode(), AdminErrorCode.NOT_EXIST_ADMIN_ID);
+    }
+
+    @Test
+    @DisplayName("어드민 로그인 실패 - 패스워드를 찾을 수 없음")
+    void testLoginAdminFailedNotFoundPassword(){
+        //given
+        Admin admin = Admin.builder()
+                .adminId("admin")
+                .password("1234")
+                .role(Role.ROLE_ADMIN)
+                .build();
+
+        given(adminRepository.findByAdminId(anyString()))
+                .willReturn(Optional.of(admin));
+
+        //when
+        AdminException adminException = assertThrows(AdminException.class,
+                () -> adminService.loginAdmin(admin.getAdminId(), ""));
+
+        //then
+        assertEquals(adminException.getErrorCode(), AdminErrorCode.PASSWORD_IS_WRONG);
+    }
+
+
 }

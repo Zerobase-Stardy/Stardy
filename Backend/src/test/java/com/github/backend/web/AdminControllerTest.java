@@ -14,7 +14,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.backend.config.SecurityConfig;
 import com.github.backend.dto.admin.CreateAdmin;
+import com.github.backend.dto.admin.LoginAdmin;
 import com.github.backend.dto.admin.RegisterAdminOutputDto;
+import com.github.backend.dto.common.Tokens;
 import com.github.backend.dto.course.CourseInfoOutputDto;
 import com.github.backend.dto.course.RegisterCourse;
 import com.github.backend.dto.gamer.GamerInfoOutputDto;
@@ -23,6 +25,8 @@ import com.github.backend.dto.course.UpdateCourse;
 import com.github.backend.dto.gamer.RegisterGamerOutputDto;
 import com.github.backend.dto.gamer.UpdateGamer;
 
+import com.github.backend.persist.admin.Admin;
+import com.github.backend.persist.course.Course;
 import com.github.backend.persist.gamer.Gamer;
 import com.github.backend.persist.member.type.Role;
 import com.github.backend.security.jwt.JwtAuthenticationProvider;
@@ -447,6 +451,39 @@ public class AdminControllerTest {
                 .andExpect(jsonPath("$.data.level").value(updateCourse.getLevel()))
                 .andExpect(jsonPath("$.data.race").value(updateCourse.getRace()))
                 .andExpect(jsonPath("$.data.price").value(updateCourse.getPrice()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser
+    @DisplayName("어드민 로그인 성공")
+    void testLoginAdmin() throws Exception {
+        //given
+        Admin admin = Admin.builder()
+                .adminId("admin")
+                .password("password")
+                .build();
+
+        Tokens tokens = Tokens.builder()
+                .accessToken("access")
+                .refreshToken("refresh")
+                .build();
+
+        given(adminService.loginAdmin(anyString(), anyString()))
+                .willReturn(tokens);
+        //when
+        //then
+        mockMvc.perform(post("/admin-management/admin/login").contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(
+                            LoginAdmin.Request.builder()
+                                    .adminId(admin.getAdminId())
+                                    .password(admin.getPassword())
+                                    .build()
+                        )
+                ))
+                .andDo(print())
+                .andExpect(jsonPath("$.data.accessToken").value(tokens.getAccessToken()))
+                .andExpect(jsonPath("$.data.refreshToken").value(tokens.getRefreshToken()))
                 .andExpect(status().isOk());
     }
 
