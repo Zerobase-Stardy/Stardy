@@ -1,8 +1,8 @@
-package com.github.backend.web.memberCourse.controller;
+package com.github.backend.web.myCourse.controller;
 
 import com.github.backend.dto.common.Result;
 import com.github.backend.dto.common.TokenMemberDto.MemberInfo;
-import com.github.backend.service.memberCourse.MemberCourseUnlockService;
+import com.github.backend.service.myCourse.MyCourseUnlockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-public class MemberCourseController {
+public class CourseUnlockController {
 
-	private final MemberCourseUnlockService memberCourseUnlockService;
+	private final MyCourseUnlockService myCourseUnlockService;
 
-	@PostMapping("/course/{courseId}/unlock")
+	@PostMapping("/courses/{courseId}/unlock")
 	public ResponseEntity<Result<?>> unlockCourse(@AuthenticationPrincipal MemberInfo memberInfo, @PathVariable Long courseId) {
 
-		memberCourseUnlockService.unlockCourse(memberInfo.getId(),courseId);
+		myCourseUnlockService.unlockCourse(memberInfo.getId(),courseId);
 
 		return ResponseEntity.ok()
 			.body(Result.builder()
@@ -27,4 +27,5 @@ public class MemberCourseController {
 				.success(true)
 				.build());
 	}
+
 }

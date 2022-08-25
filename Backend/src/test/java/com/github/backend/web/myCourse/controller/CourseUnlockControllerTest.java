@@ -1,4 +1,4 @@
-package com.github.backend.web.memberCourse.controller;
+package com.github.backend.web.myCourse.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -14,7 +14,7 @@ import com.github.backend.security.jwt.JwtAuthenticationProvider;
 import com.github.backend.security.jwt.JwtEntryPoint;
 import com.github.backend.security.oauth.OAuth2SuccessHandler;
 import com.github.backend.service.common.impl.CustomOAuth2UserService;
-import com.github.backend.service.memberCourse.MemberCourseUnlockService;
+import com.github.backend.service.myCourse.MyCourseUnlockService;
 import com.github.backend.testUtils.WithMemberInfo;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -25,10 +25,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(value = MemberCourseController.class
+@WebMvcTest(value = CourseUnlockController.class
 	, includeFilters = {
 	@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)})
-class MemberCourseControllerTest {
+class CourseUnlockControllerTest {
 
 	@Autowired
 	MockMvc mockMvc;
@@ -46,13 +46,13 @@ class MemberCourseControllerTest {
 	CustomOAuth2UserService customOAuth2UserService;
 
 	@MockBean
-	MemberCourseUnlockService memberCourseUnlockService;
+	MyCourseUnlockService myCourseUnlockService;
 
 
 	@WithMemberInfo
 	@Test
 	void unlockCourse() throws Exception {
-		doNothing().when(memberCourseUnlockService).unlockCourse(anyLong(),anyLong());
+		doNothing().when(myCourseUnlockService).unlockCourse(anyLong(),anyLong());
 
 		ArgumentCaptor<Long> memberIdCaptor = ArgumentCaptor.forClass(Long.class);
 		ArgumentCaptor<Long> courseIdCaptor = ArgumentCaptor.forClass(Long.class);
@@ -64,7 +64,7 @@ class MemberCourseControllerTest {
 			.andExpect(jsonPath("$.status").value(200))
 			.andExpect(jsonPath("$.success").value(true));
 
-		verify(memberCourseUnlockService).unlockCourse(memberIdCaptor.capture(),
+		verify(myCourseUnlockService).unlockCourse(memberIdCaptor.capture(),
 			courseIdCaptor.capture());
 
 		assertThat(memberIdCaptor.getValue()).isEqualTo(1L);

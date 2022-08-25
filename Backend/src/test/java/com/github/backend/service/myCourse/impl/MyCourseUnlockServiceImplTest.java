@@ -1,4 +1,4 @@
-package com.github.backend.service.memberCourse.impl;
+package com.github.backend.service.myCourse.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -11,14 +11,14 @@ import com.github.backend.exception.course.CourseException;
 import com.github.backend.exception.course.code.CourseErrorCode;
 import com.github.backend.exception.member.MemberException;
 import com.github.backend.exception.member.code.MemberErrorCode;
-import com.github.backend.exception.memberCourse.MemberCourseException;
-import com.github.backend.exception.memberCourse.code.MemberCourseErrorCode;
+import com.github.backend.exception.myCourse.MemberCourseException;
+import com.github.backend.exception.myCourse.code.MemberCourseErrorCode;
 import com.github.backend.persist.course.Course;
 import com.github.backend.persist.course.repository.CourseRepository;
 import com.github.backend.persist.member.Member;
 import com.github.backend.persist.member.repository.MemberRepository;
-import com.github.backend.persist.memberCourse.MemberCourse;
-import com.github.backend.persist.memberCourse.repository.MemberCourseRepository;
+import com.github.backend.persist.myCourse.MyCourse;
+import com.github.backend.persist.myCourse.repository.MemberCourseRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +30,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class MemberCourseUnlockServiceImplTest {
+class MyCourseUnlockServiceImplTest {
 
 	@Mock
 	MemberRepository memberRepository;
@@ -42,7 +42,7 @@ class MemberCourseUnlockServiceImplTest {
 	MemberCourseRepository memberCourseRepository;
 
 	@InjectMocks
-	MemberCourseUnlockServiceImpl memberCourseUnlockService;
+	MyCourseUnlockServiceImpl memberCourseUnlockService;
 
 	Member member;
 	Course course;
@@ -72,8 +72,8 @@ class MemberCourseUnlockServiceImplTest {
 		given(courseRepository.findById(anyLong()))
 			.willReturn(Optional.of(course));
 
-		ArgumentCaptor<MemberCourse> captor = ArgumentCaptor.forClass(
-			MemberCourse.class);
+		ArgumentCaptor<MyCourse> captor = ArgumentCaptor.forClass(
+			MyCourse.class);
 
 		//when
 		memberCourseUnlockService.unlockCourse(member.getId(), course.getId());
