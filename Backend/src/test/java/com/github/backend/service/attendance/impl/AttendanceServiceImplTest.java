@@ -8,15 +8,16 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import com.github.backend.exception.attendance.AttendanceException;
 import com.github.backend.dto.attendance.AttendanceDto;
 import com.github.backend.dto.attendance.AttendanceDto.GetRequest;
-import com.github.backend.persist.attendance.Attendance;
-import com.github.backend.persist.member.Member;
-import com.github.backend.persist.attendance.repository.AttendanceRepository;
-import com.github.backend.persist.member.repository.MemberRepository;
+import com.github.backend.exception.attendance.AttendanceException;
 import com.github.backend.exception.attendance.code.AttendanceErrorCode;
-import com.github.backend.service.attendance.impl.AttendanceServiceImpl;
+import com.github.backend.exception.member.MemberException;
+import com.github.backend.exception.member.code.MemberErrorCode;
+import com.github.backend.persist.attendance.Attendance;
+import com.github.backend.persist.attendance.repository.AttendanceRepository;
+import com.github.backend.persist.member.Member;
+import com.github.backend.persist.member.repository.MemberRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,8 +85,8 @@ class AttendanceServiceImplTest {
 	    //when
 		//then
 		assertThatThrownBy(() -> attendanceService.checkTodayAttendance("test@test.com"))
-			.isInstanceOf(AttendanceException.class)
-			.hasMessage(AttendanceErrorCode.MEMBER_NOT_EXISTS.getDescription());
+			.isInstanceOf(MemberException.class)
+			.hasMessage(MemberErrorCode.MEMBER_NOT_EXISTS.getDescription());
 	}
 
 	@DisplayName("출석체크 실패 - 이미 출석을 한 경우")
