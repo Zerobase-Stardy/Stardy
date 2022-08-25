@@ -33,7 +33,11 @@ export default function Header(props) {
     });
   };
 
-  if (locationNow.pathname.includes("admin") || locationNow.pathname.includes("classRoom") ) return null;
+  if (
+    locationNow.pathname.includes("admin") ||
+    locationNow.pathname.includes("classRoom")
+  )
+    return null;
 
   return (
     <HeaderArea>
@@ -64,7 +68,7 @@ export default function Header(props) {
 }
 
 const Wrap = styled.div`
-  width: 80%;
+  width: 70%;
   margin: 0 auto;
   position: relative;
 `;

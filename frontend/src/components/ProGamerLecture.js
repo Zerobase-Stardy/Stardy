@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { BsCoin } from "react-icons/bs";
 
 export default function ProGamerLecture(props) {
   //   const [lectures, setLectures] = useState([]);
@@ -13,7 +14,7 @@ export default function ProGamerLecture(props) {
       level: "입문(난이도)",
       race: "테란(종족)",
       price: 20,
-      name: "임요한",
+      name: "임요환",
     },
 
     {
@@ -25,7 +26,7 @@ export default function ProGamerLecture(props) {
       level: "입문(난이도)",
       race: "테란(종족)",
       price: 20,
-      name: "임요한",
+      name: "임요환",
     },
     {
       gamerId: 3,
@@ -36,7 +37,7 @@ export default function ProGamerLecture(props) {
       level: "입문(난이도)",
       race: "테란(종족)",
       price: 20,
-      name: "임요한",
+      name: "임요환",
     },
     {
       gamerId: 4,
@@ -122,8 +123,16 @@ export default function ProGamerLecture(props) {
         <img src={data.thumblink} alt="thumblink" />
       </Thumbnail>
       <Title>{data.title}</Title>
-      <Name>{data.name}</Name>
-      <Price>{data.price}</Price>
+      <Name>
+        <p>{data.name}</p>
+      </Name>{" "}
+      <Price>
+        <span>
+          <BsCoin /> :
+        </span>
+        &nbsp;
+        <p>{data.price}</p>
+      </Price>
     </LectureArea>
   ));
 
@@ -135,11 +144,18 @@ export default function ProGamerLecture(props) {
         <img src={data.thumblink} alt="thumblink" />
       </Thumbnail>
       <Title>{data.title}</Title>
-      <Name>{data.name}</Name>
-      <Price>{data.price}</Price>
+      <Name>
+        <p>{data.name}</p>
+      </Name>
+      <Price>
+        <span>
+          <BsCoin /> :
+        </span>
+        &nbsp;
+        <p>{data.price}</p>
+      </Price>{" "}
     </LectureArea>
   ));
-  console.log(filterLecture.length === 0 ? "비워짐" : "꽉참");
 
   return (
     <Wrap>
@@ -160,21 +176,57 @@ const Wrap = styled.div`
 const LectureArea = styled.div`
   width: 23%;
   height: 250px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   display: flex;
   flex-direction: column;
+  transition: 0.25s;
+
+  padding: 10px;
   gap: 10px;
   img {
     width: 100%;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+    background-color: #ff6e7f;
+    border-radius: 8px;
+    border: 1px white;
+    color: white;
+
+    p {
+      color: white;
+    }
+  }
+
+  &:active {
+    transform: scale(1.2);
   }
 `;
 
 const Thumbnail = styled.div``;
 const Title = styled.div`
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 700;
 `;
 
-const Name = styled.div``;
+const Name = styled.div`
+  p {
+    font-size: 14px;
+    color: #606060;
+  }
+`;
 
-const Price = styled.div``;
+const Price = styled.div`
+  font-size: 18px;
+  display: flex;
+
+  p {
+    line-height: 25px;
+    color: #606060;
+  }
+  span {
+    font-size: 20px;
+    color: yellowgreen;
+  }
+`;

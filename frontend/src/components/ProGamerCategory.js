@@ -1,129 +1,23 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ProGamerLecture from "../components/ProGamerLecture";
 
 export default function ProGamerCategory() {
-  const gamers = [
-    {
-      name: "유영진",
-      race: "테란",
-      nickName: "a",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "임요한",
-      race: "테란",
-      nickName: "b",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "저그킹",
-      race: "저그",
-      nickName: "c",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-  ];
-
+  const [gamers, setGamers] = useState([]);
   const [checkList, setCheckList] = useState([]);
   const [moreView, setMoreView] = useState(false);
   const littleGamers = gamers.filter((gamer, idx) => idx < 17);
   const bigGamers = gamers.filter((gamer, idx) => idx >= 17);
+
+  useEffect(() => {
+    axios
+      .get("/admin-management/gamers")
+      .then((res) => setGamers(...gamers, res.data.data))
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   function checkHandler(checked, item) {
     if (checked) {
@@ -137,20 +31,21 @@ export default function ProGamerCategory() {
     return array.map((item, idx) => (
       <div key={idx}>
         <Input
-          name={item.nickName}
+          name={item.nickname}
           type="checkbox"
-          id={item.nickName}
+          id={item.nickname}
           onChange={(e) => {
+            console.log("ddd");
             checkHandler(e.target.checked, item);
           }}
         />
-        <Label htmlFor={item.nickName}>{item.name}</Label>
+        <Label htmlFor={item.nickname}>{item.name}</Label>
       </div>
     ));
   }
   return (
     <Wrap>
-      <h2>프로게이머별 강의</h2>
+      <h2>Pro-Gamer</h2>
       <CategoryArea>
         {gamerBtn(littleGamers)}
 

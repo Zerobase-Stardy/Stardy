@@ -17,7 +17,11 @@ import {
 
 export default function Footer() {
   const locationNow = useLocation();
-  if (locationNow.pathname.includes("admin") || locationNow.pathname.includes("classRoom") ) return null;
+  if (
+    locationNow.pathname.includes("admin") ||
+    locationNow.pathname.includes("classRoom")
+  )
+    return null;
 
   return (
     <footer>
@@ -89,7 +93,7 @@ const Top = styled.div`
 const Bottom = styled.div`
   margin: 0 auto;
   text-align: center;
-  display: grid;
+  display: flex;
   gap: 20px;
   font-size: 14px;
 `;
