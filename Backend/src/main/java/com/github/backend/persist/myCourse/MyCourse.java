@@ -44,5 +44,6 @@ public class MyCourse {
 	public boolean toggleBookmark() {
 		this.bookmark = !this.bookmark;
 		return this.bookmark;
+
 	}
 }

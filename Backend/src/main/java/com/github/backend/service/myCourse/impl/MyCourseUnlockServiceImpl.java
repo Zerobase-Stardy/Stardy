@@ -1,5 +1,6 @@
 package com.github.backend.service.myCourse.impl;
 
+
 import static com.github.backend.exception.myCourse.code.MyCourseErrorCode.ALREADY_MY_COURSE_EXISTS;
 
 import com.github.backend.exception.course.CourseException;
@@ -7,6 +8,7 @@ import com.github.backend.exception.course.code.CourseErrorCode;
 import com.github.backend.exception.member.MemberException;
 import com.github.backend.exception.member.code.MemberErrorCode;
 import com.github.backend.exception.myCourse.MyCourseException;
+
 import com.github.backend.persist.course.Course;
 import com.github.backend.persist.course.repository.CourseRepository;
 import com.github.backend.persist.member.Member;
@@ -25,7 +27,6 @@ public class MyCourseUnlockServiceImpl implements MyCourseUnlockService {
 	private final MemberRepository memberRepository;
 	private final CourseRepository courseRepository;
 	private final MyCourseRepository myCourseRepository;
-
 
 	@Transactional
 	@Override
@@ -52,6 +53,5 @@ public class MyCourseUnlockServiceImpl implements MyCourseUnlockService {
 			throw new MyCourseException(ALREADY_MY_COURSE_EXISTS);
 		}
 	}
-
 
 }

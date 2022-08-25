@@ -12,6 +12,7 @@ public class RegisterCourse {
 
     @Getter
     @Setter
+    @Builder
     @AllArgsConstructor
     public static class Request{
 
@@ -41,18 +42,4 @@ public class RegisterCourse {
         private Long price;
     }
 
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    public static class Response{
-        private String gamerName;
-        private String title;
-        private String race;
-        private String level;
-        private String comment;
-        private Long price;
-
-    }
 }

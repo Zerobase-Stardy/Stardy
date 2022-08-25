@@ -19,6 +19,7 @@ import com.github.backend.persist.member.Member;
 import com.github.backend.persist.member.repository.MemberRepository;
 import com.github.backend.persist.myCourse.MyCourse;
 import com.github.backend.persist.myCourse.repository.MyCourseRepository;
+
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -40,6 +41,7 @@ class MyCourseUnlockServiceImplTest {
 
 	@Mock
 	MyCourseRepository myCourseRepository;
+
 
 	@InjectMocks
 	MyCourseUnlockServiceImpl memberCourseUnlockService;

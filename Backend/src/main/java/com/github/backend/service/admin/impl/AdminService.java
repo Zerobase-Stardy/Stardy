@@ -1,8 +1,9 @@
 package com.github.backend.service.admin.impl;
 
-import com.github.backend.dto.course.UpdateCourse;
-import com.github.backend.dto.gamer.SearchCourse;
-import com.github.backend.dto.gamer.SearchGamer;
+import com.github.backend.dto.admin.RegisterAdminOutputDto;
+import com.github.backend.dto.course.CourseInfoOutputDto;
+import com.github.backend.dto.course.RegisterCourse;
+import com.github.backend.dto.gamer.*;
 import com.github.backend.exception.admin.AdminException;
 import com.github.backend.exception.admin.code.AdminErrorCode;
 import com.github.backend.exception.course.CourseException;
@@ -18,10 +19,18 @@ import com.github.backend.persist.gamer.Gamer;
 import com.github.backend.persist.gamer.repository.GamerRepository;
 import com.github.backend.persist.gamer.repository.querydsl.GamerSearchRepository;
 import com.github.backend.persist.member.type.Role;
-import java.util.List;
+import com.github.backend.dto.course.UpdateCourse;
+
+import com.github.backend.exception.admin.code.AdminErrorCode;
+import com.github.backend.exception.course.code.CourseErrorCode;
+import com.github.backend.exception.gamer.GamerErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -41,18 +50,17 @@ public class AdminService {
      * 중복된 Admin Id 등록할 수 없음.
      */
     @Transactional
-    public Admin registerAdmin(String adminId, String password){
-
+    public RegisterAdminOutputDto.Info registerAdmin(String adminId, String password){
 
         validateCreateAdmin(adminId);
 
-        return adminRepository.save(
-                Admin.builder()
-                        .adminId(adminId)
-                        .password(password)
-                        .role(Role.ROLE_ADMIN)
-                        .build()
-        );
+        Admin admin = adminRepository.save(Admin.builder()
+                .adminId(adminId)
+                .password(password)
+                .role(Role.ROLE_ADMIN)
+                .build());
+
+        return RegisterAdminOutputDto.Info.of(admin);
     }
 
     private void validateCreateAdmin(String adminId) {
@@ -62,59 +70,33 @@ public class AdminService {
 
     /**
      * Gamer 등록
-     * @param name : gamerName
-     * @param race : gamerRace
-     * @param nickname : gamerGameNickname
-     * @param introduce : gamerIntroduce
+     * @param request
+     * - name : 게이머 이름
+     * - race : 종족
+     * - nickname : 게이머 인게임 별명
+     * - introduce : 자기소개
      * 중복된 nickname Gamer 등록할 수 없음.
      */
+
     @Transactional
-    public Gamer registerGamer(
-            String name,
-            String race,
-            String nickname,
-            String introduce
+    public RegisterGamerOutputDto.Info registerGamer(
+            RegisterGamer.Request request
     ){
 
-        validateCreateGamer(nickname);
+        validateCreateGamer(request.getNickname());
 
-        return gamerRepository.save(
+        Gamer gamer = gamerRepository.save(
                 Gamer.builder()
-                        .name(name)
-                        .race(race)
-                        .nickname(nickname)
-                        .introduce(introduce)
+                        .name(request.getName())
+                        .race(request.getRace())
+                        .nickname(request.getNickname())
+                        .introduce(request.getIntroduce())
                         .build()
         );
 
+        return RegisterGamerOutputDto.Info.of(gamer);
+
     }
-
-    /**
-     *
-     * @param gamerId : 게이머 id
-     * @return 게이머 상세 정보
-     */
-    @Transactional
-    public Gamer getGamerInfo(Long gamerId){
-
-        return gamerRepository.findById(gamerId)
-                .orElseThrow(() -> new GamerException(GamerErrorCode.NOT_EXIST_GAMER));
-    }
-
-
-    /**
-     * gamer 정보 반환
-     * @param searchGamer : gamer 조회 Dto
-     * gamer name, nickname, race 이용한 조회 가능
-     */
-    @Transactional
-    public List<Gamer> getGamerList(SearchGamer searchGamer){
-
-        return gamerSearchRepository.searchByWhere(
-                searchGamer.toCondition()
-        );
-    }
-
 
     private void validateCreateGamer(String nickname) {
         if (gamerRepository.existsByNickname(nickname)) {
@@ -123,81 +105,106 @@ public class AdminService {
     }
 
     /**
-     * 게이머 정보 수정
-     * @param id : id(pk)
-     * @param name : 게이머 이름
-     * @param race : 게이머 종족
-     * @param nickname : 게이머 인게임 별명
-     * @param introduce : 게이머 자기 소개
-     * id에 해당하는 gamer 존재해야 함.
+     *
+     * @param gamerId : 게이머 id
+     * @return 게이머 상세 정보
      */
     @Transactional
-    public Gamer updateGamer(
+    public GamerInfoOutputDto.Info getGamerInfo(Long gamerId){
+
+        Gamer gamer = gamerRepository.findById(gamerId)
+                .orElseThrow(() -> new GamerException(GamerErrorCode.NOT_EXIST_GAMER));
+
+        return GamerInfoOutputDto.Info.of(gamer);
+    }
+
+
+    /**
+     * gamer 정보 반환
+     * @param searchGamer : gamer 조회 Dto
+     * gamer name, nickname, race 이용한 조회 가능
+     */
+
+    @Transactional
+    public List<GamerInfoOutputDto.Info> getGamerList(SearchGamer searchGamer){
+        return gamerSearchRepository.searchByWhere(searchGamer.toCondition())
+                .stream()
+                .map(GamerInfoOutputDto.Info::of)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 게이머 정보 수정
+     * @param id : id(pk)
+     * @param request
+     * - name : 게이머 이름
+     * - race : 게이머 종족
+     * - nickname : 게이머 인게임 별명
+     * - introduce : 게이머 자기 소개
+     * id에 해당하는 gamer 존재해야 함.
+     */
+
+    @Transactional
+    public GamerInfoOutputDto.Info updateGamer(
             Long id,
-            String name,
-            String race,
-            String nickname,
-            String introduce
+            UpdateGamer.Request request
     ){
         Gamer gamer = gamerRepository.findById(id)
                 .orElseThrow(() -> new GamerException(GamerErrorCode.NOT_EXIST_GAMER));
 
-        gamer.setName(name);
-        gamer.setRace(race);
-        gamer.setNickname(nickname);
-        gamer.setIntroduce(introduce);
+        gamer.setName(request.getName());
+        gamer.setRace(request.getRace());
+        gamer.setNickname(request.getNickname());
+        gamer.setIntroduce(request.getIntroduce());
 
-        return gamerRepository.save(gamer);
+        return GamerInfoOutputDto.Info.of(gamerRepository.save(gamer));
     }
 
     @Transactional
-    public void deleteGamer(Long id){
+    public GamerInfoOutputDto.Info deleteGamer(Long id){
         Gamer gamer = gamerRepository.findById(id)
                 .orElseThrow(() -> new GamerException(GamerErrorCode.NOT_EXIST_GAMER));
-
         gamerRepository.delete(gamer);
+
+        return GamerInfoOutputDto.Info.of(gamer);
     }
 
     /**
      * 강의 등록
-     * @param gamerId : 게이머 Id
-     * @param title : 강의 제목
-     * @param videoUrl : 강의 url
-     * @param thumbnailUrl : 썸네일 url
-     * @param comment : 설명
-     * @param level : 난이도
-     * @param race : 종족
-     * @param price : 가격
+     * @param request
+     * - gamerId : 게이머 Id
+     * - title : 강의 제목
+     * - videoUrl : 강의 url
+     * - thumbnailUrl : 썸네일 url
+     * - comment : 설명
+     * - level : 난이도
+     * - race : 종족
+     * - price : 가격
      * gamerId에 해당하는 게이머가 존재하고, 강의 제목이 중복되지 않음.
      */
     @Transactional
-    public Course registerCourse(
-            Long gamerId,
-            String title,
-            String videoUrl,
-            String thumbnailUrl,
-            String comment,
-            String level,
-            String race,
-            Long price
+    public CourseInfoOutputDto.Info registerCourse(
+            RegisterCourse.Request request
     ){
-        Gamer gamer = gamerRepository.findById(gamerId)
+        Gamer gamer = gamerRepository.findById(request.getGamerId())
                 .orElseThrow(() -> new CourseException(CourseErrorCode.NOT_EXIST_GAMER));
 
-        validateRegisterCourse(title);
+        validateRegisterCourse(request.getTitle());
 
-        return courseRepository.save(
+        Course course = courseRepository.save(
                 Course.builder()
-                        .title(title)
-                        .videoUrl(videoUrl)
-                        .thumbnailUrl(thumbnailUrl)
-                        .comment(comment)
-                        .level(level)
-                        .race(race)
-                        .price(price)
+                        .title(request.getTitle())
+                        .videoUrl(request.getVideoUrl())
+                        .thumbnailUrl(request.getThumbnailUrl())
+                        .comment(request.getComment())
+                        .level(request.getLevel())
+                        .race(request.getRace())
+                        .price(request.getPrice())
                         .gamer(gamer)
-                        .build()
-        );
+                        .build());
+
+        return CourseInfoOutputDto.Info.of(course);
+
     }
 
     private void validateRegisterCourse(String title) {
@@ -211,7 +218,7 @@ public class AdminService {
      * @param request : 수정할 강의 정보 Entity
      */
     @Transactional
-    public Course updateCourseInfo(Long courseId, UpdateCourse.Request request){
+    public CourseInfoOutputDto.Info updateCourseInfo(Long courseId, UpdateCourse.Request request){
 
         Gamer gamer = gamerRepository.findById(request.getGamerId())
                 .orElseThrow(() -> new CourseException(CourseErrorCode.NOT_EXIST_GAMER));
@@ -228,7 +235,7 @@ public class AdminService {
         course.setPrice(request.getPrice());
         course.setGamer(gamer);
 
-        return courseRepository.save(course);
+        return CourseInfoOutputDto.Info.of(courseRepository.save(course));
     }
 
     /**
@@ -237,19 +244,21 @@ public class AdminService {
      * @return 강의 상세 정보
      */
     @Transactional
-    public Course getCourseInfo(Long courseId){
+    public CourseInfoOutputDto.Info getCourseInfo(Long courseId){
 
-        return courseRepository.findById(courseId)
-                .orElseThrow(() -> new CourseException(CourseErrorCode.NOT_EXIST_COURSE));
+        return CourseInfoOutputDto.Info.of(
+                courseRepository.findById(courseId)
+                .orElseThrow(() -> new CourseException(CourseErrorCode.NOT_EXIST_COURSE))
+        );
     }
 
     @Transactional
-    public List<Course> searchCourseList(SearchCourse searchCourse){
+    public List<CourseInfoOutputDto.Info> searchCourseList(SearchCourse searchCourse){
 
-        return courseSearchRepository.searchByWhere(
-                searchCourse.toCondition()
-        );
-
+        return courseSearchRepository.searchByWhere(searchCourse.toCondition())
+                .stream()
+                .map(CourseInfoOutputDto.Info::of)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -257,11 +266,13 @@ public class AdminService {
      * @param courseId : 강의 id
      */
     @Transactional
-    public void deleteCourse(Long courseId){
+    public CourseInfoOutputDto.Info deleteCourse(Long courseId){
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new CourseException(CourseErrorCode.NOT_EXIST_COURSE));
 
         courseRepository.delete(course);
+
+        return CourseInfoOutputDto.Info.of(course);
     }
 
 
