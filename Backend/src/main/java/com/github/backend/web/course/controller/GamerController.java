@@ -4,10 +4,11 @@ import com.github.backend.dto.common.Result;
 import com.github.backend.dto.gamer.SearchGamer;
 import com.github.backend.persist.gamer.Gamer;
 import com.github.backend.service.gamer.impl.GamerService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor

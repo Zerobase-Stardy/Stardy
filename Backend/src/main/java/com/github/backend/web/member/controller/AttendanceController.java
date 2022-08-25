@@ -19,13 +19,13 @@ public class AttendanceController {
 
 	private final AttendanceService attendanceService;
 
-	@PostMapping("/member/attendance")
+	@PostMapping("/members/me/attendances/daily")
 	public ResponseEntity<Result<?>> checkDailyAttendance(@AuthenticationPrincipal MemberInfo memberInfo) {
 		attendanceService.checkTodayAttendance(memberInfo.getEmail());
 		return ResponseEntity.ok().body(new Result<>(200,true,""));
 	}
 
-	@GetMapping("/member/attendance")
+	@GetMapping("/members/me/attendances")
 	public ResponseEntity<Result<?>> getAttendances(@AuthenticationPrincipal MemberInfo memberInfo,
 		AttendanceDto.GetRequest request) {
 
