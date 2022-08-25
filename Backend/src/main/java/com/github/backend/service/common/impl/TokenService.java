@@ -1,9 +1,10 @@
 package com.github.backend.service.common.impl;
 
-import static com.github.backend.dto.common.TokenMemberDto.Tokens;
+
 import static javax.management.timer.Timer.ONE_MINUTE;
 
 import com.github.backend.dto.common.LoginInfo;
+import com.github.backend.dto.common.Tokens;
 import com.github.backend.exception.common.JwtInvalidException;
 import com.github.backend.exception.common.code.JwtErrorCode;
 import com.github.backend.persist.common.repository.RefreshTokenRepository;
