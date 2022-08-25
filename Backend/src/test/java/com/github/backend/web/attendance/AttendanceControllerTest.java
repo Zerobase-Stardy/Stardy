@@ -1,4 +1,4 @@
-package com.github.backend.web;
+package com.github.backend.web.attendance;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -19,10 +19,8 @@ import com.github.backend.security.oauth.OAuth2SuccessHandler;
 import com.github.backend.service.attendance.AttendanceService;
 import com.github.backend.service.common.impl.CustomOAuth2UserService;
 import com.github.backend.testUtils.WithMemberInfo;
-import com.github.backend.web.attendance.AttendanceController;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

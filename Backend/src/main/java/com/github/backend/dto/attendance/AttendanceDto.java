@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 
 public class AttendanceDto {
@@ -31,7 +33,10 @@ public class AttendanceDto {
 	@Data
 	public static class GetRequest{
 		private Long memberId;
+
+		@DateTimeFormat(iso = ISO.DATE)
 		private LocalDate startDate;
+		@DateTimeFormat(iso = ISO.DATE)
 		private LocalDate endDate;
 	}
 
