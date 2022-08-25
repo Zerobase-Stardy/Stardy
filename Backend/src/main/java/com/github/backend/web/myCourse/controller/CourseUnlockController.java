@@ -1,8 +1,10 @@
 package com.github.backend.web.myCourse.controller;
 
+import com.github.backend.dto.common.MemberInfo;
 import com.github.backend.dto.common.Result;
 import com.github.backend.dto.common.TokenMemberDto.MemberInfo;
 import com.github.backend.service.myCourse.MyCourseUnlockService;
+import com.github.backend.service.memberCourse.MemberCourseUnlockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

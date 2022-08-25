@@ -13,6 +13,7 @@ public class GamerException extends RuntimeException{
     private String errorMessage;
 
     public GamerException(GamerErrorCode errorCode){
+        super(errorCode.getDescription());
         this.errorCode = errorCode;
         this.errorMessage = errorCode.getDescription();
     }

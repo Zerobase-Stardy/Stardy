@@ -1,9 +1,10 @@
 package com.github.backend.security.oauth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.backend.dto.common.MemberInfo;
+import com.github.backend.dto.common.Result;
 import com.github.backend.dto.common.CustomOAuth2User;
-import com.github.backend.dto.common.TokenMemberDto.MemberInfo;
-import com.github.backend.dto.common.TokenMemberDto.Tokens;
+import com.github.backend.dto.common.Tokens;
 import com.github.backend.service.common.impl.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

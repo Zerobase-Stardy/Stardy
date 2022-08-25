@@ -1,6 +1,5 @@
 package com.github.backend.dto.common;
 
-import com.github.backend.dto.common.TokenMemberDto.MemberInfo;
 import java.util.Collection;
 import java.util.Map;
 import lombok.Getter;
