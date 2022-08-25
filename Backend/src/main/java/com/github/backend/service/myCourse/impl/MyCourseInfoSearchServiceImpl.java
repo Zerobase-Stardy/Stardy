@@ -16,7 +16,7 @@ public class MyCourseInfoSearchServiceImpl implements MyCourseInfoSearchService 
 
 	private final MyCourseSearchRepository myCourseSearchRepository;
 
-	@Transactional
+	@Transactional(readOnly = true)
 	@Override
 	public Page<Info> searchMyCourses(Pageable pageable,Request request) {
 		return myCourseSearchRepository.search(pageable, request.toCond());
