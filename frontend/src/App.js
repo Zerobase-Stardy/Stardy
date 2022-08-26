@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
 import LoginModal from "./components/LoginModal";
@@ -17,6 +17,7 @@ import AdminLogin from "./admin/AdminLogin";
 import AdminSignUp from "./admin/AdminSignUp";
 import Attendance from "./pages/Attendance";
 import Profile from "./pages/Profile";
+import cookie from "react-cookies";
 import Zerg from "./Races/Zerg";
 import Terran from "./Races/Terran";
 import Protoss from "./Races/Protoss";

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { RiCloseLine } from "react-icons/ri";
 import GoogleButton from "./GoogleButton";
 import KaKaoButton from "./KaKaoButton";
-import { Link } from "react-router-dom";
 
 export default function Login(props) {
   const loginRef = useRef();
@@ -35,9 +34,9 @@ export default function Login(props) {
         </ButtonArea>
 
         <AdminZone>
-          <Link to="/admin/login" onClick={toggle}>
+          {/* <Link to="/admin/login" onClick={toggle}>
             관리자 로그인
-          </Link>
+          </Link> */}
         </AdminZone>
       </LoginArea>
     </Modal>
@@ -52,12 +51,12 @@ const Modal = styled.div`
   bottom: 0;
   width: 100%;
   height: 100vh;
+  z-index: 100;
   background-color: rgba(0, 0, 0, 0.85);
 `;
 
 const LoginArea = styled.div`
   position: fixed;
-  border-radius: 10px;
   top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -66,12 +65,15 @@ const LoginArea = styled.div`
   background-color: white;
   padding: 30px;
   text-align: center;
-  background-color: rgba(120, 120, 120, 0.8);
+  background-color: black;
+  border: 1px solid white;
   color: white;
 
   h1 {
-    font-size: 24px;
+    letter-spacing: 3px;
+    font-size: 30px;
     font-weight: bold;
+    font-family: GalMuri;
   }
 `;
 
@@ -84,7 +86,7 @@ const CloseBtn = styled.div`
     cursor: pointer;
 
     &:hover {
-      color: black;
+      color: #ff7752;
     }
   }
 `;

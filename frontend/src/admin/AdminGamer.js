@@ -20,11 +20,11 @@ export default function AdminGamer() {
     introduce: "",
   });
 
+  console.log(gamers);
   useEffect(() => {
     axios
       .get("/admin-management/gamers")
       .then((response) => {
-        console.log(response);
         setGamers(...gamers, response.data.data);
       })
       .catch((error) => {
@@ -84,9 +84,7 @@ export default function AdminGamer() {
         nickname: inputs.nickName,
         introduce: inputs.introduce,
       })
-      .then(function (response) {
-        console.log(response);
-      })
+      .then(function (response) {})
       .catch(function (error) {
         console.log(error);
       });
