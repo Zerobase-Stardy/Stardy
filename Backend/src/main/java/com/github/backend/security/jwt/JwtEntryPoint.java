@@ -20,13 +20,12 @@ public class JwtEntryPoint implements AuthenticationEntryPoint {
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 		AuthenticationException authException) throws IOException, ServletException {
+
 		setResponse(response);
 
-		/**
-		 *  여기 응답 반환값 Result<커스텀응답객체>로 반환하도록 설정해야합니다.
-		 */
+		response.getWriter().write(objectMapper.writeValueAsString(request.getAttribute("errorResult")));
+		response.getWriter().flush();
 
-		response.getWriter().write(objectMapper.writeValueAsString(request.getAttribute("exception")));
 	}
 
 	private void setResponse(HttpServletResponse response) {
