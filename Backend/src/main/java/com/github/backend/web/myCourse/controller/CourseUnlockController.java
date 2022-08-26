@@ -9,6 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RequiredArgsConstructor
 @RestController
@@ -17,7 +18,7 @@ public class CourseUnlockController {
 	private final MyCourseUnlockService myCourseUnlockService;
 
 	@PostMapping("/courses/{courseId}/unlock")
-	public ResponseEntity<Result<?>> unlockCourse(@AuthenticationPrincipal MemberInfo memberInfo, @PathVariable Long courseId) {
+	public ResponseEntity<Result<?>> unlockCourse(@ApiIgnore  @AuthenticationPrincipal MemberInfo memberInfo, @PathVariable Long courseId) {
 
 		myCourseUnlockService.unlockCourse(memberInfo.getId(),courseId);
 

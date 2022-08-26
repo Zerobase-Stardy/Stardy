@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RequiredArgsConstructor
 @RequestMapping("/members/me/courses")
@@ -27,7 +28,7 @@ public class MyCoursePageController {
 	private final MyCourseBookmarkService myCourseBookmarkService;
 
 	@GetMapping
-	public ResponseEntity<Result<?>> searchMyCourse(@AuthenticationPrincipal MemberInfo memberInfo,
+	public ResponseEntity<Result<?>> searchMyCourse(@ApiIgnore  @AuthenticationPrincipal MemberInfo memberInfo,
 		Pageable pageable, Request request) {
 		request.setMemberId(memberInfo.getId());
 		Page<Info> infos = myCourseInfoSearchService.searchMyCourses(pageable, request);
@@ -39,7 +40,7 @@ public class MyCoursePageController {
 	}
 
 	@PostMapping("/{courseId}/bookmark")
-	public ResponseEntity<Result<?>> toggleBookmark(@AuthenticationPrincipal MemberInfo memberInfo,
+	public ResponseEntity<Result<?>> toggleBookmark(@ApiIgnore @AuthenticationPrincipal MemberInfo memberInfo,
 		@PathVariable Long courseId) {
 
 		boolean bookmark
