@@ -43,6 +43,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 	}
 
 	private OAuth2User process(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
+
 		AuthType authType = AuthType.valueOf(
 			oAuth2UserRequest.getClientRegistration().getRegistrationId().toUpperCase());
 

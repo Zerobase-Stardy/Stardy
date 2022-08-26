@@ -5,10 +5,8 @@ import com.github.backend.dto.common.AdminInfo;
 import com.github.backend.dto.common.MemberInfo;
 import com.github.backend.exception.common.JwtInvalidException;
 import com.github.backend.exception.common.code.JwtErrorCode;
-import com.github.backend.service.common.impl.TokenService;
 import io.jsonwebtoken.Claims;
 import java.util.Arrays;
-import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -24,7 +22,6 @@ import org.springframework.stereotype.Component;
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 
 	private final TokenService tokenService;
-	private final HttpServletRequest request;
 
 	@Override
 	public Authentication authenticate(Authentication authentication)
@@ -36,6 +33,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 		if (claims.get(JwtInfo.KEY_ROLES,String.class).equals("ROLE_ADMIN")) {
 
 			AdminInfo info = AdminInfo.of(claims);
+
 			return new JwtAuthenticationToken(AdminInfo.of(claims), "",
 				Arrays.asList(new SimpleGrantedAuthority(info.getRole())));
 		}
@@ -48,15 +46,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 			case "WITHDRAWAL":
 				throw new JwtInvalidException(JwtErrorCode.MEMBER_STATUS_WITHDRAWAL);
 			case "WAIT":
-				switch (request.getRequestURI()){
-					case "/member/nickname" :
-					case "/member/withdrawal" :
-					case "/oauth/logout":
-						return new JwtAuthenticationToken(info, "",
-							Arrays.asList(new SimpleGrantedAuthority(info.getRole())));
-					default:
-						throw new JwtInvalidException(JwtErrorCode.MEMBER_STATUS_WAIT);
-				}
+				throw new JwtInvalidException(JwtErrorCode.MEMBER_STATUS_WAIT);
 			default:
 				return new JwtAuthenticationToken(info, "",
 					Arrays.asList(new SimpleGrantedAuthority(info.getRole())));

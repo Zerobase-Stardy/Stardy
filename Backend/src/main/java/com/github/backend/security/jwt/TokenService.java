@@ -1,14 +1,12 @@
-package com.github.backend.service.common.impl;
+package com.github.backend.security.jwt;
 
 
 import static javax.management.timer.Timer.ONE_MINUTE;
 
 import com.github.backend.dto.common.LoginInfo;
-import com.github.backend.dto.common.Tokens;
 import com.github.backend.exception.common.JwtInvalidException;
 import com.github.backend.exception.common.code.JwtErrorCode;
 import com.github.backend.persist.common.repository.RefreshTokenRepository;
-import com.github.backend.security.jwt.JwtInfo;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -35,6 +33,7 @@ public class TokenService {
 		return Tokens.builder()
 			.accessToken(issueAccessToken(loginInfo))
 			.refreshToken(issueRefreshToken(loginInfo))
+			.refreshTokenExpiredMin(jwtInfo.getRefreshTokenExpiredMin())
 			.build();
 	}
 

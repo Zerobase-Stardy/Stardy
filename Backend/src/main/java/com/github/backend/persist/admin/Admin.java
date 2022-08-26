@@ -31,6 +31,7 @@ public class Admin extends BaseTimeEntity {
     @Column(nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
 

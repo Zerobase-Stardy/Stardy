@@ -1,4 +1,4 @@
-package com.github.backend.dto.common;
+package com.github.backend.security.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class Tokens{
     private String accessToken;
     private String refreshToken;
+    private int refreshTokenExpiredMin;
 }

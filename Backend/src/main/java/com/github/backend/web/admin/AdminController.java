@@ -3,7 +3,7 @@ package com.github.backend.web.admin;
 import com.github.backend.dto.admin.LoginAdmin;
 import com.github.backend.dto.admin.RegisterAdminOutputDto;
 import com.github.backend.dto.common.AdminInfo;
-import com.github.backend.dto.common.Tokens;
+import com.github.backend.security.jwt.Tokens;
 import com.github.backend.dto.course.CourseInfoOutputDto;
 import com.github.backend.dto.admin.CreateAdmin;
 import com.github.backend.dto.course.RegisterCourse;

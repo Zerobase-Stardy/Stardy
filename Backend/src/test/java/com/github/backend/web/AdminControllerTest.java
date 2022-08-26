@@ -16,24 +16,27 @@ import com.github.backend.config.SecurityConfig;
 import com.github.backend.dto.admin.CreateAdmin;
 import com.github.backend.dto.admin.LoginAdmin;
 import com.github.backend.dto.admin.RegisterAdminOutputDto;
-import com.github.backend.dto.common.Tokens;
+import com.github.backend.security.jwt.Tokens;
 import com.github.backend.dto.course.CourseInfoOutputDto;
 import com.github.backend.dto.course.RegisterCourse;
+import com.github.backend.dto.course.UpdateCourse;
 import com.github.backend.dto.gamer.GamerInfoOutputDto;
 import com.github.backend.dto.gamer.RegisterGamer;
-import com.github.backend.dto.course.UpdateCourse;
 import com.github.backend.dto.gamer.RegisterGamerOutputDto;
 import com.github.backend.dto.gamer.UpdateGamer;
-
 import com.github.backend.persist.admin.Admin;
 import com.github.backend.persist.course.Course;
 import com.github.backend.persist.gamer.Gamer;
 import com.github.backend.persist.member.type.Role;
+import com.github.backend.security.jwt.JwtAccessDeniedHandler;
 import com.github.backend.security.jwt.JwtAuthenticationProvider;
 import com.github.backend.security.jwt.JwtEntryPoint;
-import com.github.backend.security.oauth.OAuth2SuccessHandler;
+import com.github.backend.security.oauth.CookieAuthorizationRequestRepository;
+import com.github.backend.security.oauth.CustomOAuth2UserService;
+import com.github.backend.security.oauth.OAuth2AuthenticationFailureHandler;
+import com.github.backend.security.oauth.OAuth2AuthenticationSuccessHandler;
 import com.github.backend.service.admin.impl.AdminService;
-import com.github.backend.service.common.impl.CustomOAuth2UserService;
+import com.github.backend.testUtils.WithMemberInfo;
 import com.github.backend.web.admin.AdminController;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +48,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(value = AdminController.class,
@@ -56,15 +59,20 @@ public class AdminControllerTest {
 
     @MockBean
     JwtAuthenticationProvider jwtAuthenticationProvider;
-
     @MockBean
     JwtEntryPoint jwtEntryPoint;
-
     @MockBean
-    OAuth2SuccessHandler oAuth2SuccessHandler;
-
+    AuthenticationConfiguration authenticationConfiguration;
     @MockBean
-    CustomOAuth2UserService customOAuth2UserService;
+    OAuth2AuthenticationSuccessHandler oAuth2SuccessHandler;
+    @MockBean
+    OAuth2AuthenticationFailureHandler oAuth2FailureHandler;
+    @MockBean
+    CustomOAuth2UserService oAuth2UserService;
+    @MockBean
+    CookieAuthorizationRequestRepository cookieAuthorizationRequestRepository;
+    @MockBean
+    JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     @MockBean
     private AdminService adminService;
@@ -76,7 +84,7 @@ public class AdminControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    @WithMockUser(roles = "ADMIN")
+    @WithMemberInfo(role = "ROLE_ADMIN")
     @DisplayName("Admin 생성 성공")
     void testRegisterAdmin() throws Exception {
         //given
@@ -105,7 +113,7 @@ public class AdminControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
+    @WithMemberInfo(role = "ROLE_ADMIN")
     @DisplayName("Gamer 등록 성공")
     void testSuccessGamerRegister() throws Exception{
         //given
@@ -140,7 +148,7 @@ public class AdminControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
+    @WithMemberInfo(role = "ROLE_ADMIN")
     @DisplayName("게이머 정보 수정 성공")
     void testUpdateGamerInfo() throws Exception{
         //given
@@ -187,7 +195,7 @@ public class AdminControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
+    @WithMemberInfo(role = "ROLE_ADMIN")
     @DisplayName("게이머 상세 조회 성공")
     void testSuccessGetGamerInfo() throws Exception {
         //given
@@ -215,7 +223,7 @@ public class AdminControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMemberInfo(role = "ROLE_ADMIN")
     @DisplayName("게이머 리스트 조회 성공")
     void testSuccessGetGamerList() throws Exception {
         //given
@@ -243,7 +251,7 @@ public class AdminControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
+    @WithMemberInfo(role = "ROLE_ADMIN")
     @DisplayName("강의 등록 성공")
     void testRegisterCourse() throws Exception{
         //given
@@ -296,7 +304,7 @@ public class AdminControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
+    @WithMemberInfo(role = "ROLE_ADMIN")
     @DisplayName("강의 정보 조회 성공")
     void testGetCourseInfo() throws Exception{
         //given
@@ -340,7 +348,7 @@ public class AdminControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMemberInfo(role = "ROLE_ADMIN")
     @DisplayName("강의 리스트 조회 성공")
     void testSuccessGetCourseList() throws Exception {
         //given
@@ -385,7 +393,7 @@ public class AdminControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
+    @WithMemberInfo(role = "ROLE_ADMIN")
     @DisplayName("강의 정보 수정 성공")
     void testUpdateCourseInfo() throws Exception{
         //given
@@ -455,7 +463,7 @@ public class AdminControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMemberInfo(role = "ROLE_ADMIN")
     @DisplayName("어드민 로그인 성공")
     void testLoginAdmin() throws Exception {
         //given
