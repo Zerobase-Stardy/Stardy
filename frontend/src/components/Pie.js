@@ -58,18 +58,18 @@ const Race = styled.div`
   font-size: 1px;
 `;
 const Terran = styled.div`
-  width: 15px;
-  height: 15px;
+  width: 10px;
+  height: 10px;
   background-color: #084b83;
 `;
 const Zerg = styled.div`
-  width: 15px;
-  height: 15px;
+  width: 10px;
+  height: 10px;
   background-color: #613dc1;
 `;
 const Protoss = styled.div`
-  width: 15px;
-  height: 15px;
+  width: 10px;
+  height: 10px;
   background-color: #eec170;
 `;
 
