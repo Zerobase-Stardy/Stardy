@@ -2,6 +2,8 @@ package com.github.backend.security.jwt;
 
 import static com.github.backend.security.jwt.JwtInfo.*;
 
+import com.github.backend.dto.common.ErrorResult;
+import com.github.backend.exception.common.JwtInvalidException;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -43,7 +45,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 			} catch (AuthenticationException e) {
 				SecurityContextHolder.clearContext();
-				request.setAttribute("exception",e.getMessage());
+
+				JwtInvalidException jwtInvalidException = (JwtInvalidException) e;
+
+				ErrorResult error = ErrorResult.builder()
+					.errorCode(jwtInvalidException.getErrorCode().name())
+					.errorDescription(jwtInvalidException.getErrorMessage())
+					.build();
+
+				request.setAttribute("errorResult",error);
 			}
 		}
 	}
@@ -55,7 +65,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			return bearerToken.substring(BEARER_PREFIX.length());
 		}
 
-		return "";
+		return null;
 	}
 
 

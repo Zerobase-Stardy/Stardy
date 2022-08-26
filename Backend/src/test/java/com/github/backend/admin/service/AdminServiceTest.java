@@ -1,7 +1,7 @@
 package com.github.backend.admin.service;
 
 import com.github.backend.dto.admin.RegisterAdminOutputDto;
-import com.github.backend.dto.common.Tokens;
+import com.github.backend.security.jwt.Tokens;
 import com.github.backend.dto.course.CourseInfoOutputDto;
 import com.github.backend.dto.course.RegisterCourse;
 import com.github.backend.dto.gamer.*;
@@ -26,18 +26,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.github.backend.service.common.impl.TokenService;
-import jdk.nashorn.internal.parser.Token;
+import com.github.backend.security.jwt.TokenService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 

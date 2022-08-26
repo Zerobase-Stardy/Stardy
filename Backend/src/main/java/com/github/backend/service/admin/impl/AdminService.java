@@ -3,7 +3,7 @@ package com.github.backend.service.admin.impl;
 import com.github.backend.dto.admin.LogoutAdminOutputDto;
 import com.github.backend.dto.admin.RegisterAdminOutputDto;
 import com.github.backend.dto.common.AdminInfo;
-import com.github.backend.dto.common.Tokens;
+import com.github.backend.security.jwt.Tokens;
 import com.github.backend.dto.course.CourseInfoOutputDto;
 import com.github.backend.dto.course.RegisterCourse;
 import com.github.backend.dto.gamer.*;
@@ -25,7 +25,7 @@ import com.github.backend.persist.gamer.repository.querydsl.GamerSearchRepositor
 import com.github.backend.persist.member.type.Role;
 import com.github.backend.dto.course.UpdateCourse;
 
-import com.github.backend.service.common.impl.TokenService;
+import com.github.backend.security.jwt.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

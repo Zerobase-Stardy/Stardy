@@ -12,10 +12,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.backend.config.SecurityConfig;
 import com.github.backend.dto.myCourse.MyCourseSearchDto.Info;
+import com.github.backend.security.jwt.JwtAccessDeniedHandler;
 import com.github.backend.security.jwt.JwtAuthenticationProvider;
 import com.github.backend.security.jwt.JwtEntryPoint;
-import com.github.backend.security.oauth.OAuth2SuccessHandler;
-import com.github.backend.service.common.impl.CustomOAuth2UserService;
+import com.github.backend.security.oauth.CookieAuthorizationRequestRepository;
+import com.github.backend.security.oauth.CustomOAuth2UserService;
+import com.github.backend.security.oauth.OAuth2AuthenticationFailureHandler;
+import com.github.backend.security.oauth.OAuth2AuthenticationSuccessHandler;
 import com.github.backend.service.myCourse.MyCourseBookmarkService;
 import com.github.backend.service.myCourse.MyCourseInfoSearchService;
 import com.github.backend.testUtils.WithMemberInfo;
@@ -28,6 +31,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(value = MyCoursePageController.class
@@ -46,9 +50,17 @@ class MyCoursePageControllerTest {
 	@MockBean
 	JwtEntryPoint jwtEntryPoint;
 	@MockBean
-	OAuth2SuccessHandler oAuth2SuccessHandler;
+	AuthenticationConfiguration authenticationConfiguration;
 	@MockBean
-	CustomOAuth2UserService customOAuth2UserService;
+	OAuth2AuthenticationSuccessHandler oAuth2SuccessHandler;
+	@MockBean
+	OAuth2AuthenticationFailureHandler oAuth2FailureHandler;
+	@MockBean
+	CustomOAuth2UserService oAuth2UserService;
+	@MockBean
+	CookieAuthorizationRequestRepository cookieAuthorizationRequestRepository;
+	@MockBean
+	JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
 	@MockBean
 	MyCourseInfoSearchService myCourseInfoSearchService;

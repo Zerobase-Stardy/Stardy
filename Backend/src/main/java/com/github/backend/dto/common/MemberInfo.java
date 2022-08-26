@@ -6,6 +6,7 @@ import static com.github.backend.security.jwt.JwtInfo.KEY_NICKNAME;
 import static com.github.backend.security.jwt.JwtInfo.KEY_ROLES;
 import static com.github.backend.security.jwt.JwtInfo.KEY_STATUS;
 
+import com.github.backend.persist.member.Member;
 import com.github.backend.security.jwt.JwtInfo;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -26,6 +27,7 @@ public class MemberInfo implements LoginInfo{
 	private String nickname;
 	private String status;
 	private String email;
+	private boolean firstLogin;
 
 	@Override
 	public Claims toClaims() {
@@ -47,6 +49,16 @@ public class MemberInfo implements LoginInfo{
 			.role(claims.get(JwtInfo.KEY_ROLES,String.class))
 			.status(claims.get(JwtInfo.KEY_STATUS,String.class))
 			.nickname(claims.get(JwtInfo.KEY_NICKNAME,String.class))
+			.build();
+	}
+
+	public static MemberInfo of(Member member) {
+		return MemberInfo.builder()
+			.id(member.getId())
+			.email(member.getEmail())
+			.role(member.getRole().name())
+			.status(member.getStatus().name())
+			.nickname(member.getNickname())
 			.build();
 	}
 
