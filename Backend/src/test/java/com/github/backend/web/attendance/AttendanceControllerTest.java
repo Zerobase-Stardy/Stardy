@@ -16,7 +16,6 @@ import com.github.backend.dto.attendance.AttendanceDto.Info;
 import com.github.backend.security.jwt.JwtAccessDeniedHandler;
 import com.github.backend.security.jwt.JwtAuthenticationProvider;
 import com.github.backend.security.jwt.JwtEntryPoint;
-import com.github.backend.security.oauth.CookieAuthorizationRequestRepository;
 import com.github.backend.security.oauth.OAuth2AuthenticationFailureHandler;
 import com.github.backend.security.oauth.OAuth2AuthenticationSuccessHandler;
 import com.github.backend.service.attendance.AttendanceService;
@@ -57,8 +56,6 @@ class AttendanceControllerTest {
 	OAuth2AuthenticationFailureHandler oAuth2FailureHandler;
 	@MockBean
 	CustomOAuth2UserService oAuth2UserService;
-	@MockBean
-	CookieAuthorizationRequestRepository cookieAuthorizationRequestRepository;
 	@MockBean
 	JwtAccessDeniedHandler jwtAccessDeniedHandler;
 

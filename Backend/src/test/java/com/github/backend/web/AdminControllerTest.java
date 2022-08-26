@@ -31,7 +31,6 @@ import com.github.backend.persist.member.type.Role;
 import com.github.backend.security.jwt.JwtAccessDeniedHandler;
 import com.github.backend.security.jwt.JwtAuthenticationProvider;
 import com.github.backend.security.jwt.JwtEntryPoint;
-import com.github.backend.security.oauth.CookieAuthorizationRequestRepository;
 import com.github.backend.security.oauth.CustomOAuth2UserService;
 import com.github.backend.security.oauth.OAuth2AuthenticationFailureHandler;
 import com.github.backend.security.oauth.OAuth2AuthenticationSuccessHandler;
@@ -69,8 +68,6 @@ public class AdminControllerTest {
     OAuth2AuthenticationFailureHandler oAuth2FailureHandler;
     @MockBean
     CustomOAuth2UserService oAuth2UserService;
-    @MockBean
-    CookieAuthorizationRequestRepository cookieAuthorizationRequestRepository;
     @MockBean
     JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
