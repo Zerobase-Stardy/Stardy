@@ -463,39 +463,6 @@ public class AdminControllerTest {
 
     @Test
     @WithMemberInfo(role = "ROLE_ADMIN")
-    @DisplayName("어드민 로그인 성공")
-    void testLoginAdmin() throws Exception {
-        //given
-        Admin admin = Admin.builder()
-                .adminId("admin")
-                .password("password")
-                .build();
-
-        Tokens tokens = Tokens.builder()
-                .accessToken("access")
-                .refreshToken("refresh")
-                .build();
-
-        given(adminService.loginAdmin(anyString(), anyString()))
-                .willReturn(tokens);
-        //when
-        //then
-        mockMvc.perform(post("/admin-management/admin/login").contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(
-                            LoginAdmin.Request.builder()
-                                    .adminId(admin.getAdminId())
-                                    .password(admin.getPassword())
-                                    .build()
-                        )
-                ))
-                .andDo(print())
-                .andExpect(jsonPath("$.data.accessToken").value(tokens.getAccessToken()))
-                .andExpect(jsonPath("$.data.refreshToken").value(tokens.getRefreshToken()))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @WithMemberInfo(role = "ROLE_ADMIN")
     @DisplayName("회원 리스트 조회 성공")
     void testSuccessGetMemberList() throws Exception {
         //given
