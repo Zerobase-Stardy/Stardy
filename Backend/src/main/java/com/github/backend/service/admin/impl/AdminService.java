@@ -3,6 +3,13 @@ package com.github.backend.service.admin.impl;
 import com.github.backend.dto.admin.LogoutAdminOutputDto;
 import com.github.backend.dto.admin.RegisterAdminOutputDto;
 import com.github.backend.dto.common.AdminInfo;
+import com.github.backend.dto.member.MemberSearchOutputDto;
+import com.github.backend.dto.member.SearchMember;
+import com.github.backend.exception.member.MemberException;
+import com.github.backend.exception.member.code.MemberErrorCode;
+import com.github.backend.persist.member.Member;
+import com.github.backend.persist.member.repository.MemberRepository;
+import com.github.backend.persist.member.repository.MemberSearchRepository;
 import com.github.backend.security.jwt.Tokens;
 import com.github.backend.dto.course.CourseInfoOutputDto;
 import com.github.backend.dto.course.RegisterCourse;
@@ -40,10 +47,12 @@ public class AdminService {
 
     private final AdminRepository adminRepository;
     private final GamerRepository gamerRepository;
+    private final MemberRepository memberRepository;
     private final CourseRepository courseRepository;
     private final GamerSearchRepository gamerSearchRepository;
     private final CourseSearchRepository courseSearchRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final MemberSearchRepository memberSearchRepository;
 
     private final TokenService tokenService;
 
@@ -313,6 +322,35 @@ public class AdminService {
         if (!admin.getPassword().equals(password)){
             throw new AdminException(AdminErrorCode.PASSWORD_IS_WRONG);
         }
+    }
+
+    /**
+     *
+     * @param searchMember
+     * - email : email
+     * - nickname : 별명
+     * - point : 포인트
+     */
+    @Transactional
+    public List<MemberSearchOutputDto.Info> searchMemberList(SearchMember searchMember){
+
+        return memberSearchRepository.searchByWhere(searchMember.toCondition())
+                .stream()
+                .map(MemberSearchOutputDto.Info::of)
+                .collect(Collectors.toList());
+
+    }
+
+
+    @Transactional
+    public MemberSearchOutputDto.Info memberNicknameChange(Long memberId, String nickname){
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_EXISTS));
+
+        member.changeNickname(nickname);
+
+        return MemberSearchOutputDto.Info.of(member);
+
     }
 
 

@@ -3,6 +3,10 @@ package com.github.backend.web.admin;
 import com.github.backend.dto.admin.LoginAdmin;
 import com.github.backend.dto.admin.RegisterAdminOutputDto;
 import com.github.backend.dto.common.AdminInfo;
+import com.github.backend.dto.course.SearchCourse;
+import com.github.backend.dto.member.MemberSearchOutputDto;
+import com.github.backend.dto.member.SearchMember;
+import com.github.backend.dto.member.UpdateMemberNickname;
 import com.github.backend.security.jwt.Tokens;
 import com.github.backend.dto.course.CourseInfoOutputDto;
 import com.github.backend.dto.admin.CreateAdmin;
@@ -199,5 +203,36 @@ public class AdminController {
                         .build()
         );
     }
+
+    @GetMapping("/members")
+    public ResponseEntity<Result<?>> getMembers(SearchMember searchMember){
+
+        List<MemberSearchOutputDto.Info> members = adminService.searchMemberList(searchMember);
+
+        return ResponseEntity.ok().body(
+                Result.builder()
+                        .status(200)
+                        .success(true)
+                        .data(members)
+                        .build()
+        );
+    }
+
+    @PatchMapping("/members/nickname/{memberId}")
+    public ResponseEntity<Result<?>> updateMemberNickname(
+            @PathVariable("memberId") @Valid Long memberId,
+            @RequestBody UpdateMemberNickname.Request request
+    ){
+        MemberSearchOutputDto.Info memberInfo = adminService.memberNicknameChange(memberId, request.getNickname());
+
+        return ResponseEntity.ok().body(
+                Result.builder()
+                        .status(200)
+                        .success(true)
+                        .data(memberInfo)
+                        .build()
+        );
+    }
+
 
 }
