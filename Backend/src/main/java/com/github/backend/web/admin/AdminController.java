@@ -45,37 +45,6 @@ public class AdminController {
         );
     }
 
-
-    @PostMapping("/admin/login")
-    public ResponseEntity<Result<?>> loginAdmin(
-            @RequestBody @Valid LoginAdmin.Request request
-    ){
-        Tokens tokens = adminService.loginAdmin(
-                request.getAdminId(), request.getPassword()
-        );
-
-        // convert Entity to DTO
-        return ResponseEntity.ok().body(
-                Result.builder()
-                        .status(200)
-                        .success(true)
-                        .data(tokens)
-                        .build()
-        );
-    }
-
-    @GetMapping("/admin/logout")
-    public ResponseEntity<Result<?>> logout(@AuthenticationPrincipal AdminInfo adminInfo){
-
-        return ResponseEntity.ok().body(
-                Result.builder()
-                        .status(200)
-                        .success(true)
-                        .data(adminService.logoutAdmin(adminInfo))
-                        .build()
-        );
-    }
-
     @PostMapping("/gamer")
     public ResponseEntity<Result<?>> registerGamer(
             @RequestBody @Valid RegisterGamer.Request request
