@@ -16,6 +16,10 @@ import com.github.backend.config.SecurityConfig;
 import com.github.backend.dto.admin.CreateAdmin;
 import com.github.backend.dto.admin.LoginAdmin;
 import com.github.backend.dto.admin.RegisterAdminOutputDto;
+import com.github.backend.dto.member.MemberSearchOutputDto;
+import com.github.backend.persist.common.type.AuthType;
+import com.github.backend.persist.member.Member;
+import com.github.backend.persist.member.type.MemberStatus;
 import com.github.backend.security.jwt.Tokens;
 import com.github.backend.dto.course.CourseInfoOutputDto;
 import com.github.backend.dto.course.RegisterCourse;
@@ -489,6 +493,39 @@ public class AdminControllerTest {
                 .andDo(print())
                 .andExpect(jsonPath("$.data.accessToken").value(tokens.getAccessToken()))
                 .andExpect(jsonPath("$.data.refreshToken").value(tokens.getRefreshToken()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMemberInfo(role = "ROLE_ADMIN")
+    @DisplayName("회원 리스트 조회 성공")
+    void testSuccessGetMemberList() throws Exception {
+        //given
+        Member member = Member.builder()
+                .email("email@kakao.com")
+                .nickname("nick")
+                .status(MemberStatus.PERMITTED)
+                .authType(AuthType.KAKAO)
+                .role(Role.ROLE_USER)
+                .point(100)
+                .build();
+
+        List<MemberSearchOutputDto.Info> memberList = new ArrayList<>();
+        memberList.add(MemberSearchOutputDto.Info.of(member));
+
+        given(adminService.searchMemberList(any()))
+                .willReturn(memberList);
+        //when
+
+        //then
+        mockMvc.perform(get("/admin-management/members"))
+                .andDo(print())
+                .andExpect(jsonPath("$.data[0].email").value(member.getEmail()))
+                .andExpect(jsonPath("$.data[0].nickname").value(member.getNickname()))
+                .andExpect(jsonPath("$.data[0].status").value(member.getStatus().name()))
+                .andExpect(jsonPath("$.data[0].authType").value(member.getAuthType().name()))
+                .andExpect(jsonPath("$.data[0].role").value(member.getRole().name()))
+                .andExpect(jsonPath("$.data[0].point").value(member.getPoint()))
                 .andExpect(status().isOk());
     }
 
