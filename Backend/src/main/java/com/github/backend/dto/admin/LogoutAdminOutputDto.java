@@ -6,7 +6,6 @@ import lombok.Data;
 
 
 public class LogoutAdminOutputDto {
-    private String adminId;
 
     @Builder
     @Data

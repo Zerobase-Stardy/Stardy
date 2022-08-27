@@ -49,9 +49,6 @@ public class AdminController {
         );
     }
 
-
-
-
     @PostMapping("/gamer")
     public ResponseEntity<Result<?>> registerGamer(
             @RequestBody @Valid RegisterGamer.Request request
