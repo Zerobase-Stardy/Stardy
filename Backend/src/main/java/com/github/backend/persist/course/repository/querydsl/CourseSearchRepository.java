@@ -1,12 +1,11 @@
 package com.github.backend.persist.course.repository.querydsl;
 
-import static com.github.backend.persist.course.QCourse.course;
+import static com.github.backend.persist.course.QCourse.*;
 import static org.springframework.util.StringUtils.hasText;
 
 import com.github.backend.persist.course.Course;
 
 
-import com.github.backend.persist.course.QCourse;
 import com.github.backend.persist.course.repository.querydsl.condition.CourseSearchCondition;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -14,9 +13,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import static org.springframework.util.StringUtils.hasText;
-import static com.github.backend.persist.course.QCourse.course;
 
 @Repository
 @RequiredArgsConstructor
