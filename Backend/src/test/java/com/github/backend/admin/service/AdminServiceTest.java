@@ -6,6 +6,7 @@ import com.github.backend.dto.member.MemberSearchOutputDto;
 import com.github.backend.dto.member.SearchMember;
 import com.github.backend.persist.common.type.AuthType;
 import com.github.backend.persist.member.Member;
+import com.github.backend.persist.member.repository.MemberRepository;
 import com.github.backend.persist.member.repository.MemberSearchRepository;
 import com.github.backend.persist.member.type.MemberStatus;
 import com.github.backend.security.jwt.Tokens;
@@ -70,6 +71,9 @@ public class AdminServiceTest {
 
     @Mock
     private AdminRepository adminRepository;
+
+    @Mock
+    private MemberRepository memberRepository;
 
     @Mock
     private TokenService tokenService;
@@ -964,6 +968,40 @@ public class AdminServiceTest {
         assertEquals(memberList.get(0).getNickname(), member.getNickname());
         assertEquals(memberList.get(0).getPoint(), member.getPoint());
     }
+
+
+    @Test
+    @DisplayName("멤버 정보 수정 - nickname")
+    void testUpdateMemberNickname(){
+        //given
+        Member member = Member.builder()
+                .id(1L)
+                .email("email@kakao.com")
+                .nickname("nick")
+                .status(MemberStatus.PERMITTED)
+                .authType(AuthType.KAKAO)
+                .role(Role.ROLE_USER)
+                .point(100)
+                .build();
+
+        Member updateMember = Member.builder()
+                .nickname("modify")
+                .build();
+
+        given(memberRepository.findById(anyLong()))
+                .willReturn(Optional.of(member));
+
+        //when
+        MemberSearchOutputDto.Info memberInfo = adminService.memberNicknameChange(
+                member.getId(),
+                updateMember.getNickname()
+        );
+
+        //then
+        assertEquals(memberInfo.getNickname(), updateMember.getNickname());
+    }
+
+
 
 
 }

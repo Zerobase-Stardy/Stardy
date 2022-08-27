@@ -4,9 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -526,6 +524,47 @@ public class AdminControllerTest {
                 .andExpect(jsonPath("$.data[0].authType").value(member.getAuthType().name()))
                 .andExpect(jsonPath("$.data[0].role").value(member.getRole().name()))
                 .andExpect(jsonPath("$.data[0].point").value(member.getPoint()))
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    @WithMemberInfo(role = "ROLE_ADMIN")
+    @DisplayName("회원 닉네임 수정 성공")
+    void testUpdateMemberNickname() throws Exception{
+        //given
+        Member member = Member.builder()
+                .id(1L)
+                .email("email@kakao.com")
+                .nickname("nick")
+                .status(MemberStatus.PERMITTED)
+                .authType(AuthType.KAKAO)
+                .role(Role.ROLE_USER)
+                .point(100)
+                .build();
+
+        Member updateMember = Member.builder()
+                .id(1L)
+                .email("email@kakao.com")
+                .nickname("modify")
+                .status(MemberStatus.PERMITTED)
+                .authType(AuthType.KAKAO)
+                .role(Role.ROLE_USER)
+                .point(100)
+                .build();
+
+        given(adminService.memberNicknameChange(anyLong(), anyString()))
+                .willReturn(MemberSearchOutputDto.Info.of(updateMember));
+
+        //when
+
+
+        //then
+        mockMvc.perform(patch(String.format("/admin-management/members/nickname/%d", member.getId()))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateMember.getNickname())))
+                .andDo(print())
+                .andExpect(jsonPath("$.data.nickname").value(updateMember.getNickname()))
                 .andExpect(status().isOk());
     }
 
