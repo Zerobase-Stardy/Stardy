@@ -17,10 +17,10 @@ import AdminLogin from "./admin/AdminLogin";
 import AdminSignUp from "./admin/AdminSignUp";
 import Attendance from "./pages/Attendance";
 import Profile from "./pages/Profile";
-import cookie from "react-cookies";
 import Zerg from "./Races/Zerg";
 import Terran from "./Races/Terran";
 import Protoss from "./Races/Protoss";
+import Error401 from "./pages/Error401";
 
 function App() {
   const [openModal, setOpenModal] = useState(false);
@@ -54,6 +54,7 @@ function App() {
           <Route path={"mylecture"} element={<MyLecture />}></Route>
           <Route path={"attendance"} element={<Attendance />}></Route>
         </Route>
+        <Route path={"/error401"} element={<Error401 />}></Route>
       </Routes>
       <Footer />
       {openModal ? (

@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import Carousel from "../components/Carousel";
-import HomeButton from "../components/HomeButton";
-import HomeCategory from "../components/HomeCategory";
+import Carousel from "../Home/Carousel";
+import HomeButton from "../Home/HomeButton";
+import HomeCategory from "../Home/HomeContent";
 
 export default function Home() {
   return (
