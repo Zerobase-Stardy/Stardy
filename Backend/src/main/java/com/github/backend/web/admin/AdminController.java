@@ -3,7 +3,6 @@ package com.github.backend.web.admin;
 import com.github.backend.dto.admin.LoginAdmin;
 import com.github.backend.dto.admin.RegisterAdminOutputDto;
 import com.github.backend.dto.common.AdminInfo;
-import com.github.backend.dto.course.SearchCourse;
 import com.github.backend.dto.member.MemberSearchOutputDto;
 import com.github.backend.dto.member.SearchMember;
 import com.github.backend.dto.member.UpdateMemberNickname;
@@ -30,7 +29,7 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    @PostMapping("/admin")
+    @PostMapping("/admins")
     public ResponseEntity<Result<?>> registerAdmin(
             @RequestBody @Valid CreateAdmin.Request request
     ){
@@ -49,7 +48,7 @@ public class AdminController {
         );
     }
 
-    @PostMapping("/gamer")
+    @PostMapping("/gamers")
     public ResponseEntity<Result<?>> registerGamer(
             @RequestBody @Valid RegisterGamer.Request request
     ){
@@ -64,7 +63,7 @@ public class AdminController {
                         .build()
         );
     }
-    @GetMapping("/gamer/{gamerId}")
+    @GetMapping("/gamers/{gamerId}")
     public ResponseEntity<Result<?>> getGamerInfo(
             @PathVariable("gamerId") Long gamerId){
 
@@ -93,7 +92,7 @@ public class AdminController {
         );
     }
 
-    @PutMapping("/gamer/{gamerId}")
+    @PutMapping("/gamers/{gamerId}")
     public ResponseEntity<Result<?>> updateGamerInfo(
             @PathVariable  Long gamerId,
             @RequestBody @Valid UpdateGamer.Request request
@@ -112,7 +111,7 @@ public class AdminController {
         );
     }
 
-    @DeleteMapping("/gamer/{gamerId}")
+    @DeleteMapping("/gamers/{gamerId}")
     public ResponseEntity<Result<?>> deleteGamerInfo(
             @PathVariable("gamerId") @Valid Long gamerId
     ){
@@ -129,7 +128,7 @@ public class AdminController {
 
 
 
-    @PostMapping("/course")
+    @PostMapping("/courses")
     public ResponseEntity<Result<?>> registerCourse(
             @RequestBody @Valid RegisterCourse.Request request
     ){
@@ -158,7 +157,7 @@ public class AdminController {
         );
     }
 
-    @GetMapping("/course/{courseId}")
+    @GetMapping("/courses/{courseId}")
     public ResponseEntity<Result<?>> getCourseInfo(
             @PathVariable("courseId") @Valid Long courseId
     ){
@@ -172,7 +171,7 @@ public class AdminController {
                 );
     }
 
-    @PutMapping("/course/{courseId}")
+    @PutMapping("/courses/{courseId}")
     public ResponseEntity<Result<?>> updateCourseInfo(
             @PathVariable("courseId") @Valid Long courseId,
             @RequestBody UpdateCourse.Request request
@@ -189,7 +188,7 @@ public class AdminController {
                 );
     }
 
-    @DeleteMapping("/course/{courseId}")
+    @DeleteMapping("/courses/{courseId}")
     public ResponseEntity<Result<?>> deleteCourseInfo(
             @PathVariable("courseId") @Valid Long courseId
     ){
