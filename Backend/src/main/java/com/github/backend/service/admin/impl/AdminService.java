@@ -3,6 +3,10 @@ package com.github.backend.service.admin.impl;
 import com.github.backend.dto.admin.LogoutAdminOutputDto;
 import com.github.backend.dto.admin.RegisterAdminOutputDto;
 import com.github.backend.dto.common.AdminInfo;
+import com.github.backend.dto.course.SearchCourse;
+import com.github.backend.dto.member.MemberSearchOutputDto;
+import com.github.backend.dto.member.SearchMember;
+import com.github.backend.persist.member.repository.MemberSearchRepository;
 import com.github.backend.security.jwt.Tokens;
 import com.github.backend.dto.course.CourseInfoOutputDto;
 import com.github.backend.dto.course.RegisterCourse;
@@ -44,6 +48,7 @@ public class AdminService {
     private final GamerSearchRepository gamerSearchRepository;
     private final CourseSearchRepository courseSearchRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final MemberSearchRepository memberSearchRepository;
 
     private final TokenService tokenService;
 
@@ -313,6 +318,23 @@ public class AdminService {
         if (!admin.getPassword().equals(password)){
             throw new AdminException(AdminErrorCode.PASSWORD_IS_WRONG);
         }
+    }
+
+    /**
+     *
+     * @param searchMember
+     * - email : email
+     * - nickname : 별명
+     * - point : 포인트
+     */
+    @Transactional
+    public List<MemberSearchOutputDto.Info> searchMemberList(SearchMember searchMember){
+
+        return memberSearchRepository.searchByWhere(searchMember.toCondition())
+                .stream()
+                .map(MemberSearchOutputDto.Info::of)
+                .collect(Collectors.toList());
+
     }
 
 

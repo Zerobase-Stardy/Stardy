@@ -206,5 +206,19 @@ public class AdminController {
         );
     }
 
+    @GetMapping("/members")
+    public ResponseEntity<Result<?>> getMembers(SearchMember searchMember){
+
+        List<MemberSearchOutputDto.Info> members = adminService.searchMemberList(searchMember);
+
+        return ResponseEntity.ok().body(
+                Result.builder()
+                        .status(200)
+                        .success(true)
+                        .data(members)
+                        .build()
+        );
+    }
+
 
 }
