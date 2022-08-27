@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { BsCoin } from "react-icons/bs";
-
+import MinerralImg from "../images/Minerral.png";
 export default function ProGamerLecture(props) {
   //   const [lectures, setLectures] = useState([]);
   const datas = [
@@ -189,14 +189,10 @@ const LectureArea = styled.div`
 
   &:hover {
     transform: scale(1.1);
-    background-color: #ff6e7f;
-    border-radius: 8px;
-    border: 1px white;
-    color: white;
-
-    p {
-      color: white;
-    }
+    border-radius: 5px;
+    border-color: #ccff66;
+    box-shadow: 0 0 10px #ccff66, inset 0 0 0 1px #000, inset 0 0 0 2px #ccff66;
+    color: #ccff66;
   }
 
   &:active {
@@ -206,27 +202,26 @@ const LectureArea = styled.div`
 
 const Thumbnail = styled.div``;
 const Title = styled.div`
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
 `;
 
 const Name = styled.div`
   p {
-    font-size: 14px;
-    color: #606060;
+    font-size: 16px;
   }
 `;
 
 const Price = styled.div`
-  font-size: 18px;
+  font-size: 16px;
   display: flex;
 
   p {
-    line-height: 25px;
-    color: #606060;
+    line-height: 23px;
+    color: #ccff66;
   }
   span {
     font-size: 20px;
-    color: yellowgreen;
+    color: #ccff66;
   }
 `;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import AdminMember from "./AdminMember";
@@ -21,7 +21,8 @@ export default function Admin() {
       })
       .then((res) => {
         if (res.data.status === 200) {
-          document.location.href = "/admin/login";
+          document.location.href = "/";
+          cookies.remove("accessToken", { path: "/" });
         }
         if (res.data.status === 401) {
           document.location.href = "/admin/login";

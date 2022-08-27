@@ -16,11 +16,9 @@ export default function Carousel() {
     },
     {
       id: 1,
-      url: "https://ifh.cc/g/QW4p6k.png",
+      url: "https://d3muzvmm7fikyw.cloudfront.net/original/1X/e8de17b2ba0f32e4d1bf4d3485ee2e518245c825.jpg",
       title: "매일 업뎃되는 강의!",
       Content: "매일 업데이트 되는 다양한 강의를 둘러보세요.",
-      link: "",
-      SmallImg: "https://ifh.cc/g/Q4oshF.png",
     },
     // {
     //   id: 2,
@@ -50,7 +48,9 @@ export default function Carousel() {
       <Img src={image.url} />
       <ImgLinkZone>
         <SmallImg>
-          <img src={image.SmallImg} alt="carousel" />
+          {image.SmallImg === undefined ? null : (
+            <img src={image.SmallImg} alt="carousel" />
+          )}
         </SmallImg>
         <Title>{image.title} </Title>
         <Content>{image.Content}</Content>
@@ -63,10 +63,15 @@ export default function Carousel() {
       <CarouselWrap>
         <Slider {...settings}>{slideshow}</Slider>
       </CarouselWrap>
+      <Effect />
     </>
   );
 }
-
+const Effect = styled.div`
+  width: 100%;
+  height: 15px;
+  background-image: url("https://static.starcraft.com/production/images/site/dividers/divider-terran.dbf9b7c1f616bf3bc680ed70a7d8de85a44e1e59.jpg");
+`;
 const CarouselWrap = styled.div`
   width: 100%;
   margin: 0 auto;
@@ -86,16 +91,16 @@ const CarouselWrap = styled.div`
   }
 
   .slick-dots li button:before {
-    color: #fff;
+    color: #80ff66;
   }
 
   .slick-arrow {
     z-index: 10;
     width: 50px;
     height: 100%;
-
     &:hover {
       background: #1b1b1bab;
+
       transition: 0.7s;
       &::before {
         color: rgba($bk, 0.5);
@@ -115,6 +120,7 @@ const CarouselWrap = styled.div`
 
     &::before {
       content: "<";
+      color: #80ff66;
     }
   }
 
@@ -123,13 +129,15 @@ const CarouselWrap = styled.div`
 
     &::before {
       content: ">";
+      color: #80ff66;
     }
   }
 `;
 
 const ImgZone = styled.div`
   width: 100%;
-  height: 400px;
+  height: 300px;
+
   position: relative;
 
   @media screen and (max-width: 1024px) {
@@ -158,9 +166,10 @@ const ImgLinkZone = styled.div`
 `;
 
 const Title = styled.h2`
+  padding-top: 40px;
   color: #fff;
 
-  font-size: 40px;
+  font-size: 30px;
 
   @media screen and (max-width: 1600px) {
     font-size: 30px;

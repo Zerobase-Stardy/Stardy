@@ -34,7 +34,9 @@ export default function AdminGamer() {
         setGamers(...gamers, response.data.data);
       })
       .catch((error) => {
-        console.log(error);
+        if (error.response.status === 401) {
+          document.location.href = "/error401";
+        }
       });
   }, []);
 
