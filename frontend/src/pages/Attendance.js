@@ -10,8 +10,13 @@ export default function Attendance() {
 
     // const [marks, setMarks] = useState(["24-08-2022"])
 
-    const handleClick = () => {
 
+    const [point, setPoint] = useState(123123123)
+
+    
+    const handleClick = () => {
+      alert(`출석하셨습니다. (포인트 +10p) 현재 포인트 ${point}`)
+      setPoint(point + 10)
     }
 
     const marks = ["24-08-2022", "12-08-2022"]
@@ -28,7 +33,7 @@ export default function Attendance() {
                   }}
         />
 
-        <AttendanceButton>출석!</AttendanceButton>
+        <AttendanceButton onClick={handleClick}>출석!</AttendanceButton>
       </div>
     )
 }

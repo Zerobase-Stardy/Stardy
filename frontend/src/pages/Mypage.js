@@ -2,12 +2,22 @@ import styled from "styled-components";
 import { Link, Outlet } from "react-router-dom";
 
 export default function MyPage(){
+
+  const LinkItem = ({ children, to}) => (
+    <Link to={to} style={{ margin: "10px" }}> 
+      <HoverEffect>
+      {" "}{children}{" "}
+      </HoverEffect>
+    </Link>
+  );
+
+
     return(
         <BodyStyle>
             <PageCategory>
-                <Link to={"/mypage/profile"} style={{ margin: " 10px " }}> 프로필 </Link>
-                <Link to={"/mypage/mylecture"}  style={{ margin: " 10px " }}> 내 강의실 </Link>
-                <Link to={"/mypage/attendance"}  style={{ margin: " 10px " }}> 출석 체크 </Link>
+                <LinkItem to={"/mypage/profile"} > 프로필 </LinkItem>
+                <LinkItem to={"/mypage/mylecture"} > 내 강의실 </LinkItem>
+                <LinkItem to={"/mypage/attendance"} > 출석 체크 </LinkItem>
             </PageCategory>
             <Outlet />
         </BodyStyle>
@@ -34,5 +44,12 @@ const PageCategory = styled.div`
   border-right: 2px solid gray;
   height: 70vh;
   margin: 5vh;
+`
+const HoverEffect = styled.div`
+cursor: pointer; 
+text-align: center;
+  &:hover{  
+    color : gray;
+  }
 `
 

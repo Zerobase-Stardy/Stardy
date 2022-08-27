@@ -16,6 +16,8 @@ export default function Profile() {
   const nickName = "nickname123123"
   const userPoint = "123,123,123"
   const userEmail = "example12@example.com"
+
+  ImgSample.defaultProps = { src:"http://i.ytimg.com/vi/iF_PQbkllM8/mqdefault.jpg"}
   return (
     <div>
       <UserInfo>
@@ -69,9 +71,8 @@ const UserVideo = styled.div`
   grid-template-rows: 1fr 1fr;
 `
 
-const ImgSample = styled.div`
-  width: 140px;
-  height: 100px;
-  margin: 24px;
-  background-color: gray;
+const ImgSample = styled.img`
+width: 160px;
+margin: 8px;
+background-color: gray;
 `

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 export default function MyLecture() {
     
-  ImgBox.defaultProps = { src: "https://via.placeholder.com/140x100" }
+  ImgBox.defaultProps = { src: "http://i.ytimg.com/vi/5oYQCn24Sk4/mqdefault.jpg" }
 
 
   return (
@@ -42,7 +42,7 @@ const LectureBody = styled.div`
 const VideoPackage = styled.div`
   box-sizing: border-box;
   display: flex;
-  width: 390px;
+  width: 540px;
   flex-wrap: wrap;
   margin: 4px 0 4px 0;
 
@@ -51,5 +51,6 @@ const VideoPackage = styled.div`
 
 const ImgBox = styled.img`
   margin: 5px;
+  width: 160px;
 `
 
