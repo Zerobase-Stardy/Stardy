@@ -8,6 +8,7 @@ import com.github.backend.security.jwt.JwtEntryPoint;
 import com.github.backend.security.oauth.CustomOAuth2UserService;
 import com.github.backend.security.oauth.OAuth2AuthenticationFailureHandler;
 import com.github.backend.security.oauth.OAuth2AuthenticationSuccessHandler;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +18,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
 @RequiredArgsConstructor
@@ -38,10 +42,10 @@ public class SecurityConfig {
 			.antMatchers("/admin-management/**").hasRole("ADMIN")
 			.anyRequest().permitAll();
 
-
 		http.headers().frameOptions().disable();
 
-		http.cors().disable()
+		http.cors().configurationSource(corsConfigurationSource())
+			.and()
 			.httpBasic().disable()
 			.csrf().disable()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -50,11 +54,11 @@ public class SecurityConfig {
 		http.logout().disable();
 
 		http.oauth2Login()
-				.userInfoEndpoint()
-					.userService(oAuth2UserService)
+			.userInfoEndpoint()
+			.userService(oAuth2UserService)
 			.and()
-				.successHandler(oAuth2SuccessHandler)
-				.failureHandler(oAuth2FailureHandler);
+			.successHandler(oAuth2SuccessHandler)
+			.failureHandler(oAuth2FailureHandler);
 
 		http.exceptionHandling()
 			.authenticationEntryPoint(jwtEntryPoint)
@@ -79,5 +83,17 @@ public class SecurityConfig {
 		return new JwtAuthenticationFilter(authenticationManager());
 	}
 
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.addAllowedOriginPattern("*");
+		configuration.addAllowedMethod("*");
+		configuration.addAllowedHeader("*");
+		configuration.setAllowCredentials(true);
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
 
 }
