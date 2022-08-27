@@ -12,7 +12,7 @@ export default function ProGamerCategory() {
 
   useEffect(() => {
     axios
-      .get("/admin-management/gamers")
+      .get("https://www.dokuny.blog/gamer/list")
       .then((res) => setGamers(...gamers, res.data.data))
       .catch((error) => {
         console.log(error);

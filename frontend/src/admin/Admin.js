@@ -4,10 +4,30 @@ import { Link } from "react-router-dom";
 import AdminMember from "./AdminMember";
 import AdminGamer from "./AdminGamer";
 import AdminLecture from "./AdminLecture";
+import axios from "axios";
+import cookies from "react-cookies";
 
 export default function Admin() {
   const [checked, setChecked] = useState("gamer");
 
+  const accessToken = cookies.load("accessToken");
+  const header = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  function logout() {
+    axios
+      .get("https://www.dokuny.blog/admin/logout", {
+        headers: header,
+      })
+      .then((res) => {
+        if (res.data.status === 200) {
+          document.location.href = "/admin/login";
+        }
+        if (res.data.status === 401) {
+          document.location.href = "/admin/login";
+        }
+      });
+  }
   return (
     <Wrap>
       <AdminHeader>
@@ -42,10 +62,15 @@ export default function Admin() {
           />
           <Label htmlFor={"lecture"}>강의</Label>
         </Radio>
+        <Link to="/admin/signup">Admin추가</Link>
 
-        <Link to="/">
-          <LogoutBtn>로그아웃</LogoutBtn>
-        </Link>
+        <LogoutBtn
+          onClick={() => {
+            logout();
+          }}
+        >
+          로그아웃
+        </LogoutBtn>
       </AdminHeader>
       <DataArea>
         {checked === "gamer" && <AdminGamer />}
@@ -67,11 +92,14 @@ const AdminHeader = styled.div`
   display: flex;
 
   a {
+    line-height: 50px;
+
     margin-left: auto;
   }
 `;
 
 const LogoutBtn = styled.div`
+  margin-left: auto;
   line-height: 50px;
   cursor: pointer;
 `;

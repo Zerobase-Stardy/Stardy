@@ -41,7 +41,7 @@ h1,h2{
 
 body{
 padding-top: 64px;
-background-Color: #f8f9fb;
+font-family: Nanum;
 }
 
 header
@@ -54,7 +54,7 @@ header
   left:0;
   right:0;
   z-index: 1;
-  font-family: Galmuri;
+  font-family: Nanum;
   opacity: 0.9;
 }
 

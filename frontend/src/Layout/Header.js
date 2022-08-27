@@ -46,7 +46,7 @@ export default function Header(props) {
           <LinkItem to="/">STARDY</LinkItem>
         </LogoArea>
         <UserNaviArea>
-          <Login onClick={props.toggle}> Login </Login> |{" "}
+          <Login onClick={props.toggle}> Login </Login> |
           <LinkItem to="/mypage/profile"> My Page </LinkItem>
         </UserNaviArea>
         <HeaderNav>
@@ -84,7 +84,7 @@ const LogoArea = styled.div`
   font-weight: bold;
   color: white;
   margin-bottom: 8px;
-  font-family: Gowun Dodum;
+  font-family: NanumBold;
 `;
 const HeaderNav = styled.div`
   padding: 4px;
@@ -107,6 +107,6 @@ const Login = styled.button`
   background-color: transparent;
   color: white;
   cursor: pointer;
-  font-family: "Galmuri";
   font-size: 14px;
+  font-family: Nanum;
 `;

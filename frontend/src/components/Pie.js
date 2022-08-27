@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 export default function Pie() {
   return (
-    <>
+    <Wrap>
       <Title>
         종족 <span>Pick</span> 률
       </Title>
@@ -35,14 +35,21 @@ export default function Pie() {
           animationDuration={2500}
         />
       </PieArea>
-    </>
+    </Wrap>
   );
 }
 
+const Wrap = styled.div`
+  padding: 20px;
+  border: 1px solid rgba(0, 204, 0, 0.6);
+  box-shadow: 0 0 20px rgb(0 204 0 / 50%), inset 0 0 0 1px #000,
+    inset 0 0 0 2px rgb(0 204 0 / 50%);
+`;
 const Title = styled.div`
   text-align: center;
   margin-bottom: 10px;
   font-size: 24px;
+  color: #fff;
   span {
     color: #ff6e7f;
   }
@@ -56,6 +63,7 @@ const Top = styled.div`
 const Race = styled.div`
   display: flex;
   font-size: 1px;
+  color: #fff;
 `;
 const Terran = styled.div`
   width: 10px;
@@ -75,5 +83,5 @@ const Protoss = styled.div`
 
 const PieArea = styled.div`
   width: 100%;
-  height: 230px;
+  height: 200px;
 `;

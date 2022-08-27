@@ -5,7 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 export default function KaKaoButton() {
   return (
     <GoogleWrap>
-      <a href="/oauth2/authorization/google%22%3E구글 로그인">
+      <a href="https://dokuny.blog/oauth2/authorization/google">
         <GoogleBtn>
           <FcGoogle />
           <p>구글로 로그인</p>

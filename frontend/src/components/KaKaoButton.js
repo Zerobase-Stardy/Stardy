@@ -6,8 +6,7 @@ import kakaoimg from "../images/kakao.png";
 export default function KaKaoButton() {
   return (
     <KaKaoWrap>
-      <KaKaoBtn href="http://52.78.131.208:8080/oauth2/authorization/kakao">
-        <button>쿠키</button>
+      <KaKaoBtn href="https://dokuny.blog/oauth2/authorization/kakao">
         <Img src={kakaoimg} alt="kakao-login" />
       </KaKaoBtn>
     </KaKaoWrap>

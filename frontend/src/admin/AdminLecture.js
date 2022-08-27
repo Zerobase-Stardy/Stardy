@@ -3,19 +3,25 @@ import styled from "styled-components";
 import axios from "axios";
 import Page from "../components/Page";
 import { ThreeDots } from "react-loader-spinner";
+import cookies from "react-cookies";
 
 export default function AdminLecture() {
+  const accessToken = cookies.load("accessToken");
+  const header = {
+    Authorization: `Bearer ${accessToken}`,
+  };
   const [lectures, setLectures] = useState([]);
   const [inputs, setInputs] = useState({
-    gamerId: "",
+    gamerId: Number(),
     title: "",
     videoUrl: "",
     thumbnailUrl: "",
     comment: "",
     level: "",
     race: "",
-    price: "",
+    price: 0,
   });
+
   const [count, setCount] = React.useState(0); //아이템 총 개수
   const [currentpage, setCurrentpage] = React.useState(1); //현재페이지
   const [postPerPage] = React.useState(10); //페이지당 아이템 개수
@@ -25,7 +31,9 @@ export default function AdminLecture() {
 
   useEffect(() => {
     axios
-      .get("/admin-management/courses")
+      .get("https://www.dokuny.blog/admin-management/courses", {
+        headers: header,
+      })
       .then((response) => setLectures(...lectures, response.data.data));
   }, []);
 
@@ -42,7 +50,9 @@ export default function AdminLecture() {
 
   function deleteHandler(id) {
     setLectures(lectures.filter((e) => e.id !== id));
-    axios.delete(`/admin-management/course/${id}`);
+    axios.delete(`https://www.dokuny.blog/admin-management/courses/${id}`, {
+      headers: header,
+    });
   }
 
   //텍스트 변경 핸들러
@@ -58,39 +68,45 @@ export default function AdminLecture() {
     e.preventDefault();
     const lecture = {
       id: lectures.length + 1,
-      gamerId: inputs.gamerId,
+      gamerId: Number(inputs.gamerId),
       title: inputs.title,
       videoUrl: inputs.videoUrl,
       thumbnailUrl: inputs.thumbnailUrl,
       comment: inputs.comment,
       level: inputs.level,
       race: inputs.race,
-      price: inputs.price,
+      price: Number(inputs.price),
     };
+
     setLectures([...lectures, lecture]);
     setInputs({
       id: lectures.length,
-      gamerId: "",
+      gamerId: 0,
       title: "",
       videoUrl: "",
       thumbnailUrl: "",
       comment: "",
       level: "",
-      race: 0,
-      price: "",
+      race: "",
+      price: 0,
     });
-    axios.post("/admin-management/course", {
-      gamerId: inputs.gamerId,
-      title: inputs.title,
-      videoUrl: inputs.videoUrl,
-      thumbnailUrl: inputs.thumbnailUrl,
-      comment: inputs.comment,
-      level: inputs.level,
-      race: inputs.race,
-      price: inputs.price,
-    });
+    axios.post(
+      "https://www.dokuny.blog/admin-management/courses",
+      {
+        gamerId: Number(inputs.gamerId),
+        title: inputs.title,
+        videoUrl: inputs.videoUrl,
+        thumbnailUrl: inputs.thumbnailUrl,
+        comment: inputs.comment,
+        level: inputs.level,
+        race: inputs.race,
+        price: Number(inputs.price),
+      },
+      {
+        headers: header,
+      }
+    );
   }
-  console.log(lectures);
 
   function updateHandler(id) {
     setLectures(
@@ -123,16 +139,22 @@ export default function AdminLecture() {
       videoUrl: "",
     });
 
-    axios.put(`/admin-management/course/${id}`, {
-      gamerId: inputs.gamerId,
-      title: inputs.title,
-      videoUrl: inputs.videoUrl,
-      thumblink: inputs.thumbnailUrl,
-      comment: inputs.comment,
-      level: inputs.level,
-      race: inputs.race,
-      price: inputs.price,
-    });
+    axios.put(
+      `https://www.dokuny.blog/admin-management/courses/${id}`,
+      {
+        gamerId: inputs.gamerId,
+        title: inputs.title,
+        videoUrl: inputs.videoUrl,
+        thumbnailUrl: inputs.thumbnailUrl,
+        comment: inputs.comment,
+        level: inputs.level,
+        race: inputs.race,
+        price: inputs.price,
+      },
+      {
+        headers: header,
+      }
+    );
   }
   return (
     <List>
@@ -146,25 +168,28 @@ export default function AdminLecture() {
                   id: <span>{list.id}</span>
                 </div>
                 <div>
-                  title: <span>{list.title}</span>
+                  comment: <span>{list.comment}</span>
                 </div>
                 <div>
-                  videoUrl :<span>{list.videoUrl}</span>
-                </div>
-                <div>
-                  thumbnailUrl : <span>{list.thumbnailUrl}</span>
-                </div>
-                <div>
-                  comment : <span>{list.comment}</span>
+                  gamerName :<span>{list.gamerName}</span>
                 </div>
                 <div>
                   level : <span>{list.level}</span>
                 </div>
                 <div>
+                  price : <span>{list.price}</span>
+                </div>
+                <div>
                   race : <span>{list.race}</span>
                 </div>
                 <div>
-                  price : <span>{list.price}</span>
+                  thumbnailUrl : <span>{list.thumbnailUrl}</span>
+                </div>
+                <div>
+                  title : <span>{list.title}</span>
+                </div>
+                <div>
+                  videoUrl : <span>{list.videoUrl}</span>
                 </div>
               </Left>
 
