@@ -1,12 +1,10 @@
 package com.github.backend.web.admin;
 
-import com.github.backend.dto.admin.LoginAdmin;
 import com.github.backend.dto.admin.RegisterAdminOutputDto;
-import com.github.backend.dto.common.AdminInfo;
+import com.github.backend.dto.course.SearchCourse;
 import com.github.backend.dto.member.MemberSearchOutputDto;
 import com.github.backend.dto.member.SearchMember;
 import com.github.backend.dto.member.UpdateMemberNickname;
-import com.github.backend.security.jwt.Tokens;
 import com.github.backend.dto.course.CourseInfoOutputDto;
 import com.github.backend.dto.admin.CreateAdmin;
 import com.github.backend.dto.course.RegisterCourse;
@@ -16,7 +14,6 @@ import com.github.backend.dto.common.Result;
 import com.github.backend.service.admin.impl.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

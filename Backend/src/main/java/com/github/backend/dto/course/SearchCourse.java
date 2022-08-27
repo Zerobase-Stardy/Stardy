@@ -1,4 +1,4 @@
-package com.github.backend.dto.gamer;
+package com.github.backend.dto.course;
 
 import com.github.backend.persist.course.repository.querydsl.condition.CourseSearchCondition;
 import lombok.AllArgsConstructor;

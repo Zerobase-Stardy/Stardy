@@ -3,6 +3,7 @@ package com.github.backend.service.admin.impl;
 import com.github.backend.dto.admin.LogoutAdminOutputDto;
 import com.github.backend.dto.admin.RegisterAdminOutputDto;
 import com.github.backend.dto.common.AdminInfo;
+import com.github.backend.dto.course.SearchCourse;
 import com.github.backend.dto.member.MemberSearchOutputDto;
 import com.github.backend.dto.member.SearchMember;
 import com.github.backend.exception.member.MemberException;
