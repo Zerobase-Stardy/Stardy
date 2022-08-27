@@ -24,7 +24,6 @@ export default function Login(props) {
     <Modal>
       <LoginArea ref={loginRef}>
         <CloseBtn>
-          {" "}
           <RiCloseLine onClick={toggle} />
         </CloseBtn>
         <h1>LOGIN</h1>
@@ -32,12 +31,7 @@ export default function Login(props) {
           <GoogleButton />
           <KaKaoButton />
         </ButtonArea>
-
-        <AdminZone>
-          {/* <Link to="/admin/login" onClick={toggle}>
-            관리자 로그인
-          </Link> */}
-        </AdminZone>
+        <AdminZone></AdminZone>
       </LoginArea>
     </Modal>
   );
@@ -73,7 +67,6 @@ const LoginArea = styled.div`
     letter-spacing: 3px;
     font-size: 30px;
     font-weight: bold;
-    font-family: GalMuri;
   }
 `;
 

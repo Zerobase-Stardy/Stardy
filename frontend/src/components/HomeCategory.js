@@ -5,54 +5,34 @@ import Pie from "./Pie";
 export default function HomeCategory() {
   return (
     <MainArea>
+      <Information>
+        <InformationWrap>
+          <InformationContentWrap>
+            <Box>
+              <Pie />
+            </Box>
+          </InformationContentWrap>
+        </InformationWrap>
+      </Information>
       <Wrap>
-        <LinkZone>
-          <Link to="/progamer" className="progamer">
-            Pro-gamer
-          </Link>
-          <Link to="/terran" className="terran">
-            Terran
-          </Link>
-          <Link to="/zerg" className="zerg">
-            Zerg
-          </Link>
-          <Link to="protoss" className="protoss">
-            Protoss
-          </Link>
-        </LinkZone>
-        <Category>
-          <Lecture>
-            <Pie />
-          </Lecture>
-          <Lecture>
-            <LectureImg />
-            <LectureTitle />
-          </Lecture>
-          <Lecture>
-            <LectureImg />
-            <LectureTitle />
-          </Lecture>
-        </Category>
         <CategoryTitle>얼리버드 신규오픈 강의</CategoryTitle>
         <Category>
-          <Lecture>
+          <Box>
             <LectureImg />
             <LectureTitle />
-          </Lecture>
-          <Lecture>
+          </Box>
+          <Box>
             <LectureImg />
             <LectureTitle />
-          </Lecture>
-          <Lecture></Lecture>
+          </Box>
+          <Box></Box>
         </Category>
       </Wrap>
     </MainArea>
   );
 }
 
-const MainArea = styled.main`
-  margin-top: 50px;
-`;
+const MainArea = styled.main``;
 
 const Wrap = styled.div`
   width: 70%;
@@ -61,47 +41,29 @@ const Wrap = styled.div`
   gap: 40px;
 `;
 
-const LinkZone = styled.div`
+const Information = styled.div`
   width: 100%;
+  height: 400px;
+  padding: 50px 0;
+  background-image: url("https://d3muzvmm7fikyw.cloudfront.net/original/1X/e8de17b2ba0f32e4d1bf4d3485ee2e518245c825.jpg");
+`;
+
+const InformationWrap = styled.div`
+  width: 70%;
+  padding: 3px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 2px solid #331f1f;
+  border-radius: 6px;
   margin: 0 auto;
-  height: 200px;
+`;
+const InformationContentWrap = styled.div`
+  margin: 0 auto;
+  width: 100%;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-
-  a {
-    width: 200px;
-    height: 80px;
-    border: none;
-    text-align: center;
-    line-height: 80px;
-    border-radius: 15px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    transition: 0.25s;
-    color: #fff;
-    font-size: 24px;
-    font-family: Galmuri;
-    &:hover {
-      letter-spacing: 2px;
-      transform: scale(1.2);
-      cursor: pointer;
-    }
-
-    &:active {
-      transform: scale(1.5);
-    }
-  }
-  .progamer {
-    background-color: #2c3639;
-  }
-  .terran {
-    background-color: #084b83;
-  }
-  .zerg {
-    background-color: #613dc1;
-  }
-  .protoss {
-    background-color: #eec170;
-  }
+  gap: 20px;
+  border: 1px solid #800000;
 `;
 
 const Category = styled.div`
@@ -115,7 +77,7 @@ const CategoryTitle = styled.h2`
   font-size: 24px;
 `;
 
-const Lecture = styled.div`
+const Box = styled.div`
   flex-basis: 30%;
   height: 300px;
 `;

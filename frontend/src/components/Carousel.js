@@ -69,6 +69,7 @@ export default function Carousel() {
 
 const CarouselWrap = styled.div`
   width: 100%;
+  margin: 0 auto;
   @media screen and (max-width: 1024px) {
     height: 400px;
   }
@@ -160,6 +161,17 @@ const Title = styled.h2`
   color: #fff;
 
   font-size: 40px;
+
+  @media screen and (max-width: 1600px) {
+    font-size: 30px;
+  }
+  @media screen and (max-width: 450px) {
+    font-size: 20px;
+  }
+
+  @media screen and (max-width: 400px) {
+    font-size: 10px;
+  }
 `;
 const Content = styled.p`
   color: #fff;
@@ -174,5 +186,16 @@ const SmallImg = styled.div`
 
   img {
     width: 100%;
+
+    @media screen and (max-width: 1600px) {
+      width: 80%;
+    }
+    @media screen and (max-width: 450px) {
+      width: 60%;
+    }
+
+    @media screen and (max-width: 400px) {
+      width: 40%;
+    }
   }
 `;
