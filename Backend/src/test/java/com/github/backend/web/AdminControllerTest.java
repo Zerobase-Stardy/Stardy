@@ -97,7 +97,7 @@ public class AdminControllerTest {
         //when
 
         //then
-        mockMvc.perform(post("/admin-management/admin")
+        mockMvc.perform(post("/admin-management/admins")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(
                                 CreateAdmin.Request.builder()
@@ -129,7 +129,7 @@ public class AdminControllerTest {
         //when
 
         //then
-        mockMvc.perform(post("/admin-management/gamer")
+        mockMvc.perform(post("/admin-management/gamers")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(
                                 RegisterGamer.Request.builder()
@@ -175,7 +175,7 @@ public class AdminControllerTest {
         //when
 
         //then
-        mockMvc.perform(put(String.format("/admin-management/gamer/%d", gamer.getId()))
+        mockMvc.perform(put(String.format("/admin-management/gamers/%d", gamer.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(
                                 UpdateGamer.Request.builder()
@@ -212,7 +212,7 @@ public class AdminControllerTest {
         //when
 
         //then
-        mockMvc.perform(get(String.format("/admin-management/gamer/%d",gamer.getId())))
+        mockMvc.perform(get(String.format("/admin-management/gamers/%d",gamer.getId())))
                 .andDo(print())
                 .andExpect(jsonPath("$.data.name").value(gamer.getName()))
                 .andExpect(jsonPath("$.data.race").value(gamer.getRace()))
@@ -278,7 +278,7 @@ public class AdminControllerTest {
         //when
 
         //then
-        mockMvc.perform(post("/admin-management/course")
+        mockMvc.perform(post("/admin-management/courses")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(
                                  RegisterCourse.Request.builder()
@@ -332,7 +332,7 @@ public class AdminControllerTest {
         //when
 
         //then
-        mockMvc.perform(get(String.format("/admin-management/course/%d", course.getId())))
+        mockMvc.perform(get(String.format("/admin-management/courses/%d", course.getId())))
                 .andDo(print())
                 .andExpect(jsonPath("$.data.id").value(course.getId()))
                 .andExpect(jsonPath("$.data.gamerName").value(course.getGamer().getName()))
@@ -446,7 +446,7 @@ public class AdminControllerTest {
 
 
         //then
-        mockMvc.perform(put(String.format("/admin-management/course/%d", course.getId()))
+        mockMvc.perform(put(String.format("/admin-management/courses/%d", course.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andDo(print())
