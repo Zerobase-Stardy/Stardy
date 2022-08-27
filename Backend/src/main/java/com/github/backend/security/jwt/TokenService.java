@@ -3,10 +3,13 @@ package com.github.backend.security.jwt;
 
 import static javax.management.timer.Timer.ONE_MINUTE;
 
+import com.github.backend.dto.common.AdminInfo;
 import com.github.backend.dto.common.LoginInfo;
+import com.github.backend.dto.common.MemberInfo;
 import com.github.backend.exception.common.JwtInvalidException;
 import com.github.backend.exception.common.code.JwtErrorCode;
 import com.github.backend.persist.common.repository.RefreshTokenRepository;
+import com.github.backend.persist.member.type.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -107,5 +110,26 @@ public class TokenService {
 		return claims;
 	}
 
+	public Tokens refresh(String refreshToken) {
+		Claims claims = parseRefreshToken(refreshToken);
+
+		String email = claims.get(JwtInfo.KEY_EMAIL, String.class);
+
+		if (!refreshTokenRepository.existsByUsername(email)) {
+			throw new JwtInvalidException(JwtErrorCode.EXPIRED_JWT);
+		}
+
+		String roles = claims.get(JwtInfo.KEY_ROLES, String.class);
+
+		LoginInfo loginInfo;
+
+		if (Role.ROLE_ADMIN.name().equals(roles)) {
+			loginInfo = AdminInfo.of(claims);
+		} else {
+			loginInfo = MemberInfo.of(claims);
+		}
+
+		return issueAllToken(loginInfo);
+	}
 
 }
