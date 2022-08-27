@@ -6,6 +6,9 @@ import com.github.backend.dto.common.AdminInfo;
 import com.github.backend.dto.common.Result;
 import com.github.backend.security.jwt.Tokens;
 import com.github.backend.service.admin.impl.AdminService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,6 +23,31 @@ public class AdminLoginController {
 
     private final AdminService adminService;
 
+
+    @ApiOperation(
+            value = "관리자 로그인.",
+            notes = "관리자 로그인."
+    )
+    @ApiImplicitParams(
+            {
+                    @ApiImplicitParam(
+                            name ="adminId"
+                            ,value ="관리자 ID"
+                            ,required =true
+                            ,dataType ="string"
+                            ,paramType ="query"
+                            ,defaultValue ="None"
+                    ),
+
+                    @ApiImplicitParam(
+                            name = "password"
+                            , value = "관리자 패스워드"
+                            , required = true
+                            , dataType = "string"
+                            , paramType = "query"
+                            , defaultValue = "None"
+                    )
+            })
     @PostMapping("/login")
     public ResponseEntity<Result<?>> loginAdmin(
             @RequestBody @Valid LoginAdmin.Request request
@@ -38,6 +66,11 @@ public class AdminLoginController {
         );
     }
 
+
+    @ApiOperation(
+            value = "관리자 로그아웃.",
+            notes = "가지고 있는 refresh Token 비활성화 시켜줍니다."
+    )
     @GetMapping("/logout")
     public ResponseEntity<Result<?>> logout(@AuthenticationPrincipal AdminInfo adminInfo){
 
