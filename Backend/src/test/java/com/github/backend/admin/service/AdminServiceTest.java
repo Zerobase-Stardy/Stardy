@@ -1,6 +1,14 @@
 package com.github.backend.admin.service;
 
 import com.github.backend.dto.admin.RegisterAdminOutputDto;
+import com.github.backend.dto.course.SearchCourse;
+import com.github.backend.dto.member.MemberSearchOutputDto;
+import com.github.backend.dto.member.SearchMember;
+import com.github.backend.persist.common.type.AuthType;
+import com.github.backend.persist.member.Member;
+import com.github.backend.persist.member.repository.MemberRepository;
+import com.github.backend.persist.member.repository.MemberSearchRepository;
+import com.github.backend.persist.member.type.MemberStatus;
 import com.github.backend.security.jwt.Tokens;
 import com.github.backend.dto.course.CourseInfoOutputDto;
 import com.github.backend.dto.course.RegisterCourse;
@@ -33,6 +41,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -58,7 +67,13 @@ public class AdminServiceTest {
     private CourseSearchRepository courseSearchRepository;
 
     @Mock
+    private MemberSearchRepository memberSearchRepository;
+
+    @Mock
     private AdminRepository adminRepository;
+
+    @Mock
+    private MemberRepository memberRepository;
 
     @Mock
     private TokenService tokenService;
@@ -916,6 +931,77 @@ public class AdminServiceTest {
         //then
         assertEquals(adminException.getErrorCode(), AdminErrorCode.PASSWORD_IS_WRONG);
     }
+
+    @Test
+    @DisplayName("멤버 조회 성공")
+    void testGetMemberList(){
+        //given
+        List<Member> members = new ArrayList<>();
+        Member member = Member.builder()
+                .email("email@kakao.com")
+                .nickname("nick")
+                .status(MemberStatus.PERMITTED)
+                .authType(AuthType.KAKAO)
+                .role(Role.ROLE_USER)
+                .point(100)
+                .build();
+
+        for (int i = 0; i < 2; i++) {
+            members.add(member);
+        }
+        given(memberSearchRepository.searchByWhere(any()))
+                .willReturn(members);
+
+
+        //when
+        List<MemberSearchOutputDto.Info> memberList = adminService.searchMemberList(
+                SearchMember.builder()
+                .email(member.getEmail())
+                .nickname(member.getNickname())
+                .point(member.getPoint())
+                .build()
+        );
+
+        //then
+        assertEquals(memberList.size(), 2);
+        assertEquals(memberList.get(0).getEmail(), member.getEmail());
+        assertEquals(memberList.get(0).getNickname(), member.getNickname());
+        assertEquals(memberList.get(0).getPoint(), member.getPoint());
+    }
+
+
+    @Test
+    @DisplayName("멤버 정보 수정 - nickname")
+    void testUpdateMemberNickname(){
+        //given
+        Member member = Member.builder()
+                .id(1L)
+                .email("email@kakao.com")
+                .nickname("nick")
+                .status(MemberStatus.PERMITTED)
+                .authType(AuthType.KAKAO)
+                .role(Role.ROLE_USER)
+                .point(100)
+                .build();
+
+        Member updateMember = Member.builder()
+                .nickname("modify")
+                .build();
+
+        given(memberRepository.findById(anyLong()))
+                .willReturn(Optional.of(member));
+
+        //when
+        MemberSearchOutputDto.Info memberInfo = adminService.memberNicknameChange(
+                member.getId(),
+                updateMember.getNickname()
+        );
+
+        //then
+        assertEquals(memberInfo.getNickname(), updateMember.getNickname());
+    }
+
+
 
 
 }
