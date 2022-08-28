@@ -1,12 +1,18 @@
 package com.github.backend.config;
 
+import com.fasterxml.classmate.TypeResolver;
+import com.github.backend.dto.common.MyPageable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Pageable;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
@@ -21,8 +27,11 @@ public class SwaggerConfig {
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.OAS_30)
+			.alternateTypeRules(
+				AlternateTypeRules.newRule(typeResolver.resolve(Pageable.class),
+					typeResolver.resolve(MyPageable.class))
+			)
 			.useDefaultResponseMessages(true)
-			.securityContexts(Arrays.asList(securityContext()))
 			.securitySchemes(Arrays.asList(apiKey()))
 			.apiInfo(apiInfo())
 			.select()
@@ -43,14 +52,6 @@ public class SwaggerConfig {
 		return new ApiKey("Authorization", "Authorization", "header");
 	}
 
-	private SecurityContext securityContext() {
-		return SecurityContext.builder().securityReferences(defaultAuth()).build();
-	}
+	private TypeResolver typeResolver = new TypeResolver();
 
-	private List<SecurityReference> defaultAuth() {
-		AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
-		AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-		authorizationScopes[0] = authorizationScope;
-		return Arrays.asList(new SecurityReference("Authorization", authorizationScopes));
-	}
 }
