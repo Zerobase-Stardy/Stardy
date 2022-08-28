@@ -7,6 +7,9 @@ import com.github.backend.security.jwt.JwtInfo;
 import com.github.backend.security.jwt.TokenService;
 import com.github.backend.security.jwt.Tokens;
 import io.jsonwebtoken.Claims;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -36,8 +39,12 @@ public class AuthController {
         );
     }
 
+    @Operation(
+        summary = "토큰 재발급", description = "토큰을 재발급합니다. refresh Token값을 보내주세요"
+    )
     @PostMapping("/refresh")
-    public ResponseEntity<Result<?>> reissueToken(@RequestBody String refreshToken){
+    public ResponseEntity<Result<?>> reissueToken(
+         @RequestBody String refreshToken){
 
         Tokens token = tokenService.refresh(refreshToken);
 

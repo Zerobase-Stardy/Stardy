@@ -7,9 +7,18 @@ import com.github.backend.dto.myCourse.MyCourseSearchDto.Info;
 import com.github.backend.dto.myCourse.MyCourseSearchDto.Request;
 import com.github.backend.service.myCourse.MyCourseBookmarkService;
 import com.github.backend.service.myCourse.MyCourseInfoSearchService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
+@Tag(name = "myCourse", description = "내 강의 관련 API")
 @RequiredArgsConstructor
 @RequestMapping("/members/me/courses")
 @RestController
@@ -27,11 +37,19 @@ public class MyCoursePageController {
 	private final MyCourseInfoSearchService myCourseInfoSearchService;
 	private final MyCourseBookmarkService myCourseBookmarkService;
 
+	@Operation(
+		summary = "내 강의 조회", description = "해금한 강의를 조회합니다.",
+		security = {@SecurityRequirement(name = "Authorization")},
+		tags = {"myCourse"}
+	)
 	@GetMapping
-	public ResponseEntity<Result<?>> searchMyCourse(@ApiIgnore  @AuthenticationPrincipal MemberInfo memberInfo,
-		Pageable pageable, Request request) {
+	public ResponseEntity<Result<?>> searchMyCourse(
+		@ApiIgnore @AuthenticationPrincipal MemberInfo memberInfo,
+		@PageableDefault(size = 10, page = 0) Pageable pageable, Request request) {
+
 		request.setMemberId(memberInfo.getId());
 		Page<Info> infos = myCourseInfoSearchService.searchMyCourses(pageable, request);
+
 		return ResponseEntity.ok().body(Result.builder()
 			.status(200)
 			.success(true)
@@ -39,9 +57,15 @@ public class MyCoursePageController {
 			.build());
 	}
 
+	@Operation(
+		summary = "내 강의 즐겨찾기", description = "해금한 강의를 즐겨찾기합니다.",
+		security = {@SecurityRequirement(name = "Authorization")},
+		tags = {"myCourse"}
+	)
 	@PostMapping("/{courseId}/bookmark")
-	public ResponseEntity<Result<?>> toggleBookmark(@ApiIgnore @AuthenticationPrincipal MemberInfo memberInfo,
-		@PathVariable Long courseId) {
+	public ResponseEntity<Result<?>> toggleBookmark(
+		@ApiIgnore @AuthenticationPrincipal MemberInfo memberInfo,
+		@Parameter(description = "강의 Id")@PathVariable Long courseId) {
 
 		boolean bookmark
 			= myCourseBookmarkService.toggleBookmark(memberInfo.getId(), courseId);

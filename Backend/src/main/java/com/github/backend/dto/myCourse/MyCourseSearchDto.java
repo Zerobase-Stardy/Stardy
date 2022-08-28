@@ -1,6 +1,7 @@
 package com.github.backend.dto.myCourse;
 
 import com.github.backend.persist.myCourse.repository.querydsl.cond.MyCourseSearchCond;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,10 +15,18 @@ public class MyCourseSearchDto {
 	@Data
 	public static class Request {
 
+		@ApiParam(hidden = true)
 		private Long memberId;
+
+		@ApiParam(value = "강의 제목")
 		private String title;
+
+		@ApiParam(value = "게이머 닉네임")
 		private String gamerNickname;
+		@ApiParam(value = "게이머 이름")
 		private String gamerName;
+
+		@ApiParam(value = "즐겨찾기 여부")
 		private boolean bookmark;
 
 		public MyCourseSearchCond toCond() {
