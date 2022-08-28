@@ -42,6 +42,7 @@ public class MyCourseSearchRepository {
 				gamerNameLike(cond.getGamerName()),
 				bookmarkEq(cond.isBookmark())
 			)
+			.orderBy(course.createdDate.desc())
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();
