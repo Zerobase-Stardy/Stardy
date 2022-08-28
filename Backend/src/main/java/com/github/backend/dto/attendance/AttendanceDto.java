@@ -2,11 +2,14 @@ package com.github.backend.dto.attendance;
 
 import com.github.backend.persist.attendance.Attendance;
 import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
 
 
 public class AttendanceDto {
@@ -31,12 +34,12 @@ public class AttendanceDto {
 	@NoArgsConstructor
 	@Data
 	public static class GetRequest{
+
 		@ApiParam(hidden = true)
 		private Long memberId;
 
-		@ApiParam(value = "시작 날짜",defaultValue = "2022-08-01")
 		private LocalDate startDate;
-		@ApiParam(value = "종료 날짜",example = "2022-08-31")
+
 		private LocalDate endDate;
 	}
 
