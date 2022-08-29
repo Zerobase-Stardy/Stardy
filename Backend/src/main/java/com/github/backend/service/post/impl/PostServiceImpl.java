@@ -52,6 +52,15 @@ public class PostServiceImpl implements PostService {
         return  PostRegisterOutPutDto.Info.of(post);
     }
 
+    @Override
+    public PostInfoOutPutDto.Info deletePost(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_EXISTS));
+        postRepository.delete(post);
+
+        return PostInfoOutPutDto.Info.of((post));
+    }
+
 
     @Override
     public PostInfoOutPutDto.Info getPostDetail(Long postId) {

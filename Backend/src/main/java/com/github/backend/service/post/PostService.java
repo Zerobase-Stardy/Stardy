@@ -11,4 +11,6 @@ public interface PostService {
     PostRegisterOutPutDto.Info registerPost(PostReq.Request request, MemberInfo memberInfo , String imagePath);
     PostInfoOutPutDto.Info getPostDetail(Long postId);
     PostUpdateOutPutDto.Info UpdatePost(Long postId, PostReq.Request request, String imagePath);
+
+    PostInfoOutPutDto.Info deletePost(Long postId);
 }
