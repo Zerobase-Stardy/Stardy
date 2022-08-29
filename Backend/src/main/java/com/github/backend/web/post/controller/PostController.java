@@ -1,8 +1,6 @@
 package com.github.backend.web.post.controller;
 
-import com.github.backend.dto.Post.PostInfoOutPutDto;
-import com.github.backend.dto.Post.PostRegisterOutPutDto;
-import com.github.backend.dto.Post.PostUpdateOutPutDto;
+import com.github.backend.dto.Post.*;
 import com.github.backend.dto.common.MemberInfo;
 import com.github.backend.dto.common.Result;
 import com.github.backend.service.post.PostService;
@@ -16,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 
@@ -60,6 +60,19 @@ public class PostController {
                         .build()
         );
     };
+
+    @GetMapping("/posts")
+    public ResponseEntity<Result<?>> getListPosts(SearchTitle searchTitle){
+        List<PostListOutPutDto.Info> post = postService.getTitleList(searchTitle);
+
+        return ResponseEntity.ok().body(
+                Result.builder()
+                        .status(200)
+                        .success(true)
+                        .data(post)
+                        .build()
+        );
+    }
 
 
     @DeleteMapping("/post/{postId}")
