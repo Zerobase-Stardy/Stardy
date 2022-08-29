@@ -18,6 +18,8 @@ import com.github.backend.security.oauth.OAuth2AuthenticationFailureHandler;
 import com.github.backend.security.oauth.OAuth2AuthenticationSuccessHandler;
 import com.github.backend.service.myCourse.MyCourseUnlockService;
 import com.github.backend.testUtils.WithMemberInfo;
+import com.github.backend.web.course.controller.CourseUnlockController;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,9 +60,10 @@ class CourseUnlockControllerTest {
 	MyCourseUnlockService myCourseUnlockService;
 
 
+	@DisplayName("강의 해금 성공")
 	@WithMemberInfo
 	@Test
-	void unlockCourse() throws Exception {
+	void unlockCourse_success() throws Exception {
 		doNothing().when(myCourseUnlockService).unlockCourse(anyLong(),anyLong());
 
 		ArgumentCaptor<Long> memberIdCaptor = ArgumentCaptor.forClass(Long.class);

@@ -1,4 +1,4 @@
-package com.github.backend.web.myCourse.controller;
+package com.github.backend.web.course.controller;
 
 import com.github.backend.dto.common.MemberInfo;
 import com.github.backend.dto.common.Result;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
-@Tag(name = "myCourse",description = "내 강의 관련 API")
+@Tag(name = "Course",description = "강의 관련 API")
 @RequiredArgsConstructor
 @RestController
 public class CourseUnlockController {
@@ -25,7 +25,7 @@ public class CourseUnlockController {
 	@Operation(
 		summary = "강의 해금", description = "강의를 해금합니다.",
 		security = {@SecurityRequirement(name = "Authorization")},
-		tags = {"myCourse"}
+		tags = {"Course"}
 	)
 	@PostMapping("/courses/{courseId}/unlock")
 	public ResponseEntity<Result<?>> unlockCourse(@ApiIgnore @AuthenticationPrincipal MemberInfo memberInfo,
