@@ -21,6 +21,7 @@ import com.github.backend.security.oauth.OAuth2AuthenticationSuccessHandler;
 import com.github.backend.service.myCourse.MyCourseBookmarkService;
 import com.github.backend.service.myCourse.MyCourseInfoSearchService;
 import com.github.backend.testUtils.WithMemberInfo;
+import com.github.backend.web.member.controller.MyCourseController;
 import java.util.ArrayList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,10 +34,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(value = MyCoursePageController.class
+@WebMvcTest(value = MyCourseController.class
 	, includeFilters = {
 	@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)})
-class MyCoursePageControllerTest {
+class MyCourseControllerTest {
 
 	@Autowired
 	MockMvc mockMvc;
@@ -64,7 +65,6 @@ class MyCoursePageControllerTest {
 
 	@MockBean
 	MyCourseBookmarkService myCourseBookmarkService;
-
 
 	@DisplayName("내 강의 검색 성공")
 	@WithMemberInfo
