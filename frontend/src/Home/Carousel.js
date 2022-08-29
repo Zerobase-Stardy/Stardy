@@ -75,16 +75,6 @@ const Effect = styled.div`
 const CarouselWrap = styled.div`
   width: 100%;
   margin: 0 auto;
-  @media screen and (max-width: 1024px) {
-    height: 400px;
-  }
-  @media screen and (max-width: 450px) {
-    height: 300px;
-  }
-
-  @media screen and (max-width: 400px) {
-    height: 200px;
-  }
 
   .slick-dots {
     bottom: 30px;
@@ -139,21 +129,11 @@ const ImgZone = styled.div`
   height: 300px;
 
   position: relative;
-
-  @media screen and (max-width: 1024px) {
-    height: 400px;
-  }
-  @media screen and (max-width: 450px) {
-    height: 300px;
-  }
-
-  @media screen and (max-width: 400px) {
-    height: 200px;
-  }
 `;
 
 const Img = styled.img`
   width: 100%;
+  height: 400px;
   object-fit: cover;
 `;
 

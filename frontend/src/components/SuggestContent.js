@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import Page from "./Page";
+import { Link } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
 
 export default function FreeContent() {
@@ -35,17 +36,19 @@ export default function FreeContent() {
     <>
       {currentPosts && suggest.length > 0 ? (
         currentPosts.map((list) => (
-          <List key={list.id}>
-            <Title> {list.title}</Title>
-            <Content>
-              <p>{list.body}</p>
-            </Content>
-          </List>
+          <Link to={`${list.id}`}>
+            <List key={list.id}>
+              <Title> {list.title}</Title>
+              <Content>
+                <p>{list.body}</p>
+              </Content>
+            </List>
+          </Link>
         ))
       ) : (
         <Center>
           <ThreeDots
-            color="#87c3a1"
+            color="#ccff66"
             text-align="center"
             height={80}
             width={80}
@@ -65,10 +68,10 @@ const List = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
-  border-bottom: 1px solid #dde0ea;
+  border: 1px solid rgba(221, 224, 234, 0.4);
 
   &:hover {
-    background-color: #edf5f1;
+    background-color: rgba(147, 168, 237, 0.2);
     transition: 0.5s;
   }
 `;

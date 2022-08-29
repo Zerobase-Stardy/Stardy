@@ -26,7 +26,7 @@ export default function Login(props) {
         <CloseBtn>
           <RiCloseLine onClick={toggle} />
         </CloseBtn>
-        <span>LOGIN</span>
+        <span>로그인</span>
         <ButtonArea>
           <GoogleButton />
           <KaKaoButton />
@@ -60,13 +60,12 @@ const LoginArea = styled.div`
   text-align: center;
   background-color: black;
   border: 1px solid rgba(0, 204, 0, 0.6);
-  box-shadow: 0 0 20px rgb(0 204 0 / 50%), inset 0 0 0 1px #000,
-    inset 0 0 0 2px rgb(0 204 0 / 50%);
+  border: 1px solid #800000;
 
   span {
     letter-spacing: 3px;
     font-size: 24px;
-    color: #80ff66;
+    color: #00cc00;
   }
 `;
 
@@ -79,8 +78,8 @@ const CloseBtn = styled.div`
     cursor: pointer;
 
     &:hover {
-      color: #80ff66;
-      border: 1px solid #80ff66;
+      color: #00cc00;
+      border: 2px solid #00cc00;
       border-radius: 50px;
     }
   }

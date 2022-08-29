@@ -11,6 +11,7 @@ import ProGamer from "./pages/ProGamer";
 import Races from "./pages/Races";
 import GlobalStyles from "./styles/GlobalStyles";
 import Post from "./pages/Post";
+import PostDetail from "./pages/PostDetail";
 import AddPost from "./pages/AddPost";
 import Admin from "./admin/Admin";
 import AdminLogin from "./admin/AdminLogin";
@@ -44,6 +45,8 @@ function App() {
         </Route>
         <Route path={"/post"} element={<Post />}></Route>
         <Route path={"/post/write"} element={<AddPost />}></Route>
+        <Route path={"/post/:id"} element={<PostDetail />}></Route>
+
         <Route path={"/mylecture"} element={<MyLecture />}></Route>
         <Route path={"/mypage"} element={<Mypage />}></Route>
         <Route path={"/admin"} element={<Admin />}></Route>

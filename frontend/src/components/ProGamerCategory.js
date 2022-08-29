@@ -35,7 +35,6 @@ export default function ProGamerCategory() {
           type="checkbox"
           id={item.nickname}
           onChange={(e) => {
-            console.log("ddd");
             checkHandler(e.target.checked, item);
           }}
         />

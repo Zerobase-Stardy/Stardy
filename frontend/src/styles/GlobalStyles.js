@@ -34,8 +34,11 @@ const GlobalStyle = createGlobalStyle`
   box-sizing: border-box;
 }
 
+
+
 h1,h2{
   font-family: NanumBold;
+  font-size: 30px;
 }
 
 

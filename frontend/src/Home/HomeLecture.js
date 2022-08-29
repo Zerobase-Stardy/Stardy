@@ -160,9 +160,7 @@ const RedBox = styled.div`
 
 const GreenBox = styled.div`
   width: 320px;
-  border: 1px solid rgba(0, 204, 0, 0.6);
-  box-shadow: 0 0 20px rgb(0 204 0 / 50%), inset 0 0 0 1px #000,
-    inset 0 0 0 2px rgb(0 204 0 / 50%);
+  border: 1px solid rgba(221, 224, 234, 0.4);
 
   &:hover {
     border-color: #ccff66;
@@ -174,7 +172,8 @@ const GreenBox = styled.div`
 const Img = styled.div`
   width: 100%;
   height: 180px;
-  border-bottom: 2px solid rgba(0, 204, 0, 0.6);
+  border: 1px solid rgba(221, 224, 234, 0.4);
+
   img {
     width: 100%;
     height: 100%;

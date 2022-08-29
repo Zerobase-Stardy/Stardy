@@ -1,166 +1,86 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { BsCoin } from "react-icons/bs";
-import MinerralImg from "../images/Minerral.png";
-export default function ProGamerLecture(props) {
-  //   const [lectures, setLectures] = useState([]);
-  const datas = [
-    {
-      gamerId: 1,
-      title: "유영진 테란 강의",
-      videoUrl: "http://www.youtube.com",
-      thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-      comment: "설명",
-      level: "입문(난이도)",
-      race: "테란(종족)",
-      price: 20,
-      name: "임요환",
-    },
+import Page from "./Page";
+import { ThreeDots } from "react-loader-spinner";
+import axios from "axios";
 
-    {
-      gamerId: 2,
-      title: "유영진 테란 강의",
-      videoUrl: "http://www.youtube.com",
-      thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-      comment: "설명",
-      level: "입문(난이도)",
-      race: "테란(종족)",
-      price: 20,
-      name: "임요환",
-    },
-    {
-      gamerId: 3,
-      title: "유영진 테란 강의",
-      videoUrl: "http://www.youtube.com",
-      thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-      comment: "설명",
-      level: "입문(난이도)",
-      race: "테란(종족)",
-      price: 20,
-      name: "임요환",
-    },
-    {
-      gamerId: 4,
-      title: "유영진 테란 강의",
-      videoUrl: "http://www.youtube.com",
-      thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-      comment: "설명",
-      level: "입문(난이도)",
-      race: "테란(종족)",
-      price: 20,
-      name: "유영진",
-    },
-    {
-      gamerId: 5,
-      title: "유영진 테란 강의",
-      videoUrl: "http://www.youtube.com",
-      thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-      comment: "설명",
-      level: "입문(난이도)",
-      race: "테란(종족)",
-      price: 20,
-      name: "유영진",
-    },
-    {
-      gamerId: 6,
-      title: "유영진 테란 강의",
-      videoUrl: "http://www.youtube.com",
-      thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-      comment: "설명",
-      level: "입문(난이도)",
-      race: "테란(종족)",
-      price: 20,
-      name: "유영진",
-    },
-    {
-      gamerId: 7,
-      title: "유영진 테란 강의",
-      videoUrl: "http://www.youtube.com",
-      thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-      comment: "설명",
-      level: "입문(난이도)",
-      race: "테란(종족)",
-      price: 20,
-      name: "저그킹",
-    },
-    {
-      gamerId: 8,
-      title: "유영진 테란 강의",
-      videoUrl: "http://www.youtube.com",
-      thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-      comment: "설명",
-      level: "입문(난이도)",
-      race: "테란(종족)",
-      price: 20,
-      name: "프로킹",
-    },
-    {
-      gamerId: 9,
-      title: "유영진 테란 강의",
-      videoUrl: "http://www.youtube.com",
-      thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-      comment: "설명",
-      level: "입문(난이도)",
-      race: "테란(종족)",
-      price: 20,
-    },
-    {
-      gamerId: 10,
-      title: "유영진 테란 강의",
-      videoUrl: "http://www.youtube.com",
-      thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-      comment: "설명",
-      level: "입문(난이도)",
-      race: "테란(종족)",
-      price: 20,
-    },
-  ];
+export default function ProGamerLecture(props) {
+  const [lectures, setLectures] = useState([]);
+  const [count, setCount] = useState(0); //아이템 총 개수
+  const [currentpage, setCurrentpage] = useState(1); //현재페이지
+  const [postPerPage] = React.useState(12); //페이지당 아이템 개수
+  const [indexOfLastPost, setIndexOfLastPost] = useState(0);
+  const [indexOfFirstPost, setIndexOfFirstPost] = useState(0);
+  const [currentPosts, setCurrentPosts] = useState(0);
   const { checkList } = props;
 
-  const lecture = datas.map((data) => (
-    <LectureArea key={data.gamerId}>
-      <Thumbnail>
-        <img src={data.thumblink} alt="thumblink" />
-      </Thumbnail>
-      <Title>{data.title}</Title>
-      <Name>
-        <p>{data.name}</p>
-      </Name>{" "}
-      <Price>
-        <span>
-          <BsCoin /> :
-        </span>
-        &nbsp;
-        <p>{data.price}</p>
-      </Price>
-    </LectureArea>
-  ));
+  useEffect(() => {
+    axios
+      .get("https://jsonplaceholder.typicode.com/photos")
+      .then((res) => setLectures(res.data));
+  }, []);
 
-  const filterLecture = datas.filter((data) => checkList.includes(data.name));
+  useEffect(() => {
+    setCount(lectures.length);
+    setIndexOfLastPost(currentpage * postPerPage);
+    setIndexOfFirstPost(indexOfLastPost - postPerPage);
+    setCurrentPosts(lectures.slice(indexOfFirstPost, indexOfLastPost));
+  }, [currentpage, indexOfFirstPost, indexOfLastPost, lectures, postPerPage]);
 
-  const filterView = filterLecture.map((data) => (
-    <LectureArea key={data.gamerId}>
-      <Thumbnail>
-        <img src={data.thumblink} alt="thumblink" />
-      </Thumbnail>
-      <Title>{data.title}</Title>
-      <Name>
-        <p>{data.name}</p>
-      </Name>
-      <Price>
-        <span>
-          <BsCoin /> :
-        </span>
-        &nbsp;
-        <p>{data.price}</p>
-      </Price>{" "}
-    </LectureArea>
-  ));
+  const setPage = (e) => {
+    setCurrentpage(e);
+  };
+
+  function lectureArea(data) {
+    return (
+      <LectureArea key={data.gamerId}>
+        <Thumbnail>
+          <img src={data.thumblink} alt="thumblink" />
+        </Thumbnail>
+        <Title>{data.title}</Title>
+        <Name>
+          <p>{data.name}</p>
+        </Name>
+        <Price>
+          <span>
+            <BsCoin /> :
+          </span>
+          &nbsp;
+          <p>{data.price}</p>
+        </Price>
+      </LectureArea>
+    );
+  }
 
   return (
-    <Wrap>
-      {filterLecture.length === 0 ? <>{lecture}</> : <>{filterView}</>}
-    </Wrap>
+    <>
+      <Wrap>
+        {checkList.length === 0 ? (
+          <>{currentPosts && currentPosts.map((data) => lectureArea(data))}</>
+        ) : (
+          <>
+            {currentPosts &&
+              currentPosts
+                .filter((data) => checkList.includes(data.gamerName))
+                .map((data) => lectureArea(data))}
+          </>
+        )}
+      </Wrap>
+      {checkList.length === 0 ? (
+        <Page page={currentpage} count={count} setPage={setPage} />
+      ) : (
+        <Page
+          page={currentpage}
+          count={
+            currentPosts &&
+            currentPosts.filter((data) => checkList.includes(data.gamerName))
+              .length
+          }
+          setPage={setPage}
+        />
+      )}
+    </>
   );
 }
 
@@ -169,7 +89,7 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-
+  min-height: 1200px;
   gap: 2%;
 `;
 

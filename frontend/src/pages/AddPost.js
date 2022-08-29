@@ -10,53 +10,63 @@ export default function Editor() {
   return (
     <Main>
       <Wrap>
-        <Top>
-          <h2>글쓰기</h2>
-          <select
-            id="channel"
-            onChange={(e) => {
-              setChannel(e.target.value);
-            }}
-          >
-            <option value="">채널 선택</option>
-            <option value="free">자유 게시판</option>
-            <option value="suggest">빌드 건의</option>
-          </select>
-          <form>
-            <Title
-              type="text"
-              placeholder="제목"
+        <RedBox>
+          <Top>
+            <h2>글쓰기</h2>
+            <select
+              id="channel"
               onChange={(e) => {
-                setWriting({ ...writing, title: e.target.value });
+                setChannel(e.target.value);
+              }}
+            >
+              <option value="">채널 선택</option>
+              <option value="free">자유 게시판</option>
+              <option value="suggest">빌드 건의</option>
+            </select>
+            <form>
+              <Title
+                type="text"
+                placeholder="제목"
+                onChange={(e) => {
+                  setWriting({ ...writing, title: e.target.value });
+                }}
+              />
+              <CKEditor
+                editor={ClassicEditor}
+                onChange={(event, editor) => {
+                  const data = editor.getData();
+                  return setWriting({
+                    ...writing,
+                    content: data,
+                  });
+                }}
+              />
+            </form>
+          </Top>
+          <Bottom>
+            <SubmitBtn
+              type="submit"
+              value="제출"
+              onClick={(e) => {
+                e.preventDefault();
+                if (writing.title === undefined) {
+                  alert("제목을 입력해주세요");
+                } else if (writing.content === undefined) {
+                  alert("내용을 입력해주세요");
+                } else if (channel === "") {
+                  alert("채널을 선택해 주세요");
+                }
+              }}
+            ></SubmitBtn>
+            <CancelBtn
+              type="button"
+              value="취소"
+              onClick={() => {
+                document.location.href = "/post";
               }}
             />
-            <CKEditor
-              editor={ClassicEditor}
-              data="<p>Hello from CKEditor 5!</p>"
-              onChange={(event, editor) => {
-                const data = editor.getData();
-                return setWriting({
-                  ...writing,
-                  content: data,
-                });
-              }}
-            />
-          </form>
-        </Top>
-
-        <SubmitBtn
-          type="submit"
-          value="제출"
-          onClick={(e) => {
-            e.preventDefault();
-            alert(
-              `title: ${writing.title}
-                  content: ${writing.content}
-                  type: ${channel}`
-            );
-          }}
-        ></SubmitBtn>
-        <CancelBtn type="button" value="취소"></CancelBtn>
+          </Bottom>
+        </RedBox>
       </Wrap>
     </Main>
   );
@@ -65,12 +75,40 @@ export default function Editor() {
 const Main = styled.main`
   width: 100%;
   padding-top: 70px;
-  background-color: #fbfbfb;
+  min-height: 900px;
+  color: #b8bbcc;
+  background-image: url("https://static.starcraft.com/production/images/site/backdrops/backdrop-stars.890c5929ec65159852db3a0fab438e7aaa5c210f.jpg");
 `;
 
 const Wrap = styled.div`
   width: 60%;
   margin: 0 auto;
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 2px solid #331f1f;
+  border-radius: 6px;
+  margin: 0 auto;
+  color: #b8bbcc;
+`;
+
+const RedBox = styled.div`
+  margin: 0 auto;
+  min-height: 300px;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  border: 1px solid #800000;
+  padding: 20px 70px;
+
+  h2 {
+    width: 100%;
+    color: #b8bbcc;
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
 `;
 
 const Top = styled.div`
@@ -89,11 +127,33 @@ const Top = styled.div`
     height: 40px;
     padding: 3px;
     font-size: 16px;
-    border: 1px solid #dde0ea;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #00cc00;
+    outline: none;
+    border: 1px solid #800000;
   }
 
+  .ck.ck-editor__top .ck-sticky-panel .ck-toolbar {
+    border: 1px solid #800000;
+    border-bottom: none;
+  }
   .ck-content {
     min-height: 600px;
+  }
+  .ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
+    border: 1px solid #800000;
+  }
+  .ck.ck-editor__main > .ck-editor__editable {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .ck.ck-toolbar {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .ck-reset_all :not(.ck-reset_all-excluded *),
+  .ck.ck-reset_all {
+    color: #00cc00;
   }
 `;
 
@@ -102,20 +162,33 @@ const Title = styled.input`
   width: 100%;
   height: 40px;
   font-size: 16px;
-  border: 1px solid #dde0ea;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #00cc00;
+  outline: none;
+  border: 1px solid #800000;
   margin-bottom: 20px;
+
+  &::placeholder {
+    color: #ddff99;
+  }
 `;
+
+const Bottom = styled.div``;
 
 const SubmitBtn = styled.input`
   width: 144px;
   height: 48px;
-  color: white;
+  color: #00cc00;
   float: left;
   border-radius: 4px;
-  border: none;
   font-size: 18px;
-  background-color: #87c3a1;
+  border: 1px solid #800000;
+  background-color: rgba(0, 0, 0, 0.1);
   cursor: pointer;
+
+  &:hover {
+    color: #ddff99;
+  }
 `;
 
 const CancelBtn = styled.input`
@@ -123,7 +196,13 @@ const CancelBtn = styled.input`
   height: 48px;
   float: right;
   border-radius: 4px;
-  border: none;
+  background-color: rgba(0, 0, 0, 0.1);
+  border: 1px solid #800000;
+  color: #00cc00;
   font-size: 18px;
   cursor: pointer;
+
+  &:hover {
+    color: #ddff99;
+  }
 `;

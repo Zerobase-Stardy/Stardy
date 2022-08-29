@@ -13,6 +13,7 @@ export default function AdminGamer() {
   const [indexOfLastPost, setIndexOfLastPost] = React.useState(0);
   const [indexOfFirstPost, setIndexOfFirstPost] = React.useState(0);
   const [currentPosts, setCurrentPosts] = React.useState(0);
+
   const [inputs, setInputs] = useState({
     name: "",
     race: "",
@@ -56,13 +57,9 @@ export default function AdminGamer() {
   function deleteHandler(id) {
     setGamers(gamers.filter((e) => e.id !== id));
 
-    axios.delete(
-      `https://www.dokuny.blog/admin-management/gamers/${id}`,
-
-      {
-        headers: header,
-      }
-    );
+    axios.delete(`https://www.dokuny.blog/admin-management/gamers/${id}`, {
+      headers: header,
+    });
   }
 
   //Input 핸들러
@@ -216,7 +213,10 @@ export default function AdminGamer() {
               <DeleteBtn
                 type="button"
                 value="삭제"
-                onClick={() => deleteHandler(list.id)}
+                onClick={() => {
+                  console.log(list.id);
+                  deleteHandler(list.id);
+                }}
               />
             </ListWrap>
           </fieldset>
