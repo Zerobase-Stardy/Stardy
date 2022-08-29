@@ -2,6 +2,7 @@ package com.github.backend.web.post.controller;
 
 import com.github.backend.dto.Post.PostInfoOutPutDto;
 import com.github.backend.dto.Post.PostRegisterOutPutDto;
+import com.github.backend.dto.Post.PostUpdateOutPutDto;
 import com.github.backend.dto.common.MemberInfo;
 import com.github.backend.dto.common.Result;
 import com.github.backend.service.post.PostService;
@@ -37,6 +38,30 @@ public class PostController {
                         .build()
         );
     }
+
+
+    @PutMapping("/post/{postId}")
+    public  ResponseEntity<Result<?>> updatePost(
+            @PathVariable("postId") Long postId
+            ,@RequestPart @Valid PostReq.Request request
+            ,@RequestPart("image") MultipartFile multipartFile
+    ) throws IOException {
+
+        PostUpdateOutPutDto.Info update = postService.UpdatePost(
+                postId,
+                request,
+                s3UploaderService.upload(multipartFile, "s3-stardy", "image"));
+
+        return ResponseEntity.ok().body(
+                Result.builder()
+                        .status(200)
+                        .success(true)
+                        .data(update)
+                        .build()
+        );
+    };
+
+
 
 
 

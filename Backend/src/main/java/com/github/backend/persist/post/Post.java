@@ -2,14 +2,12 @@ package com.github.backend.persist.post;
 
 import com.github.backend.persist.common.BaseTimeEntity;
 import com.github.backend.persist.member.Member;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -35,4 +33,11 @@ public class Post extends BaseTimeEntity {
 
     @ManyToOne
     private Member member;
+
+    public void update(String imagePath,String title, String content, String boardKind){
+        this.imagePath = imagePath;
+        this.title = title;
+        this.content = content;
+        this.boardKind = boardKind;
+    }
 }

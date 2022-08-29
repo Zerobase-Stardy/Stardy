@@ -2,6 +2,7 @@ package com.github.backend.service.post.impl;
 
 import com.github.backend.dto.Post.PostInfoOutPutDto;
 import com.github.backend.dto.Post.PostRegisterOutPutDto;
+import com.github.backend.dto.Post.PostUpdateOutPutDto;
 import com.github.backend.dto.common.MemberInfo;
 import com.github.backend.exception.post.PostException;
 import com.github.backend.exception.post.code.PostErrorCode;
@@ -21,6 +22,18 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
+
+
+    @Transactional
+    @Override
+    public PostUpdateOutPutDto.Info UpdatePost(Long postId, PostReq.Request request, String imagePath) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_EXISTS));
+
+        post.update(imagePath, request.getTitle(), request.getContent(), request.getBoardKind());
+
+        return PostUpdateOutPutDto.Info.of(postRepository.save(post));
+    }
 
     @Transactional
     @Override
