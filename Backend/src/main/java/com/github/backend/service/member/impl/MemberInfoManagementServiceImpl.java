@@ -21,6 +21,7 @@ public class MemberInfoManagementServiceImpl implements MemberInfoManagementServ
 	public void editNickname(String memberEmail, String newNickname) {
 		Member member = memberService.getMember(memberEmail);
 		member.changeNickname(newNickname);
+
 	}
 
 	@Transactional

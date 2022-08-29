@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 
-public class Post {
+public class PostReq {
 
     @Getter
     @Setter
@@ -15,16 +15,10 @@ public class Post {
     @AllArgsConstructor
     public static class Request{
         @NotNull
-        private String email;
-        @NotNull
         private String title;
         @NotNull
         private String content;
         @NotNull
         private String boardKind;
-
-
-
-
     }
 }

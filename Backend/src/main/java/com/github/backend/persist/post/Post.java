@@ -2,14 +2,12 @@ package com.github.backend.persist.post;
 
 import com.github.backend.persist.common.BaseTimeEntity;
 import com.github.backend.persist.member.Member;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

@@ -52,6 +52,7 @@ public class SecurityConfig {
 			UsernamePasswordAuthenticationFilter.class);
 
 		http.authenticationProvider(jwtAuthenticationProvider);
+		http.authorizeRequests().antMatchers("/post").authenticated();
 
 		http.authorizeRequests()
 			.anyRequest().permitAll();
