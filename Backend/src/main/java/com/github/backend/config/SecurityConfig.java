@@ -8,7 +8,6 @@ import com.github.backend.security.jwt.JwtEntryPoint;
 import com.github.backend.security.oauth.CustomOAuth2UserService;
 import com.github.backend.security.oauth.OAuth2AuthenticationFailureHandler;
 import com.github.backend.security.oauth.OAuth2AuthenticationSuccessHandler;
-import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
