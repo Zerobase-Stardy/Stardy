@@ -30,6 +30,9 @@ public class Post extends BaseTimeEntity {
     @Column(nullable = false)
     private String boardKind;
 
+    @Column(nullable = true)
+    private String imagePath;
+
     @ManyToOne
     private Member member;
 }
