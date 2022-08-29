@@ -1,5 +1,6 @@
 package com.github.backend.web.post.controller;
 
+import com.github.backend.dto.Post.PostInfoOutPutDto;
 import com.github.backend.dto.Post.PostRegisterOutPutDto;
 import com.github.backend.dto.common.MemberInfo;
 import com.github.backend.dto.common.Result;
@@ -9,9 +10,7 @@ import com.github.backend.web.post.dto.PostReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -23,6 +22,23 @@ public class PostController {
 
     private final S3UploaderService s3UploaderService;
     private final PostService postService;
+
+    @GetMapping("/post/{postId}")
+    public ResponseEntity<Result<?>> postDetail(
+            @PathVariable("postId") Long postId){
+
+        PostInfoOutPutDto.Info postDetail = postService.getPostDetail(postId);
+
+        return ResponseEntity.ok().body(
+                Result.builder()
+                        .status(200)
+                        .success(true)
+                        .data(postDetail)
+                        .build()
+        );
+    }
+
+
 
     @PostMapping("/post")
     public ResponseEntity<Result<?>> registerPost(

@@ -1,5 +1,6 @@
 package com.github.backend.service.post.impl;
 
+import com.github.backend.dto.Post.PostInfoOutPutDto;
 import com.github.backend.dto.Post.PostRegisterOutPutDto;
 import com.github.backend.dto.common.MemberInfo;
 import com.github.backend.exception.post.PostException;
@@ -36,5 +37,13 @@ public class PostServiceImpl implements PostService {
                 .build());
 
         return  PostRegisterOutPutDto.Info.of(post);
+    }
+
+
+    @Override
+    public PostInfoOutPutDto.Info getPostDetail(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_EXISTS));
+        return PostInfoOutPutDto.Info.of(post);
     }
 }
