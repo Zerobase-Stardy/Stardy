@@ -20,7 +20,6 @@ const LinkItem = ({ active, children, to }) => (
 export default function Header(props) {
   const user = useSelector((state) => state.userinfo.value);
 
-  console.log(user.login);
   const locationNow = useLocation();
   const [visible, setVisible] = useState({
     display: "none",

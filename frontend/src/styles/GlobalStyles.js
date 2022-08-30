@@ -39,9 +39,6 @@ h1,h2{
 body{
 padding-top: 64px;
 font-family: Nanum;
-background-color: black;
-background-image: url("https://static.starcraft.com/production/images/site/backdrops/backdrop-stars.890c5929ec65159852db3a0fab438e7aaa5c210f.jpg");
-
 }
 
 header

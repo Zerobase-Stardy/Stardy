@@ -30,7 +30,6 @@ import KakaoHandle from "./components/KakaoHandle";
 
 function App() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.userinfo.value);
 
   useEffect(() => {
     const accessToken = cookies.load("accessToken");

@@ -14,10 +14,6 @@ const loginSlice = createSlice({
   reducers: {
     login: (state, action) => {
       state.value = action.payload;
-      // state.login = action.payload;
-      // state.email = action.payload;
-      // state.nickname = action.payload;
-      // state.point = action.payload;
     },
   },
 });
