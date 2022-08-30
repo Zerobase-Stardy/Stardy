@@ -1,14 +1,8 @@
 package com.github.backend.service.impl;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-
 import com.github.backend.persist.member.Member;
-import com.github.backend.persist.post.Post;
 import com.github.backend.persist.member.repository.MemberRepository;
+import com.github.backend.persist.post.Post;
 import com.github.backend.persist.post.repository.PostRepository;
 import com.github.backend.service.post.impl.PostServiceImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +14,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class PostServiceImplTest {
@@ -59,12 +59,12 @@ public class PostServiceImplTest {
         ArgumentCaptor<Post> captor = ArgumentCaptor.forClass(
                 Post.class);
         //when
-        postService.registerPost(
-                member.getEmail(),
-                post.getTitle(),
-                post.getContent(),
-                post.getBoardKind()
-        );
+//        postService.registerPost(
+//                member.getEmail(),
+//                post.getTitle(),
+//                post.getContent(),
+//                post.getBoardKind()
+//        );
 
         //then
         verify(postRepository).save(captor.capture());
