@@ -1,39 +1,43 @@
 package com.github.backend.web.myCourse.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.backend.config.SecurityConfig;
+import com.github.backend.dto.myCourse.MyCourseSearchDto.Info;
 import com.github.backend.security.jwt.JwtAccessDeniedHandler;
 import com.github.backend.security.jwt.JwtAuthenticationProvider;
 import com.github.backend.security.jwt.JwtEntryPoint;
 import com.github.backend.security.oauth.CustomOAuth2UserService;
 import com.github.backend.security.oauth.OAuth2AuthenticationFailureHandler;
 import com.github.backend.security.oauth.OAuth2AuthenticationSuccessHandler;
-import com.github.backend.service.myCourse.MyCourseUnlockService;
+import com.github.backend.service.myCourse.MyCourseBookmarkService;
+import com.github.backend.service.myCourse.MyCourseInfoSearchService;
 import com.github.backend.testUtils.WithMemberInfo;
-import com.github.backend.web.course.controller.CourseUnlockController;
+import com.github.backend.web.member.controller.MyCourseController;
+import java.util.ArrayList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(value = CourseUnlockController.class
+@WebMvcTest(value = MyCourseController.class
 	, includeFilters = {
 	@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)})
-class CourseUnlockControllerTest {
+class MyCourseControllerTest {
 
 	@Autowired
 	MockMvc mockMvc;
@@ -57,29 +61,57 @@ class CourseUnlockControllerTest {
 	JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
 	@MockBean
-	MyCourseUnlockService myCourseUnlockService;
+	MyCourseInfoSearchService myCourseInfoSearchService;
 
+	@MockBean
+	MyCourseBookmarkService myCourseBookmarkService;
 
-	@DisplayName("강의 해금 성공")
+	@DisplayName("내 강의 검색 성공")
 	@WithMemberInfo
 	@Test
-	void unlockCourse_success() throws Exception {
-		doNothing().when(myCourseUnlockService).unlockCourse(anyLong(),anyLong());
+	void searchMyCourse_success() throws Exception {
+		//given
+		ArrayList<Info> infos = new ArrayList<>();
 
-		ArgumentCaptor<Long> memberIdCaptor = ArgumentCaptor.forClass(Long.class);
-		ArgumentCaptor<Long> courseIdCaptor = ArgumentCaptor.forClass(Long.class);
+		for (long i = 0; i < 1; i++) {
+			Info info = Info.builder()
+				.courseId(i)
+				.build();
+
+			infos.add(info);
+		}
+		PageImpl<Info> expectedPage = new PageImpl<>(infos);
+
+		given(myCourseInfoSearchService.searchMyCourses(any(), any()))
+			.willReturn(expectedPage);
+
+		//when
+
+		//then
+		mockMvc.perform(get("/members/me/courses"))
+			.andDo(print())
+			.andExpect(jsonPath("$.status").value(200))
+			.andExpect(jsonPath("$.success").value(true))
+			.andExpect(jsonPath("$.data.content[0].courseId").value(0));
+	}
+
+	@DisplayName("내 강의 북마크 성공")
+	@WithMemberInfo
+	@Test
+	void toggleBookmark_success() throws Exception {
+	    //given
+		given(myCourseBookmarkService.toggleBookmark(any(), any()))
+			.willReturn(true);
 
 		//when
 		//then
-		mockMvc.perform(post("/courses/1/unlock"))
+		mockMvc.perform(post("/members/me/courses/1/bookmark"))
 			.andDo(print())
+			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.status").value(200))
-			.andExpect(jsonPath("$.success").value(true));
+			.andExpect(jsonPath("$.success").value(true))
+			.andExpect(jsonPath("$.data.bookmark").value(true));
 
-		verify(myCourseUnlockService).unlockCourse(memberIdCaptor.capture(),
-			courseIdCaptor.capture());
-
-		assertThat(memberIdCaptor.getValue()).isEqualTo(1L);
-		assertThat(courseIdCaptor.getValue()).isEqualTo(1L);
+		verify(myCourseBookmarkService).toggleBookmark(1L, 1L);
 	}
 }

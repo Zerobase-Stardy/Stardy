@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
-@Tag(name = "attendance",description = "내 출석 관련 API")
+@Tag(name = "My Attendance",description = "내 출석 관련 API")
 @RequiredArgsConstructor
 @RestController
 public class AttendanceController {
@@ -34,7 +34,7 @@ public class AttendanceController {
 	@Operation(
 		summary = "출석 체크", description = "하루에 한번 출석 체크. 출석 체크시 포인트 증가",
 		security = {@SecurityRequirement(name = "Authorization")},
-		tags = {"attendance"}
+		tags = {"My Attendance"}
 	)
 	@PostMapping("/members/me/attendances/daily")
 	public ResponseEntity<Result<?>> checkDailyAttendance(
@@ -46,7 +46,7 @@ public class AttendanceController {
 	@Operation(
 		summary = "출석 조회", description = "원하는 기간만큼의 출석 조회 가능" ,
 		security = {@SecurityRequirement(name = "Authorization")},
-		tags = {"attendance"}
+		tags = {"My Attendance"}
 	)
 	@GetMapping("/members/me/attendances")
 	public ResponseEntity<Result<?>> getAttendances(

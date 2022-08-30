@@ -1,5 +1,6 @@
 package com.github.backend.dto.member;
 
+import com.github.backend.persist.member.Member;
 import com.github.backend.persist.member.querydsl.condition.MemberSearchCondition;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,4 +21,13 @@ public class SearchMember {
                 .point(getPoint())
                 .build();
     }
+
+    public static SearchMember of(Member member) {
+        return SearchMember.builder()
+            .email(member.getEmail())
+            .nickname(member.getNickname())
+            .point(member.getPoint())
+            .build();
+    }
+
 }
