@@ -9,6 +9,8 @@ export default function Editor() {
 
   return (
     <Main>
+      <Effect />
+
       <Wrap>
         <RedBox>
           <Top>
@@ -79,7 +81,12 @@ const Main = styled.main`
   color: #b8bbcc;
   background-image: url("https://static.starcraft.com/production/images/site/backdrops/backdrop-stars.890c5929ec65159852db3a0fab438e7aaa5c210f.jpg");
 `;
-
+const Effect = styled.div`
+  width: 593px;
+  height: 53px;
+  margin: 0 auto;
+  background-image: url("https://static.starcraft.com/production/images/site/dividers/divider-terminal-detail.3a193b6d6e3a7d62cee253b2a245bbdd73bea9b6.png");
+`;
 const Wrap = styled.div`
   width: 60%;
   margin: 0 auto;

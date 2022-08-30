@@ -6,7 +6,6 @@ export default function KaKaoButton() {
   return (
     <GoogleWrap>
       <a href="https://dokuny.blog/oauth2/authorization/google">
-
         <GoogleBtn>
           <FcGoogle />
           <p>구글로 로그인</p>

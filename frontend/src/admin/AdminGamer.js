@@ -13,7 +13,6 @@ export default function AdminGamer() {
   const [indexOfLastPost, setIndexOfLastPost] = React.useState(0);
   const [indexOfFirstPost, setIndexOfFirstPost] = React.useState(0);
   const [currentPosts, setCurrentPosts] = React.useState(0);
-
   const [inputs, setInputs] = useState({
     name: "",
     race: "",
@@ -53,7 +52,6 @@ export default function AdminGamer() {
   };
 
   //axios Delete
-
   function deleteHandler(id) {
     setGamers(gamers.filter((e) => e.id !== id));
 

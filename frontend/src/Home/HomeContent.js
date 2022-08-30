@@ -2,10 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import Pie from "../components/Pie";
 import HomeLecture from "./HomeLecture";
-export default function HomeContent() {
+export default function HomeCategory() {
   return (
     <MainArea>
       <StarBackground>
+        <Effect />
         <BrownBox>
           <RedBox>
             <PieBox>
@@ -54,11 +55,15 @@ const MainArea = styled.div``;
 
 const StarBackground = styled.div`
   width: 100%;
-  height: 400px;
   padding: 50px 0;
   background-image: url("https://static.starcraft.com/production/images/site/backdrops/backdrop-stars.890c5929ec65159852db3a0fab438e7aaa5c210f.jpg");
 `;
-
+const Effect = styled.div`
+  width: 593px;
+  height: 53px;
+  margin: 0 auto;
+  background-image: url("https://static.starcraft.com/production/images/site/dividers/divider-terminal-detail.3a193b6d6e3a7d62cee253b2a245bbdd73bea9b6.png");
+`;
 const BrownBox = styled.div`
   width: 70%;
   padding: 3px;

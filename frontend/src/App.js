@@ -22,6 +22,7 @@ import Zerg from "./Races/Zerg";
 import Terran from "./Races/Terran";
 import Protoss from "./Races/Protoss";
 import Error401 from "./pages/Error401";
+import KakaoHandle from "./components/KakaoHandle";
 
 function App() {
   const [openModal, setOpenModal] = useState(false);
@@ -46,6 +47,7 @@ function App() {
         <Route path={"/post"} element={<Post />}></Route>
         <Route path={"/post/write"} element={<AddPost />}></Route>
         <Route path={"/post/:id"} element={<PostDetail />}></Route>
+        <Route path={"/oauth/kakao"} element={<KakaoHandle />}></Route>
 
         <Route path={"/mylecture"} element={<MyLecture />}></Route>
         <Route path={"/mypage"} element={<Mypage />}></Route>

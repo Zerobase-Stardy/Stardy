@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import NavHoverMenu from "../components/NavHoverMenu";
-
 const LinkItem = ({ active, children, to }) => (
   <Link
     to={to}
