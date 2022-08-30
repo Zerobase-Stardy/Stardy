@@ -7,7 +7,6 @@ import com.github.backend.persist.course.Course;
 
 
 import com.github.backend.persist.course.repository.querydsl.condition.CourseSearchCondition;
-import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -26,7 +25,7 @@ public class CourseSearchRepository {
 
     public Page<Course> searchByWhere(CourseSearchCondition condition, Pageable pageable){
 
-        QueryResults<Course> result = queryFactory.select(course)
+        List<Course> result = queryFactory.select(course)
                 .from(course)
                 .where(
                         titleContain(condition.getTitle()),
@@ -35,13 +34,11 @@ public class CourseSearchRepository {
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetchResults();
+                .fetch();
 
 
-        return new PageImpl<>(result.getResults(), pageable, result.getTotal());
+        return new PageImpl<>(result, pageable, getTotalPage(condition));
     }
-
-
 
 
     private BooleanExpression titleContain(String title){
@@ -54,5 +51,18 @@ public class CourseSearchRepository {
 
     private BooleanExpression raceEq(String race){
         return hasText(race) ? course.race.eq(race) : null;
+    }
+
+    private Long getTotalPage(CourseSearchCondition condition){
+        Long count = queryFactory.select(course.count())
+                .from(course)
+                .where(
+                        titleContain(condition.getTitle()),
+                        levelEq(condition.getLevel()),
+                        raceEq(condition.getRace())
+                )
+                .fetchOne();
+
+        return count == null ? 0 : count;
     }
 }

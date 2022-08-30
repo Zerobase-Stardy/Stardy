@@ -1,14 +1,11 @@
 package com.github.backend.persist.gamer.repository.querydsl;
 
 
-import static com.github.backend.persist.course.QCourse.course;
 import static com.github.backend.persist.gamer.QGamer.gamer;
 import static org.springframework.util.StringUtils.hasText;
 
-import com.github.backend.persist.course.Course;
 import com.github.backend.persist.gamer.Gamer;
 import com.github.backend.persist.gamer.repository.querydsl.condition.GamerSearchCondition;
-import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -25,7 +22,7 @@ public class GamerSearchRepository {
 
     public Page<Gamer> searchByWhere(GamerSearchCondition condition, Pageable pageable){
 
-        QueryResults<Gamer> result = queryFactory.select(gamer)
+        List<Gamer> result = queryFactory.select(gamer)
                 .from(gamer)
                 .where(
                         gamerNameEq(condition.getName()),
@@ -34,9 +31,10 @@ public class GamerSearchRepository {
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetchResults();
+                .fetch();
 
-        return new PageImpl<>(result.getResults(), pageable, result.getTotal());
+
+        return new PageImpl<>(result, pageable, getTotalPage(condition));
     }
 
     private BooleanExpression gamerNameEq(String name){
@@ -49,6 +47,19 @@ public class GamerSearchRepository {
 
     private BooleanExpression gamerNickname(String nickname){
         return hasText(nickname) ? gamer.nickname.eq(nickname) : null;
+    }
+
+    private Long getTotalPage(GamerSearchCondition condition){
+        Long count = queryFactory.select(gamer.count())
+                .from(gamer)
+                .where(
+                        gamerNameEq(condition.getName()),
+                        raceEq(condition.getRace()),
+                        gamerNickname(condition.getNickname())
+                )
+                .fetchOne();
+
+        return count == null ? 0 : count;
     }
 
 }
