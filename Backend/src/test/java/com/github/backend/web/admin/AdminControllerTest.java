@@ -1,4 +1,4 @@
-package com.github.backend.web;
+package com.github.backend.web.admin;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -48,6 +48,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -232,20 +233,20 @@ public class AdminControllerTest {
                 .nickname("rush")
                 .introduce("단단한 테란")
                 .build();
-        List<GamerInfoOutputDto.Info> gamerList = new ArrayList<>();
-        gamerList.add(GamerInfoOutputDto.Info.of(gamer));
+        List<Gamer> gamerList = new ArrayList<>();
+        gamerList.add(gamer);
 
-        given(adminService.getGamerList(any()))
-                .willReturn(gamerList);
+        given(adminService.getGamerList(any(), any()))
+                .willReturn(new PageImpl<>(gamerList).map(GamerInfoOutputDto.Info::of));
         //when
 
         //then
         mockMvc.perform(get("/admin-management/gamers"))
                 .andDo(print())
-                .andExpect(jsonPath("$.data[0].name").value(gamer.getName()))
-                .andExpect(jsonPath("$.data[0].race").value(gamer.getRace()))
-                .andExpect(jsonPath("$.data[0].nickname").value(gamer.getNickname()))
-                .andExpect(jsonPath("$.data[0].introduce").value(gamer.getIntroduce()))
+                .andExpect(jsonPath("$.data.content[0].name").value(gamer.getName()))
+                .andExpect(jsonPath("$.data.content[0].race").value(gamer.getRace()))
+                .andExpect(jsonPath("$.data.content[0].nickname").value(gamer.getNickname()))
+                .andExpect(jsonPath("$.data.content[0].introduce").value(gamer.getIntroduce()))
                 .andExpect(status().isOk());
     }
 
@@ -371,23 +372,38 @@ public class AdminControllerTest {
                 .price(10L)
                 .build();
 
-        List<CourseInfoOutputDto.Info> courseList = new ArrayList<>();
-        courseList.add(CourseInfoOutputDto.Info.of(course));
+        Course course2 = Course.builder()
+                .id(2L)
+                .gamer(gamer)
+                .title("벙커링")
+                .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
+                .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
+                .comment("세상에서 제일 쉬운 8배럭 벙커링 강의")
+                .level("입문")
+                .race("테란")
+                .price(10L)
+                .build();
 
-        given(adminService.searchCourseList(any()))
-                .willReturn(courseList);
+        List<Course> courseList = new ArrayList<>();
+        courseList.add(course);
+        courseList.add(course2);
+
+
+
+        given(adminService.searchCourseList(any(), any()))
+                .willReturn(new PageImpl<>(courseList).map(CourseInfoOutputDto.Info::of));
         //when
 
         //then
         mockMvc.perform(get("/admin-management/courses"))
                 .andDo(print())
-                .andExpect(jsonPath("$.data[0].title").value(course.getTitle()))
-                .andExpect(jsonPath("$.data[0].videoUrl").value(course.getVideoUrl()))
-                .andExpect(jsonPath("$.data[0].thumbnailUrl").value(course.getThumbnailUrl()))
-                .andExpect(jsonPath("$.data[0].comment").value(course.getComment()))
-                .andExpect(jsonPath("$.data[0].level").value(course.getLevel()))
-                .andExpect(jsonPath("$.data[0].race").value(course.getRace()))
-                .andExpect(jsonPath("$.data[0].price").value(course.getPrice()))
+                .andExpect(jsonPath("$.data.content[0].title").value(course.getTitle()))
+                .andExpect(jsonPath("$.data.content[0].videoUrl").value(course.getVideoUrl()))
+                .andExpect(jsonPath("$.data.content[0].thumbnailUrl").value(course.getThumbnailUrl()))
+                .andExpect(jsonPath("$.data.content[0].comment").value(course.getComment()))
+                .andExpect(jsonPath("$.data.content[0].level").value(course.getLevel()))
+                .andExpect(jsonPath("$.data.content[0].race").value(course.getRace()))
+                .andExpect(jsonPath("$.data.content[0].price").value(course.getPrice()))
                 .andExpect(status().isOk());
     }
 
@@ -467,6 +483,7 @@ public class AdminControllerTest {
     void testSuccessGetMemberList() throws Exception {
         //given
         Member member = Member.builder()
+                .id(1L)
                 .email("email@kakao.com")
                 .nickname("nick")
                 .status(MemberStatus.PERMITTED)
@@ -475,22 +492,22 @@ public class AdminControllerTest {
                 .point(100)
                 .build();
 
-        List<MemberSearchOutputDto.Info> memberList = new ArrayList<>();
-        memberList.add(MemberSearchOutputDto.Info.of(member));
+        List<Member> memberList = new ArrayList<>();
+        memberList.add(member);
 
-        given(adminService.searchMemberList(any()))
-                .willReturn(memberList);
+        given(adminService.searchMemberList(any(), any()))
+                .willReturn(new PageImpl<>(memberList).map(MemberSearchOutputDto.Info::of));
         //when
 
         //then
         mockMvc.perform(get("/admin-management/members"))
                 .andDo(print())
-                .andExpect(jsonPath("$.data[0].email").value(member.getEmail()))
-                .andExpect(jsonPath("$.data[0].nickname").value(member.getNickname()))
-                .andExpect(jsonPath("$.data[0].status").value(member.getStatus().name()))
-                .andExpect(jsonPath("$.data[0].authType").value(member.getAuthType().name()))
-                .andExpect(jsonPath("$.data[0].role").value(member.getRole().name()))
-                .andExpect(jsonPath("$.data[0].point").value(member.getPoint()))
+                .andExpect(jsonPath("$.data.content[0].email").value(member.getEmail()))
+                .andExpect(jsonPath("$.data.content[0].nickname").value(member.getNickname()))
+                .andExpect(jsonPath("$.data.content[0].status").value(member.getStatus().name()))
+                .andExpect(jsonPath("$.data.content[0].authType").value(member.getAuthType().name()))
+                .andExpect(jsonPath("$.data.content[0].role").value(member.getRole().name()))
+                .andExpect(jsonPath("$.data.content[0].point").value(member.getPoint()))
                 .andExpect(status().isOk());
     }
 

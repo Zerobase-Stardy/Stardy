@@ -1,4 +1,4 @@
-package com.github.backend.admin.service;
+package com.github.backend.service.admin;
 
 import com.github.backend.dto.admin.RegisterAdminOutputDto;
 import com.github.backend.dto.course.SearchCourse;
@@ -30,6 +30,7 @@ import com.github.backend.persist.course.Course;
 import com.github.backend.persist.course.repository.CourseRepository;
 import com.github.backend.persist.course.repository.querydsl.CourseSearchRepository;
 import com.github.backend.service.admin.impl.AdminService;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +42,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -213,14 +215,18 @@ public class AdminServiceTest {
     void testGetGamerList(){
         //given
         Gamer gamer = Gamer.builder()
+                .id(1L)
                 .name("유영진")
                 .race("테란")
                 .nickname("rush")
                 .introduce("단단한 테란")
                 .build();
 
+
+
         List<Gamer> gamers = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
+            gamer.setId((long) (i + 1));
             gamers.add(gamer);
         }
 
@@ -230,96 +236,129 @@ public class AdminServiceTest {
                 .nickname(gamer.getNickname())
                 .build();
 
-        given(gamerSearchRepository.searchByWhere(any()))
-                .willReturn(gamers);
+        Pageable pageable = PageRequest.of(1, 2, Sort.Direction.DESC, "id");
+
+        given(gamerSearchRepository.searchByWhere(any(), any()))
+                .willReturn(new PageImpl<>(gamers));
 
         //when
-        List<GamerInfoOutputDto.Info> findGamerList = adminService.getGamerList(searchGamer);
+        Page<GamerInfoOutputDto.Info> findGamerList = adminService.getGamerList(searchGamer, pageable);
 
         //then
-        assertEquals(2, findGamerList.size());
-        assertEquals(gamer.getName(), findGamerList.get(0).getName());
-        assertEquals(gamer.getNickname(), findGamerList.get(0).getNickname());
-        assertEquals(gamer.getRace(), findGamerList.get(0).getRace());
-        assertEquals(gamer.getIntroduce(), findGamerList.get(0).getIntroduce());
+        assertEquals(findGamerList.getContent().size(), gamers.size());
+        assertEquals(findGamerList.getContent().get(0).getId(), gamer.getId());
     }
 
     @Test
     @DisplayName("게이머 이름 검색 조회 성공")
     void testGetGamerNameList(){
         //given
-        List<Gamer> gamers = new ArrayList<>();
         Gamer gamer = Gamer.builder()
                 .name("유영진")
+                .race("테란")
+                .nickname("rush")
+                .introduce("단단한 테란")
                 .build();
 
+
+
+        List<Gamer> gamers = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
+            gamer.setId((long) (i + 1));
             gamers.add(gamer);
         }
-        given(gamerSearchRepository.searchByWhere(any()))
-                .willReturn(gamers);
 
         SearchGamer searchGamer = SearchGamer.builder()
                 .name(gamer.getName())
+                .race(gamer.getRace())
+                .nickname(gamer.getNickname())
                 .build();
 
+        given(gamerSearchRepository.searchByWhere(any(), any()))
+                .willReturn(new PageImpl<>(gamers));
+
+        Pageable pageable = PageRequest.of(1, 2, Sort.Direction.DESC, "id");
+
         //when
-        List<GamerInfoOutputDto.Info> gamerNameList = adminService.getGamerList(searchGamer);
+        Page<GamerInfoOutputDto.Info> gamerNameList = adminService.getGamerList(searchGamer, pageable);
 
         //then
-        assertEquals(gamerNameList.size(), 2);
-        assertEquals(gamerNameList.get(0).getName(), gamer.getName());
+        assertEquals(gamerNameList.getContent().size(), gamers.size());
+        assertEquals(gamerNameList.getContent().get(0).getName(), gamer.getName());
     }
 
     @Test
     @DisplayName("게이머 종족 검색 조회 성공")
     void testGetGamerRaceList(){
         //given
-        List<Gamer> gamers = new ArrayList<>();
         Gamer gamer = Gamer.builder()
+                .name("유영진")
                 .race("테란")
+                .nickname("rush")
+                .introduce("단단한 테란")
                 .build();
 
+        List<Gamer> gamers = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
+            gamer.setId((long) (i + 1));
             gamers.add(gamer);
         }
+
         SearchGamer searchGamer = SearchGamer.builder()
                 .name(gamer.getName())
+                .race(gamer.getRace())
+                .nickname(gamer.getNickname())
                 .build();
 
-        given(gamerSearchRepository.searchByWhere(any()))
-                .willReturn(gamers);
+        given(gamerSearchRepository.searchByWhere(any(), any()))
+                .willReturn(new PageImpl<>(gamers));
+
+        Pageable pageable = PageRequest.of(1, 2, Sort.Direction.DESC, "id");
 
         //when
-        List<GamerInfoOutputDto.Info> gamerRaceList = adminService.getGamerList(searchGamer);
+        Page<GamerInfoOutputDto.Info> gamerRaceList = adminService.getGamerList(searchGamer, pageable);
 
         //then
-        assertEquals(gamerRaceList.size(), 2);
-        assertEquals(gamerRaceList.get(0).getRace(), gamer.getRace());
+        assertEquals(gamerRaceList.getContent().size(), gamers.size());
+        assertEquals(gamerRaceList.getContent().get(0).getRace(), gamer.getRace());
     }
 
     @Test
     @DisplayName("게이머 닉네임 검색 조회 성공")
     void testGetGamerNickNameList(){
         //given
-        List<Gamer> gamers = new ArrayList<>();
         Gamer gamer = Gamer.builder()
+                .name("유영진")
+                .race("테란")
                 .nickname("rush")
+                .introduce("단단한 테란")
                 .build();
 
-        gamers.add(gamer);
+
+
+        List<Gamer> gamers = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            gamer.setId((long) (i + 1));
+            gamers.add(gamer);
+        }
+
         SearchGamer searchGamer = SearchGamer.builder()
+                .name(gamer.getName())
+                .race(gamer.getRace())
                 .nickname(gamer.getNickname())
                 .build();
 
-        given(gamerSearchRepository.searchByWhere(any()))
-                .willReturn(gamers);
+        given(gamerSearchRepository.searchByWhere(any(), any()))
+                .willReturn(new PageImpl<>(gamers));
+
+        Pageable pageable = PageRequest.of(1, 2, Sort.Direction.DESC, "id");
+
         //when
-        List<GamerInfoOutputDto.Info> gamerNicknameList = adminService.getGamerList(searchGamer);
+        Page<GamerInfoOutputDto.Info> gamerNicknameList = adminService.getGamerList(searchGamer, pageable);
 
         //then
-        assertEquals(gamerNicknameList.size(), 1);
-        assertEquals(gamerNicknameList.get(0).getNickname(), gamer.getNickname());
+        assertEquals(gamerNicknameList.getContent().size(), gamers.size());
+        assertEquals(gamerNicknameList.getContent().get(0).getNickname(), gamer.getNickname());
     }
 
 
@@ -541,6 +580,7 @@ public class AdminServiceTest {
                 .build();
 
         Course course = Course.builder()
+                .id(1L)
                 .gamer(gamer)
                 .title("벙커링")
                 .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
@@ -551,23 +591,37 @@ public class AdminServiceTest {
                 .price(10L)
                 .build();
 
-        for (int i = 0; i < 2; i++) {
-            courses.add(course);
-        }
-        given(courseSearchRepository.searchByWhere(any()))
-                .willReturn(courses);
+        Course course2 = Course.builder()
+                .id(2L)
+                .gamer(gamer)
+                .title("벙커링")
+                .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
+                .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
+                .comment("세상에서 제일 쉬운 8배럭 벙커링 강의")
+                .level("입문")
+                .race("테란")
+                .price(10L)
+                .build();
+
+        courses.add(course);
+        courses.add(course2);
+
+        given(courseSearchRepository.searchByWhere(any(), any()))
+                .willReturn(new PageImpl<>(courses));
 
         SearchCourse searchCourse = SearchCourse.
                 builder()
                 .title(course.getTitle())
                 .build();
 
+        Pageable pageable = PageRequest.of(1, 2, Sort.Direction.DESC, "id");
+
         //when
-        List<CourseInfoOutputDto.Info> courseList = adminService.searchCourseList(searchCourse);
+        Page<CourseInfoOutputDto.Info> courseList = adminService.searchCourseList(searchCourse, pageable);
 
         //then
-        assertEquals(courseList.size(), 2);
-        assertEquals(courseList.get(0).getTitle(), course.getTitle());
+        assertEquals(courseList.getContent().get(0).getTitle(), course.getTitle());
+        assertEquals(courseList.getContent().get(1).getTitle(), course2.getTitle());
     }
 
     @Test
@@ -581,6 +635,7 @@ public class AdminServiceTest {
                 .build();
 
         Course course = Course.builder()
+                .id(1L)
                 .gamer(gamer)
                 .title("벙커링")
                 .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
@@ -591,23 +646,39 @@ public class AdminServiceTest {
                 .price(10L)
                 .build();
 
-        for (int i = 0; i < 2; i++) {
-            courses.add(course);
-        }
-        given(courseSearchRepository.searchByWhere(any()))
-                .willReturn(courses);
+        Course course2 = Course.builder()
+                .id(2L)
+                .gamer(gamer)
+                .title("벙커링")
+                .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
+                .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
+                .comment("세상에서 제일 쉬운 8배럭 벙커링 강의")
+                .level("입문")
+                .race("테란")
+                .price(10L)
+                .build();
+
+        courses.add(course);
+        courses.add(course2);
+
+
+        given(courseSearchRepository.searchByWhere(any(), any()))
+                .willReturn(new PageImpl<>(courses));
 
         SearchCourse searchCourse = SearchCourse.
                 builder()
-                .level(course.getLevel())
+                .title(course.getTitle())
                 .build();
 
+        Pageable pageable = PageRequest.of(1, 2, Sort.Direction.DESC, "id");
+
         //when
-        List<CourseInfoOutputDto.Info> courseList = adminService.searchCourseList(searchCourse);
+        Page<CourseInfoOutputDto.Info> courseList = adminService.searchCourseList(searchCourse, pageable);
+
 
         //then
-        assertEquals(courseList.size(), 2);
-        assertEquals(courseList.get(0).getLevel(), course.getLevel());
+        assertEquals(courseList.getContent().get(0).getLevel(), course.getLevel());
+        assertEquals(courseList.getContent().get(1).getLevel(), course2.getLevel());
     }
 
 
@@ -622,6 +693,7 @@ public class AdminServiceTest {
                 .build();
 
         Course course = Course.builder()
+                .id(1L)
                 .gamer(gamer)
                 .title("벙커링")
                 .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
@@ -632,23 +704,39 @@ public class AdminServiceTest {
                 .price(10L)
                 .build();
 
-        for (int i = 0; i < 2; i++) {
-            courses.add(course);
-        }
-        given(courseSearchRepository.searchByWhere(any()))
-                .willReturn(courses);
+        Course course2 = Course.builder()
+                .id(2L)
+                .gamer(gamer)
+                .title("벙커링")
+                .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
+                .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
+                .comment("세상에서 제일 쉬운 8배럭 벙커링 강의")
+                .level("입문")
+                .race("테란")
+                .price(10L)
+                .build();
+
+        courses.add(course);
+        courses.add(course2);
+
+
+        given(courseSearchRepository.searchByWhere(any(), any()))
+                .willReturn(new PageImpl<>(courses));
 
         SearchCourse searchCourse = SearchCourse.
                 builder()
-                .race(course.getRace())
+                .title(course.getTitle())
                 .build();
 
+        Pageable pageable = PageRequest.of(1, 2, Sort.Direction.DESC, "id");
+
         //when
-        List<CourseInfoOutputDto.Info> courseList = adminService.searchCourseList(searchCourse);
+        Page<CourseInfoOutputDto.Info> courseList = adminService.searchCourseList(searchCourse, pageable);
+
 
         //then
-        assertEquals(courseList.size(), 2);
-        assertEquals(courseList.get(0).getRace(), course.getRace());
+        assertEquals(courseList.getContent().get(0).getRace(), course.getRace());
+        assertEquals(courseList.getContent().get(1).getRace(), course2.getRace());
     }
 
     @Test
@@ -937,6 +1025,7 @@ public class AdminServiceTest {
         //given
         List<Member> members = new ArrayList<>();
         Member member = Member.builder()
+                .id(1L)
                 .email("email@kakao.com")
                 .nickname("nick")
                 .status(MemberStatus.PERMITTED)
@@ -945,27 +1034,37 @@ public class AdminServiceTest {
                 .point(100)
                 .build();
 
-        for (int i = 0; i < 2; i++) {
-            members.add(member);
-        }
-        given(memberSearchRepository.searchByWhere(any()))
-                .willReturn(members);
+        Member member2 = Member.builder()
+                .id(2L)
+                .email("email@kakao.com")
+                .nickname("nick")
+                .status(MemberStatus.PERMITTED)
+                .authType(AuthType.KAKAO)
+                .role(Role.ROLE_USER)
+                .point(100)
+                .build();
 
+        members.add(member);
+        members.add(member2);
+
+        given(memberSearchRepository.searchByWhere(any(), any()))
+                .willReturn(new PageImpl<>(members));
+
+        Pageable pageable = PageRequest.of(1, 2, Sort.Direction.DESC, "id");
 
         //when
-        List<MemberSearchOutputDto.Info> memberList = adminService.searchMemberList(
+        Page<MemberSearchOutputDto.Info> memberList = adminService.searchMemberList(
                 SearchMember.builder()
                 .email(member.getEmail())
                 .nickname(member.getNickname())
                 .point(member.getPoint())
-                .build()
+                .build(), pageable
         );
 
         //then
-        assertEquals(memberList.size(), 2);
-        assertEquals(memberList.get(0).getEmail(), member.getEmail());
-        assertEquals(memberList.get(0).getNickname(), member.getNickname());
-        assertEquals(memberList.get(0).getPoint(), member.getPoint());
+        assertEquals(memberList.getContent().size(), 2);
+        assertEquals(memberList.getContent().get(0).getNickname(), member.getNickname());
+        assertEquals(memberList.getContent().get(1).getNickname(), member2.getNickname());
     }
 
 
