@@ -19,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -86,23 +87,36 @@ class CourseControllerTest {
                 .price(10L)
                 .build();
 
-        List<CourseInfoOutputDto.Info> courseList = new ArrayList<>();
-        courseList.add(CourseInfoOutputDto.Info.of(course));
+        Course course2 = Course.builder()
+                .id(2L)
+                .gamer(gamer)
+                .title("벙커링")
+                .videoUrl("https://www.youtube.com/watch?v=2rpu0f-qog4")
+                .thumbnailUrl("https://img.youtube.com/vi/2rpu0f-qog4/default.jpg")
+                .comment("세상에서 제일 쉬운 8배럭 벙커링 강의")
+                .level("입문")
+                .race("테란")
+                .price(10L)
+                .build();
 
-        given(courseService.searchCourseList(any()))
-                .willReturn(courseList);
+        List<Course> courseList = new ArrayList<>();
+        courseList.add(course);
+        courseList.add(course2);
+
+        given(courseService.searchCourseList(any(), any()))
+                .willReturn(new PageImpl<>(courseList).map(CourseInfoOutputDto.Info::of));
         //when
 
         //then
         mockMvc.perform(get("/course/courses"))
                 .andDo(print())
-                .andExpect(jsonPath("$.data[0].title").value(course.getTitle()))
-                .andExpect(jsonPath("$.data[0].videoUrl").value(course.getVideoUrl()))
-                .andExpect(jsonPath("$.data[0].thumbnailUrl").value(course.getThumbnailUrl()))
-                .andExpect(jsonPath("$.data[0].comment").value(course.getComment()))
-                .andExpect(jsonPath("$.data[0].level").value(course.getLevel()))
-                .andExpect(jsonPath("$.data[0].race").value(course.getRace()))
-                .andExpect(jsonPath("$.data[0].price").value(course.getPrice()))
+                .andExpect(jsonPath("$.data.content[0].title").value(course.getTitle()))
+                .andExpect(jsonPath("$.data.content[0].videoUrl").value(course.getVideoUrl()))
+                .andExpect(jsonPath("$.data.content[0].thumbnailUrl").value(course.getThumbnailUrl()))
+                .andExpect(jsonPath("$.data.content[0].comment").value(course.getComment()))
+                .andExpect(jsonPath("$.data.content[0].level").value(course.getLevel()))
+                .andExpect(jsonPath("$.data.content[0].race").value(course.getRace()))
+                .andExpect(jsonPath("$.data.content[0].price").value(course.getPrice()))
                 .andExpect(status().isOk());
     }
 }

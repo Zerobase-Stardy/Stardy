@@ -8,6 +8,8 @@ import com.github.backend.persist.course.repository.CourseRepository;
 import com.github.backend.exception.course.code.CourseErrorCode;
 import com.github.backend.persist.course.repository.querydsl.CourseSearchRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +23,10 @@ public class CourseService {
 
 
     @Transactional
-    public List<CourseInfoOutputDto.Info> searchCourseList(SearchCourse searchCourse){
+    public Page<CourseInfoOutputDto.Info> searchCourseList(SearchCourse searchCourse, Pageable pageable){
 
-        return courseSearchRepository.searchByWhere(searchCourse.toCondition())
-                .stream()
-                .map(CourseInfoOutputDto.Info::of)
-                .collect(Collectors.toList());
+        return courseSearchRepository.searchByWhere(searchCourse.toCondition(), pageable)
+                .map(CourseInfoOutputDto.Info::of);
     }
 
 }

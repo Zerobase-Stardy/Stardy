@@ -16,6 +16,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -191,9 +195,13 @@ public class AdminController {
                     )
             })
     @GetMapping("/gamers")
-    public ResponseEntity<Result<?>> getGamerList(SearchGamer searchGamer){
+    public ResponseEntity<Result<?>> getGamerList(
+            SearchGamer searchGamer,
+            @PageableDefault(size=10, sort="id", direction = Sort.Direction.ASC)
+                    Pageable pageable)
+    {
 
-        List<GamerInfoOutputDto.Info> gamersInfo = adminService.getGamerList(searchGamer);
+        Page<GamerInfoOutputDto.Info> gamersInfo = adminService.getGamerList(searchGamer, pageable);
 
         return ResponseEntity.ok().body(
                 Result.builder()
@@ -421,15 +429,16 @@ public class AdminController {
                     )
             })
     @GetMapping("/courses")
-    public ResponseEntity<Result<?>> getCourseList(SearchCourse searchCourse){
+    public ResponseEntity<Result<?>> getCourseList(SearchCourse searchCourse,
+                                                   @PageableDefault(size=10, sort="id", direction = Sort.Direction.ASC) Pageable pageable){
 
-        List<CourseInfoOutputDto.Info> Course = adminService.searchCourseList(searchCourse);
+        Page<CourseInfoOutputDto.Info> course = adminService.searchCourseList(searchCourse, pageable);
 
         return ResponseEntity.ok().body(
                 Result.builder()
                         .status(200)
                         .success(true)
-                        .data(Course)
+                        .data(course)
                         .build()
         );
     }
@@ -615,9 +624,12 @@ public class AdminController {
                     )
             })
     @GetMapping("/members")
-    public ResponseEntity<Result<?>> getMembers(SearchMember searchMember){
-
-        List<MemberSearchOutputDto.Info> members = adminService.searchMemberList(searchMember);
+    public ResponseEntity<Result<?>> getMembers(
+            SearchMember searchMember,
+            @PageableDefault(size=10, sort="id", direction = Sort.Direction.ASC)
+                    Pageable pageable)
+    {
+        Page<MemberSearchOutputDto.Info> members = adminService.searchMemberList(searchMember, pageable);
 
         return ResponseEntity.ok().body(
                 Result.builder()

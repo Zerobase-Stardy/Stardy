@@ -11,6 +11,9 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 
@@ -19,16 +22,24 @@ import org.springframework.stereotype.Repository;
 public class CourseSearchRepository {
     private final JPAQueryFactory queryFactory;
 
-    public List<Course> searchByWhere(CourseSearchCondition condition){
 
-        return queryFactory.selectFrom(course)
+    public Page<Course> searchByWhere(CourseSearchCondition condition, Pageable pageable){
+
+        List<Course> result = queryFactory.select(course)
+                .from(course)
                 .where(
                         titleContain(condition.getTitle()),
                         levelEq(condition.getLevel()),
                         raceEq(condition.getRace())
                 )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
+
+
+        return new PageImpl<>(result, pageable, getTotalPage(condition));
     }
+
 
     private BooleanExpression titleContain(String title){
         return hasText(title) ? course.title.contains(title) : null;
@@ -40,5 +51,18 @@ public class CourseSearchRepository {
 
     private BooleanExpression raceEq(String race){
         return hasText(race) ? course.race.eq(race) : null;
+    }
+
+    private Long getTotalPage(CourseSearchCondition condition){
+        Long count = queryFactory.select(course.count())
+                .from(course)
+                .where(
+                        titleContain(condition.getTitle()),
+                        levelEq(condition.getLevel()),
+                        raceEq(condition.getRace())
+                )
+                .fetchOne();
+
+        return count == null ? 0 : count;
     }
 }

@@ -35,6 +35,8 @@ import com.github.backend.dto.course.UpdateCourse;
 
 import com.github.backend.security.jwt.TokenService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +47,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AdminService {
+
 
     private final AdminRepository adminRepository;
     private final GamerRepository gamerRepository;
@@ -141,11 +144,10 @@ public class AdminService {
      */
 
     @Transactional
-    public List<GamerInfoOutputDto.Info> getGamerList(SearchGamer searchGamer){
-        return gamerSearchRepository.searchByWhere(searchGamer.toCondition())
-                .stream()
-                .map(GamerInfoOutputDto.Info::of)
-                .collect(Collectors.toList());
+    public Page<GamerInfoOutputDto.Info> getGamerList(SearchGamer searchGamer, Pageable pageable){
+
+        return gamerSearchRepository.searchByWhere(searchGamer.toCondition(), pageable)
+                .map(GamerInfoOutputDto.Info::of);
     }
 
     /**
@@ -268,12 +270,11 @@ public class AdminService {
     }
 
     @Transactional
-    public List<CourseInfoOutputDto.Info> searchCourseList(SearchCourse searchCourse){
+    public Page<CourseInfoOutputDto.Info> searchCourseList(SearchCourse searchCourse, Pageable pageable){
 
-        return courseSearchRepository.searchByWhere(searchCourse.toCondition())
-                .stream()
-                .map(CourseInfoOutputDto.Info::of)
-                .collect(Collectors.toList());
+        return courseSearchRepository.searchByWhere(searchCourse.toCondition(), pageable)
+                .map(CourseInfoOutputDto.Info::of);
+
     }
 
     /**
@@ -333,12 +334,10 @@ public class AdminService {
      * - point : 포인트
      */
     @Transactional
-    public List<MemberSearchOutputDto.Info> searchMemberList(SearchMember searchMember){
+    public Page<MemberSearchOutputDto.Info> searchMemberList(SearchMember searchMember, Pageable pageable){
 
-        return memberSearchRepository.searchByWhere(searchMember.toCondition())
-                .stream()
-                .map(MemberSearchOutputDto.Info::of)
-                .collect(Collectors.toList());
+        return memberSearchRepository.searchByWhere(searchMember.toCondition(), pageable)
+                .map(MemberSearchOutputDto.Info::of);
 
     }
 

@@ -10,6 +10,9 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -17,15 +20,21 @@ import org.springframework.stereotype.Repository;
 public class GamerSearchRepository {
     private final JPAQueryFactory queryFactory;
 
-    public List<Gamer> searchByWhere(GamerSearchCondition condition){
+    public Page<Gamer> searchByWhere(GamerSearchCondition condition, Pageable pageable){
 
-        return queryFactory.selectFrom(gamer)
+        List<Gamer> result = queryFactory.select(gamer)
+                .from(gamer)
                 .where(
                         gamerNameEq(condition.getName()),
                         raceEq(condition.getRace()),
                         gamerNickname(condition.getNickname())
                 )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
+
+
+        return new PageImpl<>(result, pageable, getTotalPage(condition));
     }
 
     private BooleanExpression gamerNameEq(String name){
@@ -38,6 +47,19 @@ public class GamerSearchRepository {
 
     private BooleanExpression gamerNickname(String nickname){
         return hasText(nickname) ? gamer.nickname.eq(nickname) : null;
+    }
+
+    private Long getTotalPage(GamerSearchCondition condition){
+        Long count = queryFactory.select(gamer.count())
+                .from(gamer)
+                .where(
+                        gamerNameEq(condition.getName()),
+                        raceEq(condition.getRace()),
+                        gamerNickname(condition.getNickname())
+                )
+                .fetchOne();
+
+        return count == null ? 0 : count;
     }
 
 }

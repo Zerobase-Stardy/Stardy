@@ -6,6 +6,8 @@ import com.github.backend.dto.course.SearchCourse;
 import com.github.backend.service.course.impl.CourseService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,9 +24,9 @@ public class CourseController {
     private final CourseService courseService;
 
     @GetMapping("/courses")
-    public ResponseEntity<Result<?>> getCourseList(SearchCourse searchCourse){
+    public ResponseEntity<Result<?>> getCourseList(SearchCourse searchCourse, Pageable pageable){
 
-        List<CourseInfoOutputDto.Info> courseList = courseService.searchCourseList(searchCourse);
+        Page<CourseInfoOutputDto.Info> courseList = courseService.searchCourseList(searchCourse, pageable);
 
         return ResponseEntity.ok().body(
                 Result.builder()
