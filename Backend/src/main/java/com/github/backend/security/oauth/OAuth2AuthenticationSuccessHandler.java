@@ -2,17 +2,19 @@ package com.github.backend.security.oauth;
 
 import com.github.backend.dto.common.CustomOAuth2User;
 import com.github.backend.dto.common.MemberInfo;
-import com.github.backend.security.jwt.Tokens;
 import com.github.backend.security.jwt.TokenService;
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.github.backend.security.jwt.Tokens;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @Component
@@ -30,6 +32,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		Tokens tokens = tokenService.issueAllToken(memberInfo);
 
 		setTokenIntoHeader(response,tokens);
+
+		redirectUri = UriComponentsBuilder.fromUriString("https://madarin.xyz/" + tokens).build().toUriString();
 
 		getRedirectStrategy().sendRedirect(request, response, redirectUri);
 	}
