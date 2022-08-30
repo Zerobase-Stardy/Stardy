@@ -34,7 +34,7 @@ public class AdminLoginController {
                             name ="adminId"
                             ,value ="관리자 ID"
                             ,required =true
-                            ,dataType ="string"
+                            ,dataType = "SearchVO"
                             ,paramType ="query"
                             ,defaultValue ="None"
                     ),

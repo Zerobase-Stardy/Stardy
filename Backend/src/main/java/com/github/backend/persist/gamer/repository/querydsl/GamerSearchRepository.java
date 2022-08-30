@@ -1,15 +1,21 @@
 package com.github.backend.persist.gamer.repository.querydsl;
 
 
+import static com.github.backend.persist.course.QCourse.course;
 import static com.github.backend.persist.gamer.QGamer.gamer;
 import static org.springframework.util.StringUtils.hasText;
 
+import com.github.backend.persist.course.Course;
 import com.github.backend.persist.gamer.Gamer;
 import com.github.backend.persist.gamer.repository.querydsl.condition.GamerSearchCondition;
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -17,15 +23,20 @@ import org.springframework.stereotype.Repository;
 public class GamerSearchRepository {
     private final JPAQueryFactory queryFactory;
 
-    public List<Gamer> searchByWhere(GamerSearchCondition condition){
+    public Page<Gamer> searchByWhere(GamerSearchCondition condition, Pageable pageable){
 
-        return queryFactory.selectFrom(gamer)
+        QueryResults<Gamer> result = queryFactory.select(gamer)
+                .from(gamer)
                 .where(
                         gamerNameEq(condition.getName()),
                         raceEq(condition.getRace()),
                         gamerNickname(condition.getNickname())
                 )
-                .fetch();
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        return new PageImpl<>(result.getResults(), pageable, result.getTotal());
     }
 
     private BooleanExpression gamerNameEq(String name){

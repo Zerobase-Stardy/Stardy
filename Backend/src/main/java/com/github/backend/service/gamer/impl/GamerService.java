@@ -1,5 +1,6 @@
 package com.github.backend.service.gamer.impl;
 
+import com.github.backend.dto.gamer.GamerInfoOutputDto;
 import com.github.backend.dto.gamer.SearchGamer;
 import com.github.backend.persist.gamer.Gamer;
 import com.github.backend.persist.gamer.repository.GamerRepository;
@@ -7,13 +8,14 @@ import com.github.backend.persist.gamer.repository.querydsl.GamerSearchRepositor
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class GamerService {
-    private final GamerRepository gamerRepository;
     private final GamerSearchRepository gamerSearchRepository;
 
     /**
@@ -22,11 +24,10 @@ public class GamerService {
      * gamer name, nickname, race 이용한 조회 가능
      */
     @Transactional
-    public List<Gamer> getGamerList(SearchGamer searchGamer){
+    public Page<GamerInfoOutputDto.Info> getGamerList(SearchGamer searchGamer, Pageable pageable){
 
-        return gamerSearchRepository.searchByWhere(
-                searchGamer.toCondition()
-        );
+        return gamerSearchRepository.searchByWhere(searchGamer.toCondition(), pageable)
+                .map(GamerInfoOutputDto.Info::of);
     }
 
 }
