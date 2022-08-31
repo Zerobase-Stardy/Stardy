@@ -12,11 +12,10 @@ import com.github.backend.persist.post.repository.PostSearchRepository;
 import com.github.backend.service.post.PostService;
 import com.github.backend.web.post.dto.PostReq;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -71,11 +70,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostListOutPutDto.Info> getTitleList(SearchTitle searchTitle) {
-        return postSearchRepository.searchByWhere(searchTitle.toCondition())
-                .stream()
-                .map(PostListOutPutDto.Info::of)
-                .collect(Collectors.toList());
+    public Page<PostListOutPutDto.Info> getTitleList(SearchTitle searchTitle, Pageable pageable) {
+        return postSearchRepository.searchByWhere(searchTitle.toCondition(),pageable).
+                map(PostListOutPutDto.Info::of);
+
     }
 
 

@@ -7,14 +7,13 @@ import lombok.Data;
 @Builder
 
 public class TitleSearchCondition {
-    private Long id;
     private String title;
-    private String writer;
+    private String boardKind;
 
-    public TitleSearchCondition(Long id, String title, String writer){
+    public TitleSearchCondition(String title, String boardKind){
         this.title = title;
-        this.id = id;
-        this.writer = writer;
+        this.boardKind = boardKind;
+
     }
 
 }

@@ -3,8 +3,8 @@ package com.github.backend.service.post;
 import com.github.backend.dto.Post.*;
 import com.github.backend.dto.common.MemberInfo;
 import com.github.backend.web.post.dto.PostReq;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface PostService {
 
@@ -12,5 +12,5 @@ public interface PostService {
     PostInfoOutPutDto.Info getPostDetail(Long postId);
     PostUpdateOutPutDto.Info updatePost(Long postId, PostReq.Request request, MemberInfo memberInfo);
     PostInfoOutPutDto.Info deletePost(Long postId);
-    List<PostListOutPutDto.Info> getTitleList(SearchTitle searchTitle);
+    Page<PostListOutPutDto.Info> getTitleList(SearchTitle searchTitle, Pageable pageable);
 }

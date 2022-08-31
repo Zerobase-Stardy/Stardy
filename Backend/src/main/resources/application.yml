@@ -1,0 +1,109 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:stardy
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  h2:
+    console:
+      enabled: true
+
+  redis:
+    port: 6379
+
+    host: localhost
+
+  jpa:
+    defer-datasource-initialization: true
+    generate-ddl: true
+
+    hibernate:
+      ddl-auto: update
+
+    open-in-view: false
+
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        jdbc:
+          batch_size: 100
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: c7f63e92d189566f4c6065856cf1d931
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            authorization-grant-type: authorization_code
+            client-authentication-method: POST
+            client-name: Kakao
+            scope:
+              - profile_nickname
+              - profile_image
+              - account_email
+          google:
+            client-id: 776641465540-qr1iai7211se9929tiv4oaphseqv1q78.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - profile
+              - email
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+  jwt:
+    access-secret: TestSecretKey123asdasdadadwadwawdawdadwddwawdadwadawadwdwaawdawdwaddwadwawad
+    access-expire-min: 60
+    refresh-secret: TestRefreshKey2131asdsdasdwdwadawdawdwadwadawwadawdawdwadwadawdawdwadawdwad
+    refresh-expire-min: 1440
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+app:
+  oauth2:
+    authorizedRedirectUri: https://madarin.xyz/
+
+---
+spring:
+  profiles:
+    group:
+      "local": "local, common"
+      "development": "development,common"
+    active: local
+
+---
+# ??
+spring:
+  config:
+    activate:
+      on-profile: "common"
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+# s3? ??? ??
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIASHWWKFANZWINFL5B
+      secretKey: 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
+    s3:
+      bucket: s3-stardy
+    region:
+      static: us-east-1
+    stack:
+      auto: false
+
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
