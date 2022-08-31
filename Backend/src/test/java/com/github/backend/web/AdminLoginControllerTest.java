@@ -1,5 +1,12 @@
 package com.github.backend.web;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.backend.config.SecurityConfig;
 import com.github.backend.dto.admin.LoginAdmin;
@@ -8,12 +15,8 @@ import com.github.backend.security.jwt.JwtAccessDeniedHandler;
 import com.github.backend.security.jwt.JwtAuthenticationProvider;
 import com.github.backend.security.jwt.JwtEntryPoint;
 import com.github.backend.security.jwt.Tokens;
-import com.github.backend.security.oauth.CustomOAuth2UserService;
-import com.github.backend.security.oauth.OAuth2AuthenticationFailureHandler;
-import com.github.backend.security.oauth.OAuth2AuthenticationSuccessHandler;
 import com.github.backend.service.admin.impl.AdminService;
 import com.github.backend.testUtils.WithMemberInfo;
-import com.github.backend.web.admin.AdminController;
 import com.github.backend.web.admin.AdminLoginController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,15 +27,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @WebMvcTest(value = AdminLoginController.class,
@@ -47,12 +42,7 @@ public class AdminLoginControllerTest {
     JwtEntryPoint jwtEntryPoint;
     @MockBean
     AuthenticationConfiguration authenticationConfiguration;
-    @MockBean
-    OAuth2AuthenticationSuccessHandler oAuth2SuccessHandler;
-    @MockBean
-    OAuth2AuthenticationFailureHandler oAuth2FailureHandler;
-    @MockBean
-    CustomOAuth2UserService oAuth2UserService;
+
     @MockBean
     JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
