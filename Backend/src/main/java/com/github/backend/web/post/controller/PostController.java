@@ -25,7 +25,7 @@ public class PostController {
     private final PostService postService;
     private final S3UploadService s3UploadService;
 
-    @GetMapping("/post/{postId}")
+    @GetMapping("/posts/{postId}")
     public ResponseEntity<Result<?>> postDetail(
             @PathVariable("postId") Long postId) {
 
@@ -41,7 +41,7 @@ public class PostController {
     }
 
 
-    @PutMapping("/post/{postId}")
+    @PutMapping("/posts/{postId}")
     public ResponseEntity<Result<?>> updatePost(
             @PathVariable("postId") Long postId
             , @RequestPart @Valid PostReq.Request request
@@ -80,7 +80,7 @@ public class PostController {
     }
 
 
-    @DeleteMapping("/post/{postId}")
+    @DeleteMapping("/posts/{postId}")
     public ResponseEntity<Result<?>> deletePost(
             @PathVariable("postId") Long postId
     ) {
@@ -96,7 +96,7 @@ public class PostController {
     }
 
 
-    @PostMapping("/post")
+    @PostMapping("/posts")
     public ResponseEntity<Result<?>> registerPost(
             @AuthenticationPrincipal MemberInfo memberInfo,
             @RequestPart @Valid PostReq.Request request,

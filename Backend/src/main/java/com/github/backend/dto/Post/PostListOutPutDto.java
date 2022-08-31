@@ -12,13 +12,17 @@ public class PostListOutPutDto{
         private Long id;
         private String title;
         private String writer;
+        private String boardKind;
+        private String content;
 
 
         public static PostListOutPutDto.Info of(Post post){
-            return PostListOutPutDto.Info.builder()
+            return Info.builder()
                     .id(post.getId())
                     .title(post.getTitle())
                     .writer(post.getMember().getEmail())
+                    .boardKind(post.getBoardKind())
+                    .content(post.getContent())
                     .build();
         }
     }
