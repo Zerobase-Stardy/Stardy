@@ -1,24 +1,27 @@
 import React, { useState } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
+import { useSelector } from "react-redux";
+
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import styled from "styled-components";
+import axios from "axios";
 
 export default function Editor() {
-  const [channel, setChannel] = useState("");
+  const [boardKind, setBoardKind] = useState("");
   const [writing, setWriting] = useState([]);
+  const header = useSelector((state) => state.userinfo.value.header);
 
   return (
     <Main>
       <Effect />
-
       <Wrap>
         <RedBox>
           <Top>
             <h2>글쓰기</h2>
             <select
-              id="channel"
+              id="boardKind"
               onChange={(e) => {
-                setChannel(e.target.value);
+                setBoardKind(e.target.value);
               }}
             >
               <option value="">채널 선택</option>
@@ -51,12 +54,41 @@ export default function Editor() {
               value="제출"
               onClick={(e) => {
                 e.preventDefault();
-                if (writing.title === undefined) {
-                  alert("제목을 입력해주세요");
-                } else if (writing.content === undefined) {
-                  alert("내용을 입력해주세요");
-                } else if (channel === "") {
-                  alert("채널을 선택해 주세요");
+
+                if (
+                  writing.title !== undefined &&
+                  boardKind !== "" &&
+                  writing.content !== undefined
+                ) {
+                  axios
+                    .post(
+                      "https://www.dokuny.blog/posts",
+                      {
+                        title: writing.title,
+                        boardKind: boardKind,
+                        content: writing.content,
+                      },
+                      {
+                        headers: header,
+                      },
+                      console.log({
+                        title: writing.title,
+                        boardKind: boardKind,
+                        content: writing.content,
+                      })
+                    )
+                    .then((res) => {
+                      console.log(res);
+                    })
+                    .catch((err) => console.log(err));
+                } else {
+                  if (writing.title === undefined) {
+                    alert("제목을 입력해주세요");
+                  } else if (writing.content === undefined) {
+                    alert("내용을 입력해주세요");
+                  } else if (boardKind === "") {
+                    alert("채널을 선택해 주세요");
+                  }
                 }
               }}
             ></SubmitBtn>
@@ -119,6 +151,7 @@ const RedBox = styled.div`
 `;
 
 const Top = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   margin-bottom: 50px;

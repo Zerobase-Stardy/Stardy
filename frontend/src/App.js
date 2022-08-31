@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+import cookies from "react-cookies";
+import { login } from "./redux/loginSlice";
 import ScrollToTop from "./components/ScrollToTop";
 import LoginModal from "./components/LoginModal";
 import Footer from "./Layout/Footer";
@@ -25,6 +29,31 @@ import Error401 from "./pages/Error401";
 import KakaoHandle from "./components/KakaoHandle";
 
 function App() {
+  const dispatch = useDispatch();
+  const header = useSelector((state) => state.userinfo.value.header);
+
+  useEffect(() => {
+    const accessToken = cookies.load("accessToken");
+    if (accessToken !== undefined) {
+      axios
+        .get("https://dokuny.blog/members/me", {
+          headers: header,
+        })
+        .then((res) => {
+          dispatch(
+            login({
+              login: true,
+              email: `${res.data.data.email}`,
+              nickname: `${res.data.data.nickname}`,
+              point: `${res.data.data.point}`,
+              header: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            })
+          );
+        });
+    }
+  }, []);
   const [openModal, setOpenModal] = useState(false);
 
   const toggleModal = () => {

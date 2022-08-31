@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
+import { FaUserAlt } from "react-icons/fa";
 
 export default function FreeContent() {
   const [post, setPost] = useState([]);
@@ -11,10 +12,19 @@ export default function FreeContent() {
 
   useEffect(() => {
     axios
-      .get(`https://jsonplaceholder.typicode.com/posts/${id}`)
-      .then((res) => setPost(res.data) / console.log(res.data));
+      .get(`https://www.dokuny.blog/posts/${id}`)
+      .then((res) => setPost(res.data.data));
   }, []);
 
+  console.log(post);
+
+  function timeEdit(time) {
+    time = Array.from(time);
+    time = Array.from(time);
+    time[time.indexOf("T")] = "/";
+    time = time.slice(0, time.lastIndexOf(":"));
+    return time.join("");
+  }
   return (
     <Main>
       <Effect />
@@ -22,7 +32,6 @@ export default function FreeContent() {
         <RedBox>
           {post.length === 0 ? (
             <Center>
-              {" "}
               <ThreeDots
                 color="#ccff66"
                 margin="0 auto"
@@ -35,8 +44,14 @@ export default function FreeContent() {
               <Title>
                 <h1>{post.title}</h1>
               </Title>
+              <Date>
+                <p>{timeEdit(post.member.createdDate)}</p>
+                <span>
+                  <FaUserAlt /> {post.member.email}
+                </span>
+              </Date>
               <Content>
-                <p>{post.body}</p>
+                <p>{post.content}</p>
               </Content>
             </PostArea>
           )}
@@ -117,6 +132,16 @@ const Title = styled.div`
     font-size: 30px;
   }
 `;
+
+const Date = styled.div`
+  p {
+    float: right;
+  }
+  svg {
+    font-size: 14px;
+  }
+`;
+
 const Content = styled.div`
   margin-top: 30px;
   p {

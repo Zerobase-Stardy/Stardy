@@ -13,7 +13,9 @@ export default function ProGamerCategory() {
   useEffect(() => {
     axios
       .get("https://www.dokuny.blog/gamer/list")
-      .then((res) => setGamers(...gamers, res.data.data))
+      .then((res) => {
+        setGamers(...gamers, res.data.data.content);
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -42,6 +44,7 @@ export default function ProGamerCategory() {
       </div>
     ));
   }
+
   return (
     <Wrap>
       <RedBox>

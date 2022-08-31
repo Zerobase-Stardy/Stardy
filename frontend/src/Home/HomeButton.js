@@ -68,6 +68,7 @@ const LinkZone = styled.div`
     }
   }
   a {
+    border-radius: 10px;
     width: 20%;
     height: 80px;
     border: none;
@@ -77,7 +78,7 @@ const LinkZone = styled.div`
     transition: 0.25s;
     color: #fff;
     font-size: 24px;
-    border: 2px solid #fff;
+    border: 1px solid #fff;
 
     &:hover {
       letter-spacing: 2px;

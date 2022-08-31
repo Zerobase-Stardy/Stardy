@@ -1,7 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset"; // style-reset 패키지
-import Gowun from "./fonts/GowunDodum-Regular.ttf";
-import Galmuri from "./fonts/Galmuri9.ttf";
+import Starcraft from "./fonts/Starcraft.ttf";
 import Nanum from "./fonts/NanumGothic-Regular.ttf";
 import NanumBold from "./fonts/NanumGothic-Bold.ttf";
 
@@ -17,16 +16,11 @@ const GlobalStyle = createGlobalStyle`
   src: url(${NanumBold});
 }
 
-@font-face {
-  font-family: "Gowun Dodum";
-  src: url(${Gowun});
-
+@font-face{
+  font-family: "Starcraft";
+  src: url(${Starcraft});
 }
 
-@font-face {
-  font-family: "Galmuri";
-  src: url(${Galmuri});
-}
 
  ${reset}
 
@@ -59,6 +53,7 @@ header
   z-index: 1;
   font-family: Nanum;
   opacity: 0.9;
+  
 }
 
 main{

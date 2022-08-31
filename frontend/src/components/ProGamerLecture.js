@@ -15,10 +15,16 @@ export default function ProGamerLecture(props) {
   const [currentPosts, setCurrentPosts] = useState(0);
   const { checkList } = props;
 
+  // useEffect(() => {
+  //   axios
+  //     .get("https://jsonplaceholder.typicode.com/photos")
+  //     .then((res) => setLectures(res.data));
+  // }, []);
+
   useEffect(() => {
     axios
-      .get("https://jsonplaceholder.typicode.com/photos")
-      .then((res) => setLectures(res.data));
+      .get("https://www.dokuny.blog/course/courses")
+      .then((res) => setLectures(res.data.data.content));
   }, []);
 
   useEffect(() => {
@@ -34,9 +40,9 @@ export default function ProGamerLecture(props) {
 
   function lectureArea(data) {
     return (
-      <LectureArea key={data.gamerId}>
+      <LectureArea key={data.id}>
         <Thumbnail>
-          <img src={data.thumblink} alt="thumblink" />
+          <img src={data.thumbnailUrl} alt="thumblink" />
         </Thumbnail>
         <Title>{data.title}</Title>
         <Name>
@@ -59,14 +65,12 @@ export default function ProGamerLecture(props) {
         {checkList.length === 0 ? (
           <>{currentPosts && currentPosts.map((data) => lectureArea(data))}</>
         ) : (
-          <>
-            {currentPosts &&
-              currentPosts
-                .filter((data) => checkList.includes(data.gamerName))
-                .map((data) => lectureArea(data))}
-          </>
+          currentPosts
+            .filter((data) => checkList.includes(data.gamerName))
+            .map((data) => lectureArea(data))
         )}
       </Wrap>
+
       {checkList.length === 0 ? (
         <Page page={currentpage} count={count} setPage={setPage} />
       ) : (
@@ -95,7 +99,7 @@ const Wrap = styled.div`
 
 const LectureArea = styled.div`
   width: 23%;
-  height: 250px;
+  height: 320px;
   margin-bottom: 30px;
   display: flex;
   flex-direction: column;

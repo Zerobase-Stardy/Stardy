@@ -16,10 +16,13 @@ export default function FreeContent() {
 
   useEffect(() => {
     axios
-      .get("https://jsonplaceholder.typicode.com/posts")
-      .then((res) => setFreeBoard(res.data));
+      .get("https://www.dokuny.blog/posts")
+      .then((res) =>
+        setFreeBoard(res.data.data.filter((data) => data.boardKind === "free"))
+      );
   }, []);
 
+  console.log(freeBoard);
   useEffect(() => {
     setCount(freeBoard.length);
     setIndexOfLastPost(currentpage * postPerPage);
@@ -35,11 +38,14 @@ export default function FreeContent() {
     <>
       {currentPosts && freeBoard.length > 0 ? (
         currentPosts.map((list) => (
-          <Link to={`${list.id}`}>
-            <List key={list.id}>
-              <Title> {list.title}</Title>
+          <Link to={`${list.id}`} key={list.id}>
+            <List>
+              <Top>
+                <Title>{list.title}</Title>
+                <Writer>{list.writer}</Writer>
+              </Top>
               <Content>
-                <p>{list.body}</p>
+                <p>{list.content}</p>
               </Content>
             </List>
           </Link>
@@ -74,6 +80,7 @@ const List = styled.div`
     transition: 0.5s;
   }
 `;
+
 const Center = styled.div`
   width: 100%;
 
@@ -81,10 +88,17 @@ const Center = styled.div`
     margin: 0 auto;
   }
 `;
+const Top = styled.div`
+  width: 100%;
+  display: flex;
+`;
 const Title = styled.div`
   font-weight: bold;
   font-size: 24px;
-  width: 100%;
+`;
+
+const Writer = styled.div`
+  margin-left: auto;
 `;
 
 const Content = styled.div`
