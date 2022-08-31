@@ -30,12 +30,10 @@ import KakaoHandle from "./components/KakaoHandle";
 
 function App() {
   const dispatch = useDispatch();
+  const header = useSelector((state) => state.userinfo.value.header);
 
   useEffect(() => {
     const accessToken = cookies.load("accessToken");
-    const header = {
-      Authorization: `Bearer ${accessToken}`,
-    };
     if (accessToken !== undefined) {
       axios
         .get("https://dokuny.blog/members/me", {
@@ -48,6 +46,9 @@ function App() {
               email: `${res.data.data.email}`,
               nickname: `${res.data.data.nickname}`,
               point: `${res.data.data.point}`,
+              header: {
+                Authorization: `Bearer ${accessToken}`,
+              },
             })
           );
         });

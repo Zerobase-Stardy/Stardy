@@ -14,6 +14,19 @@ export default function AdminMember() {
   const [indexOfFirstPost, setIndexOfFirstPost] = React.useState(0);
   const [currentPosts, setCurrentPosts] = React.useState(0);
 
+  // const accessToken = cookies.load("accessToken");
+  // const header = {
+  //   Authorization: `Bearer ${accessToken}`,
+  // };
+  // useEffect(() => {
+  //   axios
+  //     .get("https://www.dokuny.blog/admin-management/members", {
+  //       headers: header,
+  //     })
+  //     .then((res) => setMembers(res.data))
+  //     .catch((err) => console.log(err))
+  // }, []);
+
   useEffect(() => {
     axios
       .get("https://jsonplaceholder.typicode.com/users")

@@ -34,7 +34,7 @@ export default function AdminLecture() {
       .get("https://www.dokuny.blog/admin-management/courses", {
         headers: header,
       })
-      .then((response) => setLectures(...lectures, response.data.data));
+      .then((response) => setLectures(...lectures, response.data.data.content));
   }, []);
 
   useEffect(() => {
@@ -167,6 +167,7 @@ export default function AdminLecture() {
                 <div>
                   id: <span>{list.id}</span>
                 </div>
+
                 <div>
                   comment: <span>{list.comment}</span>
                 </div>

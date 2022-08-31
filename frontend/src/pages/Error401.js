@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function Error401() {
   return (
     <div style={{ textAlign: "center" }}>
-      Error : 401 잘못된 접근 입니다.
+      잘못된 접근 입니다.
       <div
         style={{
           fontSize: "30px",

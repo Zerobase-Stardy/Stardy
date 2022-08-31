@@ -3,17 +3,11 @@ import axios from "axios";
 import cookies from "react-cookies";
 import styled from "styled-components";
 import { ThreeDots } from "react-loader-spinner";
-import { useDispatch } from "react-redux";
-import { login } from "../redux/loginSlice";
+
 export default function KakaoHandle() {
   const expires = new Date();
   let code = new URL(window.location.href).searchParams.get("code");
-  const accessToken = cookies.load("accessToken");
-  const header = {
-    Authorization: `Bearer ${accessToken}`,
-  };
   expires.setHours(expires.getHours() + 1);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     axios
@@ -32,19 +26,6 @@ export default function KakaoHandle() {
   });
 
   return (
-    // <button
-    //   onClick={() => {
-    //     console.log(header);
-    //     axios
-    //       .get("https://dokuny.blog/members/me", {
-    //         headers: header,
-    //       })
-    //       .then((res) => console.log(res.data.data));
-    //   }}
-    // >
-    //   요청
-    // </button>
-
     <Main>
       <BrownBox>
         <RedBox>

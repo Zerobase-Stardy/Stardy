@@ -1,4 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+import cookies from "react-cookies";
+
+const accessToken = cookies.load("accessToken");
 
 const loginSlice = createSlice({
   name: "login",
@@ -8,6 +11,9 @@ const loginSlice = createSlice({
       email: "",
       nickname: "",
       point: 0,
+      header: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     },
   },
 

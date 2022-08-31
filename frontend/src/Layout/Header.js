@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import NavHoverMenu from "../components/NavHoverMenu";
 import cookies from "react-cookies";
+import axios from "axios";
 
 const LinkItem = ({ active, children, to }) => (
   <Link
@@ -19,6 +20,7 @@ const LinkItem = ({ active, children, to }) => (
 
 export default function Header(props) {
   const user = useSelector((state) => state.userinfo.value);
+  const header = useSelector((state) => state.userinfo.value.header);
 
   const locationNow = useLocation();
   const [visible, setVisible] = useState({
@@ -54,6 +56,14 @@ export default function Header(props) {
           {user.login ? (
             <Logout
               onClick={() => {
+                axios
+                  .get("https://www.dokuny.blog/auth/logout", {
+                    headers: header,
+                  })
+                  .then((respose) => {
+                    console.log(respose);
+                  })
+                  .catch((err) => console.log(err));
                 cookies.remove("accessToken");
                 cookies.remove("refreshToken");
                 document.location.href = "/";
@@ -112,7 +122,7 @@ const LogoArea = styled.div`
   margin-bottom: 8px;
   font-family: Starcraft;
 
-  &:hover {
+  a:hover {
     color: rgba(255, 255, 255, 1);
   }
 `;
