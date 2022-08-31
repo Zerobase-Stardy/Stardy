@@ -1,6 +1,8 @@
 package com.github.backend.persist.common.type;
 
 
+import com.github.backend.exception.common.OAuthException;
+import com.github.backend.exception.common.code.OAuthErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,4 +14,12 @@ public enum AuthType {
 
 	private String korName;
 
+
+	public static AuthType of(String authType) {
+		try {
+			return AuthType.valueOf(authType.toUpperCase());
+		} catch (IllegalArgumentException e) {
+			throw new OAuthException(OAuthErrorCode.INVALID_PROVIDER);
+		}
+	}
 }

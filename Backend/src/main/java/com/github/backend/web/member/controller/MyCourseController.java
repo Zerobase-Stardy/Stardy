@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
-@Tag(name = "My Course", description = "내 강의에 관련된 API들 입니다.")
+@Tag(name = "My Course", description = "내 강의 API")
 @RequiredArgsConstructor
 @RequestMapping("/members/me/courses")
 @RestController

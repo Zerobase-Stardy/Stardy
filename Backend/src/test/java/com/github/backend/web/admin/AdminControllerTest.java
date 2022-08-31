@@ -4,7 +4,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -12,13 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.backend.config.SecurityConfig;
 import com.github.backend.dto.admin.CreateAdmin;
-import com.github.backend.dto.admin.LoginAdmin;
 import com.github.backend.dto.admin.RegisterAdminOutputDto;
-import com.github.backend.dto.member.MemberSearchOutputDto;
-import com.github.backend.persist.common.type.AuthType;
-import com.github.backend.persist.member.Member;
-import com.github.backend.persist.member.type.MemberStatus;
-import com.github.backend.security.jwt.Tokens;
 import com.github.backend.dto.course.CourseInfoOutputDto;
 import com.github.backend.dto.course.RegisterCourse;
 import com.github.backend.dto.course.UpdateCourse;
@@ -26,16 +23,17 @@ import com.github.backend.dto.gamer.GamerInfoOutputDto;
 import com.github.backend.dto.gamer.RegisterGamer;
 import com.github.backend.dto.gamer.RegisterGamerOutputDto;
 import com.github.backend.dto.gamer.UpdateGamer;
+import com.github.backend.dto.member.MemberSearchOutputDto;
 import com.github.backend.persist.admin.Admin;
+import com.github.backend.persist.common.type.AuthType;
 import com.github.backend.persist.course.Course;
 import com.github.backend.persist.gamer.Gamer;
+import com.github.backend.persist.member.Member;
+import com.github.backend.persist.member.type.MemberStatus;
 import com.github.backend.persist.member.type.Role;
 import com.github.backend.security.jwt.JwtAccessDeniedHandler;
 import com.github.backend.security.jwt.JwtAuthenticationProvider;
 import com.github.backend.security.jwt.JwtEntryPoint;
-import com.github.backend.security.oauth.CustomOAuth2UserService;
-import com.github.backend.security.oauth.OAuth2AuthenticationFailureHandler;
-import com.github.backend.security.oauth.OAuth2AuthenticationSuccessHandler;
 import com.github.backend.service.admin.impl.AdminService;
 import com.github.backend.testUtils.WithMemberInfo;
 import com.github.backend.web.admin.AdminController;
@@ -65,12 +63,7 @@ public class AdminControllerTest {
     JwtEntryPoint jwtEntryPoint;
     @MockBean
     AuthenticationConfiguration authenticationConfiguration;
-    @MockBean
-    OAuth2AuthenticationSuccessHandler oAuth2SuccessHandler;
-    @MockBean
-    OAuth2AuthenticationFailureHandler oAuth2FailureHandler;
-    @MockBean
-    CustomOAuth2UserService oAuth2UserService;
+
     @MockBean
     JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
