@@ -53,13 +53,6 @@ public class SecurityConfig {
 		http.formLogin().disable();
 		http.logout().disable();
 
-		http.oauth2Login()
-			.userInfoEndpoint()
-			.userService(oAuth2UserService)
-			.and()
-			.successHandler(oAuth2SuccessHandler)
-			.failureHandler(oAuth2FailureHandler);
-
 		http.exceptionHandling()
 			.authenticationEntryPoint(jwtEntryPoint)
 			.accessDeniedHandler(jwtAccessDeniedHandler);
