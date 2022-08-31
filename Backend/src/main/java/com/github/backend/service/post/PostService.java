@@ -10,7 +10,7 @@ public interface PostService {
 
     PostRegisterOutPutDto.Info registerPost(PostReq.Request request, MemberInfo memberInfo);
     PostInfoOutPutDto.Info getPostDetail(Long postId);
-    PostUpdateOutPutDto.Info UpdatePost(Long postId, PostReq.Request request, MemberInfo memberInfo);
+    PostUpdateOutPutDto.Info updatePost(Long postId, PostReq.Request request, MemberInfo memberInfo);
     PostInfoOutPutDto.Info deletePost(Long postId);
     List<PostListOutPutDto.Info> getTitleList(SearchTitle searchTitle);
 }

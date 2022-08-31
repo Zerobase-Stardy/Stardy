@@ -29,7 +29,7 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public PostUpdateOutPutDto.Info UpdatePost(Long postId, PostReq.Request request, MemberInfo memberInfo) {
+    public PostUpdateOutPutDto.Info updatePost(Long postId, PostReq.Request request, MemberInfo memberInfo) {
 
 
         Post post = postRepository.findById(postId)
