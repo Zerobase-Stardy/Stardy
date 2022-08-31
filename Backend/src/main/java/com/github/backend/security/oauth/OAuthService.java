@@ -23,6 +23,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -43,8 +44,8 @@ public class OAuthService {
 
 		ClientRegistration provider = inMemoryRepository.findByRegistrationId(providerName);
 		OAuthTokenResponse tokenResponse = getToken(code, provider);
-		Map<String, Object> userAttributes = getUserAttributes(tokenResponse, provider);
 
+		Map<String, Object> userAttributes = getUserAttributes(tokenResponse, provider);
 
 		OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(
 			authType, userAttributes);
@@ -75,7 +76,6 @@ public class OAuthService {
 		} else {
 			member = registerNewMember(oAuth2UserInfo);
 		}
-
 		return member;
 	}
 
@@ -85,6 +85,8 @@ public class OAuthService {
 			.uri(provider.getProviderDetails().getTokenUri())
 			.headers(header -> {
 				header.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+				header.setBasicAuth(provider.getClientId(),provider.getClientSecret());
+				header.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 				header.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
 			})
 			.bodyValue(tokenRequest(code, provider))
@@ -99,6 +101,7 @@ public class OAuthService {
 		formData.add("grant_type", "authorization_code");
 		formData.add("redirect_uri", provider.getRedirectUri());
 		formData.add("client_id", provider.getClientId());
+		formData.add("client_secret",provider.getClientSecret());
 		return formData;
 	}
 
