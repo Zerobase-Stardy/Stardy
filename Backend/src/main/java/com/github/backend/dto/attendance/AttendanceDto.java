@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import springfox.documentation.annotations.ApiIgnore;
 
 
@@ -38,8 +40,10 @@ public class AttendanceDto {
 		@ApiParam(hidden = true)
 		private Long memberId;
 
+		@DateTimeFormat(iso = ISO.DATE)
 		private LocalDate startDate;
 
+		@DateTimeFormat(iso = ISO.DATE)
 		private LocalDate endDate;
 	}
 
