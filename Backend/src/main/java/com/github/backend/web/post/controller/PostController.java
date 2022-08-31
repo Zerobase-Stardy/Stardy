@@ -6,6 +6,9 @@ import com.github.backend.dto.common.Result;
 import com.github.backend.service.post.PostService;
 import com.github.backend.service.post.impl.S3UploadService;
 import com.github.backend.web.post.dto.PostReq;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,15 +19,18 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
+@Tag(name = "Post", description = "게시판 관련 API")
 @RequiredArgsConstructor
 @RestController
-
 public class PostController {
-
 
     private final PostService postService;
     private final S3UploadService s3UploadService;
 
+    @Operation(
+        summary = "게시글 상세조회", description = "게시글을 상세조회합니다.",
+        tags = {"Post"}
+    )
     @GetMapping("/posts/{postId}")
     public ResponseEntity<Result<?>> postDetail(
             @PathVariable("postId") Long postId) {
@@ -41,6 +47,11 @@ public class PostController {
     }
 
 
+    @Operation(
+        summary = "게시글 수정", description = "게시글을 수정합니다.",
+        security = {@SecurityRequirement(name = "Authorization")},
+        tags = {"Post"}
+    )
     @PutMapping("/posts/{postId}")
     public ResponseEntity<Result<?>> updatePost(
             @PathVariable("postId") Long postId
@@ -48,9 +59,7 @@ public class PostController {
             ,@AuthenticationPrincipal MemberInfo memberInfo
     ) throws IOException {
 
-
-
-        PostUpdateOutPutDto.Info update = postService.UpdatePost(
+        PostUpdateOutPutDto.Info update = postService.updatePost(
                 postId,
                 request,
                 memberInfo);
@@ -64,8 +73,10 @@ public class PostController {
         );
     }
 
-    ;
-
+    @Operation(
+        summary = "게시글 전체 조회", description = "게시글을 전체 조회합니다.",
+        tags = {"Post"}
+    )
     @GetMapping("/posts")
     public ResponseEntity<Result<?>> getListPosts(SearchTitle searchTitle) {
         List<PostListOutPutDto.Info> post = postService.getTitleList(searchTitle);
@@ -80,6 +91,11 @@ public class PostController {
     }
 
 
+    @Operation(
+        summary = "게시글 삭제", description = "게시글을 삭제합니다.",
+        security = {@SecurityRequirement(name = "Authorization")},
+        tags = {"Post"}
+    )
     @DeleteMapping("/posts/{postId}")
     public ResponseEntity<Result<?>> deletePost(
             @PathVariable("postId") Long postId
@@ -95,7 +111,11 @@ public class PostController {
         );
     }
 
-
+    @Operation(
+        summary = "게시글 등록", description = "게시글을 등록합니다.",
+        security = {@SecurityRequirement(name = "Authorization")},
+        tags = {"Post"}
+    )
     @PostMapping("/posts")
     public ResponseEntity<Result<?>> registerPost(
             @AuthenticationPrincipal MemberInfo memberInfo,
@@ -115,6 +135,11 @@ public class PostController {
         );
     }
 
+    @Operation(
+        summary = "이미지 저장", description = "이미지를 저장합니다.",
+        security = {@SecurityRequirement(name = "Authorization")},
+        tags = {"Post"}
+    )
     @PostMapping("/postImage")
     public ResponseEntity<Result<?>> getImagePath(@RequestPart("image") MultipartFile multipartFile) throws IOException {
         String imagePath = s3UploadService.upload(multipartFile, "image").getPath();
@@ -127,6 +152,12 @@ public class PostController {
                         .build()
         );
     }
+
+    @Operation(
+        summary = "이미지 삭제", description = "이미지를 삭제합니다.",
+        security = {@SecurityRequirement(name = "Authorization")},
+        tags = {"Post"}
+    )
     @DeleteMapping("/deleteImage")
     public ResponseEntity<Result<?>> deleteImage(@RequestParam String imageKey) throws IOException {
         s3UploadService.remove(imageKey);
