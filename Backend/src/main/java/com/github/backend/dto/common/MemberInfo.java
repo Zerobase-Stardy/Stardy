@@ -28,7 +28,6 @@ public class MemberInfo implements LoginInfo{
 	private String nickname;
 	private String status;
 	private String email;
-	private boolean firstLogin;
 
 	@Override
 	public Claims toClaims() {
