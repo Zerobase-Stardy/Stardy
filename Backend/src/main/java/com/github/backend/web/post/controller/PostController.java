@@ -58,7 +58,7 @@ public class PostController {
     @PutMapping("/posts/{postId}")
     public ResponseEntity<Result<?>> updatePost(
             @PathVariable("postId") Long postId
-            , @RequestPart @Valid PostReq.Request request
+            ,@RequestBody @Valid PostReq.Request request
             ,@AuthenticationPrincipal MemberInfo memberInfo
     ) throws IOException {
 
@@ -122,7 +122,7 @@ public class PostController {
     @PostMapping("/posts")
     public ResponseEntity<Result<?>> registerPost(
             @AuthenticationPrincipal MemberInfo memberInfo,
-            @RequestPart @Valid PostReq.Request request
+            @RequestBody @Valid PostReq.Request request
     ) throws IOException {
         PostRegisterOutPutDto.Info postRegisterOutPutDto = postService.registerPost(
                 request,
