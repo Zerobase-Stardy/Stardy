@@ -51,7 +51,7 @@ export default function FreeContent() {
                 </span>
               </Date>
               <Content>
-                <p>{post.content}</p>
+                <div dangerouslySetInnerHTML={{ __html: post.content }} />
               </Content>
             </PostArea>
           )}
@@ -144,8 +144,17 @@ const Date = styled.div`
 
 const Content = styled.div`
   margin-top: 30px;
+  padding-bottom: 100px;
   p {
     font-size: 18px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  img {
+    max-width: 500px;
+    max-height: 350px;
+    margin: 0 auto;
   }
 `;
 

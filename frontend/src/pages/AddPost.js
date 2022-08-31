@@ -1,15 +1,18 @@
 import React, { useState } from "react";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { useSelector } from "react-redux";
-
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import styled from "styled-components";
 import axios from "axios";
+import styled from "styled-components";
+import Editor from "../components/Editor";
 
-export default function Editor() {
+export default function Addpost() {
   const [boardKind, setBoardKind] = useState("");
-  const [writing, setWriting] = useState([]);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const header = useSelector((state) => state.userinfo.value.header);
+
+  const handleText = (value) => {
+    setContent(value);
+  };
 
   return (
     <Main>
@@ -33,19 +36,10 @@ export default function Editor() {
                 type="text"
                 placeholder="제목"
                 onChange={(e) => {
-                  setWriting({ ...writing, title: e.target.value });
+                  setTitle(e.target.value);
                 }}
               />
-              <CKEditor
-                editor={ClassicEditor}
-                onChange={(event, editor) => {
-                  const data = editor.getData();
-                  return setWriting({
-                    ...writing,
-                    content: data,
-                  });
-                }}
-              />
+              <Editor writing={handleText} />
             </form>
           </Top>
           <Bottom>
@@ -55,26 +49,28 @@ export default function Editor() {
               onClick={(e) => {
                 e.preventDefault();
 
-                if (
-                  writing.title !== undefined &&
-                  boardKind !== "" &&
-                  writing.content !== undefined
-                ) {
+                if (title !== "" && boardKind !== "" && content !== "") {
+                  console.log({
+                    title: title,
+                    boardKind: boardKind,
+                    content: content,
+                  });
                   axios
                     .post(
                       "https://www.dokuny.blog/posts",
                       {
-                        title: writing.title,
+                        title: title,
                         boardKind: boardKind,
-                        content: writing.content,
+                        content: content,
                       },
+
                       {
                         headers: header,
                       },
                       console.log({
-                        title: writing.title,
+                        title: title,
                         boardKind: boardKind,
-                        content: writing.content,
+                        content: content,
                       })
                     )
                     .then((res) => {
@@ -82,9 +78,9 @@ export default function Editor() {
                     })
                     .catch((err) => console.log(err));
                 } else {
-                  if (writing.title === undefined) {
+                  if (title === "") {
                     alert("제목을 입력해주세요");
-                  } else if (writing.content === undefined) {
+                  } else if (content === "") {
                     alert("내용을 입력해주세요");
                   } else if (boardKind === "") {
                     alert("채널을 선택해 주세요");

@@ -18,7 +18,9 @@ export default function FreeContent() {
     axios
       .get("https://www.dokuny.blog/posts")
       .then((res) =>
-        setFreeBoard(res.data.data.filter((data) => data.boardKind === "free"))
+        setFreeBoard(
+          res.data.data.content.filter((data) => data.boardKind === "free")
+        )
       );
   }, []);
 
@@ -45,7 +47,7 @@ export default function FreeContent() {
                 <Writer>{list.writer}</Writer>
               </Top>
               <Content>
-                <p>{list.content}</p>
+                <p dangerouslySetInnerHTML={{ __html: list.content }} />
               </Content>
             </List>
           </Link>
@@ -104,7 +106,9 @@ const Writer = styled.div`
 const Content = styled.div`
   width: 100%;
   height: 100px;
-
+  img {
+    display: none;
+  }
   p {
     text-overflow: ellipsis;
     overflow: hidden;

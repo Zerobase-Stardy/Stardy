@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
 
 export default function FreeContent() {
-  const [suggest, setsuggest] = useState([]);
+  const [suggest, setSuggest] = useState([]);
   const [count, setCount] = React.useState(0); //아이템 총 개수
   const [currentpage, setCurrentpage] = React.useState(1); //현재페이지
   const [postPerPage] = React.useState(10); //페이지당 아이템 개수
@@ -19,7 +19,9 @@ export default function FreeContent() {
     axios
       .get("https://www.dokuny.blog/posts")
       .then((res) =>
-        setsuggest(res.data.data.filter((data) => data.boardKind === "suggest"))
+        setSuggest(
+          res.data.data.content.filter((data) => data.boardKind === "suggest")
+        )
       );
   }, []);
 
@@ -45,7 +47,7 @@ export default function FreeContent() {
                 <Writer>{list.writer}</Writer>
               </Top>
               <Content>
-                <p>{list.content}</p>
+                <p dangerouslySetInnerHTML={{ __html: list.content }} />
               </Content>
             </List>
           </Link>

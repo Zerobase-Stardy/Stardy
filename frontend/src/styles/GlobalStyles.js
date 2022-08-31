@@ -28,7 +28,14 @@ const GlobalStyle = createGlobalStyle`
   box-sizing: border-box;
 }
 
+strong{
+  font-weight: bold;
+}
 
+em{
+  font-style: italic;
+
+}
 
 h1,h2{
   font-family: NanumBold;
