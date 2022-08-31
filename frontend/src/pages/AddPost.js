@@ -74,7 +74,7 @@ export default function Addpost() {
                       })
                     )
                     .then((res) => {
-                      console.log(res);
+                      document.location.href = "/post";
                     })
                     .catch((err) => console.log(err));
                 } else {

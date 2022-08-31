@@ -24,7 +24,6 @@ export default function FreeContent() {
       );
   }, []);
 
-  console.log(freeBoard);
   useEffect(() => {
     setCount(freeBoard.length);
     setIndexOfLastPost(currentpage * postPerPage);
