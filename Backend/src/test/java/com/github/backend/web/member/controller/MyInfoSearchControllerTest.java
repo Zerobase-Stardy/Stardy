@@ -1,6 +1,5 @@
 package com.github.backend.web.member.controller;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -13,9 +12,6 @@ import com.github.backend.dto.member.SearchMember;
 import com.github.backend.security.jwt.JwtAccessDeniedHandler;
 import com.github.backend.security.jwt.JwtAuthenticationProvider;
 import com.github.backend.security.jwt.JwtEntryPoint;
-import com.github.backend.security.oauth.CustomOAuth2UserService;
-import com.github.backend.security.oauth.OAuth2AuthenticationFailureHandler;
-import com.github.backend.security.oauth.OAuth2AuthenticationSuccessHandler;
 import com.github.backend.service.member.MemberSearchService;
 import com.github.backend.testUtils.WithMemberInfo;
 import org.junit.jupiter.api.DisplayName;
@@ -45,12 +41,7 @@ class MyInfoSearchControllerTest {
 	JwtEntryPoint jwtEntryPoint;
 	@MockBean
 	AuthenticationConfiguration authenticationConfiguration;
-	@MockBean
-	OAuth2AuthenticationSuccessHandler oAuth2SuccessHandler;
-	@MockBean
-	OAuth2AuthenticationFailureHandler oAuth2FailureHandler;
-	@MockBean
-	CustomOAuth2UserService oAuth2UserService;
+
 	@MockBean
 	JwtAccessDeniedHandler jwtAccessDeniedHandler;
 

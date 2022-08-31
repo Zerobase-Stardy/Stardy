@@ -5,10 +5,7 @@ import com.github.backend.security.jwt.JwtAccessDeniedHandler;
 import com.github.backend.security.jwt.JwtAuthenticationFilter;
 import com.github.backend.security.jwt.JwtAuthenticationProvider;
 import com.github.backend.security.jwt.JwtEntryPoint;
-import com.github.backend.security.oauth.CustomOAuth2UserService;
-import com.github.backend.security.oauth.OAuth2AuthenticationFailureHandler;
-import com.github.backend.security.oauth.OAuth2AuthenticationSuccessHandler;
-import java.util.Arrays;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,9 +27,6 @@ public class SecurityConfig {
 	private final JwtAuthenticationProvider jwtAuthenticationProvider;
 	private final JwtEntryPoint jwtEntryPoint;
 	private final AuthenticationConfiguration authenticationConfiguration;
-	private final OAuth2AuthenticationSuccessHandler oAuth2SuccessHandler;
-	private final OAuth2AuthenticationFailureHandler oAuth2FailureHandler;
-	private final CustomOAuth2UserService oAuth2UserService;
 	private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
 	@Bean

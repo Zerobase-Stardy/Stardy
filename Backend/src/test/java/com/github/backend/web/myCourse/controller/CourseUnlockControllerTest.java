@@ -13,9 +13,6 @@ import com.github.backend.config.SecurityConfig;
 import com.github.backend.security.jwt.JwtAccessDeniedHandler;
 import com.github.backend.security.jwt.JwtAuthenticationProvider;
 import com.github.backend.security.jwt.JwtEntryPoint;
-import com.github.backend.security.oauth.CustomOAuth2UserService;
-import com.github.backend.security.oauth.OAuth2AuthenticationFailureHandler;
-import com.github.backend.security.oauth.OAuth2AuthenticationSuccessHandler;
 import com.github.backend.service.myCourse.MyCourseUnlockService;
 import com.github.backend.testUtils.WithMemberInfo;
 import com.github.backend.web.course.controller.CourseUnlockController;
@@ -47,12 +44,6 @@ class CourseUnlockControllerTest {
 	JwtEntryPoint jwtEntryPoint;
 	@MockBean
 	AuthenticationConfiguration authenticationConfiguration;
-	@MockBean
-	OAuth2AuthenticationSuccessHandler oAuth2SuccessHandler;
-	@MockBean
-	OAuth2AuthenticationFailureHandler oAuth2FailureHandler;
-	@MockBean
-	CustomOAuth2UserService oAuth2UserService;
 	@MockBean
 	JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
