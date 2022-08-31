@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
-@Tag(name = "My Info - Search", description = "로그인한 회원이 자신에 대한 정보를 조회할 때 사용하는 API들 입니다.")
+@Tag(name = "My Info - Search", description = "내 정보 조회 API")
 @RequiredArgsConstructor
 @RequestMapping("/members/me")
 @RestController

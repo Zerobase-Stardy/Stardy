@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
 
-@Tag(name = "My Info - Control", description = "내 정보를 변경할 때 사용합니다.")
+@Tag(name = "My Info - Control", description = "내 정보 변경 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/members/me")
