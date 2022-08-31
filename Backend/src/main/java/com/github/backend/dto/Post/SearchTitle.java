@@ -10,13 +10,14 @@ import lombok.Getter;
 @AllArgsConstructor
 public class SearchTitle {
 
-    private Long id;
     private String title;
+    private String boardKind;
+
 
 
     public TitleSearchCondition toCondition() {
         return TitleSearchCondition.builder()
-                .id(getId())
+                .boardKind(getBoardKind())
                 .title(getTitle())
                 .build();
     }
