@@ -7,6 +7,7 @@ import com.github.backend.service.post.PostService;
 import com.github.backend.service.post.impl.S3UploadService;
 import com.github.backend.web.post.dto.PostReq;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +59,7 @@ public class PostController {
     @PutMapping("/posts/{postId}")
     public ResponseEntity<Result<?>> updatePost(
             @PathVariable("postId") Long postId
-            , @RequestPart @Valid PostReq.Request request
+            ,@RequestBody @Valid PostReq.Request request
             ,@AuthenticationPrincipal MemberInfo memberInfo
     ) throws IOException {
 
@@ -122,7 +123,7 @@ public class PostController {
     @PostMapping("/posts")
     public ResponseEntity<Result<?>> registerPost(
             @AuthenticationPrincipal MemberInfo memberInfo,
-            @RequestPart @Valid PostReq.Request request
+            @RequestBody @Valid PostReq.Request request
     ) throws IOException {
         PostRegisterOutPutDto.Info postRegisterOutPutDto = postService.registerPost(
                 request,
