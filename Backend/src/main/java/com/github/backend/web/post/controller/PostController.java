@@ -4,7 +4,7 @@ import com.github.backend.dto.Post.*;
 import com.github.backend.dto.common.MemberInfo;
 import com.github.backend.dto.common.Result;
 import com.github.backend.service.post.PostService;
-import com.github.backend.service.post.impl.S3UploaderService;
+import com.github.backend.service.post.impl.S3UploadService;
 import com.github.backend.web.post.dto.PostReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +21,13 @@ import java.util.List;
 
 public class PostController {
 
-    private final S3UploaderService s3UploaderService;
+
     private final PostService postService;
+    private final S3UploadService s3UploadService;
 
     @GetMapping("/post/{postId}")
     public ResponseEntity<Result<?>> postDetail(
-            @PathVariable("postId") Long postId){
+            @PathVariable("postId") Long postId) {
 
         PostInfoOutPutDto.Info postDetail = postService.getPostDetail(postId);
 
@@ -41,16 +42,18 @@ public class PostController {
 
 
     @PutMapping("/post/{postId}")
-    public  ResponseEntity<Result<?>> updatePost(
+    public ResponseEntity<Result<?>> updatePost(
             @PathVariable("postId") Long postId
-            ,@RequestPart @Valid PostReq.Request request
-            ,@RequestPart("image") MultipartFile multipartFile
+            , @RequestPart @Valid PostReq.Request request
+            ,@AuthenticationPrincipal MemberInfo memberInfo
     ) throws IOException {
+
+
 
         PostUpdateOutPutDto.Info update = postService.UpdatePost(
                 postId,
                 request,
-                s3UploaderService.upload(multipartFile, "s3-stardy", "image"));
+                memberInfo);
 
         return ResponseEntity.ok().body(
                 Result.builder()
@@ -59,10 +62,12 @@ public class PostController {
                         .data(update)
                         .build()
         );
-    };
+    }
+
+    ;
 
     @GetMapping("/posts")
-    public ResponseEntity<Result<?>> getListPosts(SearchTitle searchTitle){
+    public ResponseEntity<Result<?>> getListPosts(SearchTitle searchTitle) {
         List<PostListOutPutDto.Info> post = postService.getTitleList(searchTitle);
 
         return ResponseEntity.ok().body(
@@ -78,8 +83,8 @@ public class PostController {
     @DeleteMapping("/post/{postId}")
     public ResponseEntity<Result<?>> deletePost(
             @PathVariable("postId") Long postId
-    ){
-        PostInfoOutPutDto.Info postInfo  = postService.deletePost(postId);
+    ) {
+        PostInfoOutPutDto.Info postInfo = postService.deletePost(postId);
 
         return ResponseEntity.ok().body(
                 Result.builder()
@@ -99,14 +104,38 @@ public class PostController {
     ) throws IOException {
         PostRegisterOutPutDto.Info postRegisterOutPutDto = postService.registerPost(
                 request,
-                memberInfo,
-                s3UploaderService.upload(multipartFile, "s3-stardy", "image"));
-
+                memberInfo
+        );
         return ResponseEntity.ok().body(
                 Result.builder()
                         .status(200)
                         .success(true)
                         .data(postRegisterOutPutDto)
+                        .build()
+        );
+    }
+
+    @PostMapping("/postImage")
+    public ResponseEntity<Result<?>> getImagePath(@RequestPart("image") MultipartFile multipartFile) throws IOException {
+        String imagePath = s3UploadService.upload(multipartFile, "image").getPath();
+
+        return ResponseEntity.ok().body(
+                Result.builder()
+                        .status(200)
+                        .success(true)
+                        .data(s3UploadService.upload(multipartFile, "image"))
+                        .build()
+        );
+    }
+    @DeleteMapping("/deleteImage")
+    public ResponseEntity<Result<?>> deleteImage(@RequestParam String imageKey) throws IOException {
+        s3UploadService.remove(imageKey);
+
+        return ResponseEntity.ok().body(
+                Result.builder()
+                        .status(200)
+                        .success(true)
+                        .data(imageKey)
                         .build()
         );
     }
