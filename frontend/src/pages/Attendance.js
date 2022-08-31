@@ -1,25 +1,54 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import moment from "moment"
 import '../styles/Calendar.css'; 
 import styled from 'styled-components';
+import { useSelector } from "react-redux";
+import axios from 'axios';
+
 
 export default function Attendance() {
   
     const [value, onChange] = useState(new Date());
 
-    // const [marks, setMarks] = useState(["24-08-2022"])
-
-
-    const [point, setPoint] = useState(123123123)
-
-    
-    const handleClick = () => {
-      alert(`출석하셨습니다. (포인트 +10p) 현재 포인트 ${point}`)
-      setPoint(point + 10)
+    const needZero  = (date) => {
+      return date > 10 ? date : "0"+ date
     }
 
-    const marks = ["24-08-2022", "12-08-2022"]
+    const day = `${value.getFullYear()}-${needZero( value.getMonth() + 1 )}-${needZero( value.getDate() )}`
+
+    const [marks, setMarks] = useState([])
+    let pick = [];
+
+    const user = useSelector((state) => state.userinfo.value);
+    const header = useSelector((state) => state.userinfo.value.header);
+
+
+    const handleClick = () => {
+      axios
+        .post("https://www.dokuny.blog/members/me/attendances/daily", {
+          headers: header,
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((err) => console.log(err));
+
+
+        alert(`출석하셨습니다. (포인트 +50p) 현재 포인트 ${user.point}`)
+      }
+
+    
+    useEffect(() => {
+      axios.get(`https://www.dokuny.blog/members/me/attendances?endDate=${day}&startDate=2000-01-01`, {
+        headers: header,
+      }).then( (res) => res.data.data.map((info) => {
+        pick.push(info.date);
+        setMarks([...pick]); 
+      }))
+      .catch((err) => console.log(err))
+    }, [])
+
 
     return (
       <div style={{width: "505px", padding: "7%"}}>
@@ -27,7 +56,7 @@ export default function Attendance() {
                   formatDay={(locale, date) => moment(date).format("DD")}
                   value={value} 
                   tileClassName={ ({ date }) => {
-                     if (marks.find((x) => x === moment(date).format("DD-MM-YYYY"))) {
+                     if (marks.find((x) => x === moment(date).format("YYYY-MM-DD"))) {
                           return 'highlight';
                       }
                   }}

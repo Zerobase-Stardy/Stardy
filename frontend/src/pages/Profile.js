@@ -1,7 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useSelector } from "react-redux";
+import cookies from "react-cookies";
+import axios from "axios";
 
 export default function Profile() {
+  const user = useSelector((state) => state.userinfo.value);
 
   const ProfileBadge = function(){
     const profilImage = "https://via.placeholder.com/150"
@@ -13,9 +17,6 @@ export default function Profile() {
     return <img src={profilImage} alt="프로필사진" style={badgeStyle} />
   }
 
-  const nickName = "nickname123123"
-  const userPoint = "123,123,123"
-  const userEmail = "example12@example.com"
 
   ImgSample.defaultProps = { src:"http://i.ytimg.com/vi/iF_PQbkllM8/mqdefault.jpg"}
   return (
@@ -24,11 +25,11 @@ export default function Profile() {
         <div style={{display: "flex"}}>
           <ProfileBadge/>
           <div style={{alignSelf: "center"}}>
-            <NickName > {nickName} </NickName>
-            <Point> 출석 포인트: {userPoint} </Point>
+            <NickName > {user.nickname} </NickName>
+            <Point> 출석 포인트: {user.point} </Point>
           </div>
         </div>
-        <Email> 이메일: <br/> {userEmail}</Email>
+        <Email> 이메일: <br/> {user.email}</Email>
       </UserInfo>
       <div style={{margin: "5% 0 0 24px"}}>수강한 강의</div>
       <UserVideo>
