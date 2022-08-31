@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface PostService {
 
-    PostRegisterOutPutDto.Info registerPost(PostReq.Request request, MemberInfo memberInfo , String imagePath);
+    PostRegisterOutPutDto.Info registerPost(PostReq.Request request, MemberInfo memberInfo);
     PostInfoOutPutDto.Info getPostDetail(Long postId);
-    PostUpdateOutPutDto.Info UpdatePost(Long postId, PostReq.Request request, String imagePath);
+    PostUpdateOutPutDto.Info UpdatePost(Long postId, PostReq.Request request, MemberInfo memberInfo);
     PostInfoOutPutDto.Info deletePost(Long postId);
     List<PostListOutPutDto.Info> getTitleList(SearchTitle searchTitle);
 }

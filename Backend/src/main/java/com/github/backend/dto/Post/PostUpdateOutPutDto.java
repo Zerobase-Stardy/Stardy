@@ -12,7 +12,6 @@ public class PostUpdateOutPutDto {
         private String title;
         private String content;
         private String boardKind;
-        private String imagePath;
         private Member member;
 
 
@@ -21,7 +20,6 @@ public class PostUpdateOutPutDto {
                     .title(post.getTitle())
                     .content(post.getContent())
                     .boardKind(post.getBoardKind())
-                    .imagePath(post.getImagePath())
                     .member(post.getMember())
                     .build();
         }

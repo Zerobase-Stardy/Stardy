@@ -29,18 +29,25 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public PostUpdateOutPutDto.Info UpdatePost(Long postId, PostReq.Request request, String imagePath) {
+    public PostUpdateOutPutDto.Info UpdatePost(Long postId, PostReq.Request request, MemberInfo memberInfo) {
+
+
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_EXISTS));
 
-        post.update(imagePath, request.getTitle(), request.getContent(), request.getBoardKind());
+
+        if(post.getMember().getId() != memberInfo.getId()){
+            throw new PostException(PostErrorCode.POST_NOT_EQ_MEMBER);
+        }
+
+        post.update(request.getTitle(), request.getContent(), request.getBoardKind());
 
         return PostUpdateOutPutDto.Info.of(postRepository.save(post));
     }
 
     @Transactional
     @Override
-    public PostRegisterOutPutDto.Info registerPost(PostReq.Request req, MemberInfo memberInfo, String imagePath) {
+    public PostRegisterOutPutDto.Info registerPost(PostReq.Request req, MemberInfo memberInfo) {
         Member member = memberRepository.findByEmail(memberInfo.getEmail())
                 .orElseThrow(() -> new PostException(PostErrorCode.MEMBER_NOT_EXISTS));
 
@@ -49,7 +56,6 @@ public class PostServiceImpl implements PostService {
                 .title(req.getTitle())
                 .content(req.getContent())
                 .boardKind(req.getBoardKind())
-                .imagePath(imagePath)
                 .build());
 
         return  PostRegisterOutPutDto.Info.of(post);

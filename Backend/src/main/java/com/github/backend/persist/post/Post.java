@@ -28,14 +28,10 @@ public class Post extends BaseTimeEntity {
     @Column(nullable = false)
     private String boardKind;
 
-    @Column(nullable = true)
-    private String imagePath;
-
     @ManyToOne
     private Member member;
 
-    public void update(String imagePath,String title, String content, String boardKind){
-        this.imagePath = imagePath;
+    public void update(String title, String content, String boardKind){
         this.title = title;
         this.content = content;
         this.boardKind = boardKind;
