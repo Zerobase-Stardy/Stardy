@@ -85,8 +85,6 @@ public class PostController {
     public ResponseEntity<Result<?>> getListPosts(SearchTitle searchTitle, @PageableDefault(size=10, sort="id", direction = Sort.Direction.ASC)
     Pageable pageable) {
 
-
-
         Page<PostListOutPutDto.Info> post = postService.getTitleList(searchTitle, pageable);
 
         return ResponseEntity.ok().body(
@@ -127,8 +125,7 @@ public class PostController {
     @PostMapping("/posts")
     public ResponseEntity<Result<?>> registerPost(
             @AuthenticationPrincipal MemberInfo memberInfo,
-            @RequestPart @Valid PostReq.Request request,
-            @RequestPart("image") MultipartFile multipartFile
+            @RequestPart @Valid PostReq.Request request
     ) throws IOException {
         PostRegisterOutPutDto.Info postRegisterOutPutDto = postService.registerPost(
                 request,
