@@ -103,6 +103,10 @@ const Bottom = styled.div`
   display: flex;
   gap: 20px;
   font-size: 14px;
+
+  @media screen and (max-width: 532px) {
+    flex-direction: column;
+  }
 `;
 
 const Member = styled.div`

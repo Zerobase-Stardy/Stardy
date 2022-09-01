@@ -52,7 +52,7 @@ const Main = styled.div`
 `;
 
 const BrownBox = styled.div`
-  width: 30%;
+  width: 90%;
   padding: 3px;
   background-color: rgba(0, 0, 0, 0.8);
   border: 2px solid #331f1f;
@@ -69,7 +69,7 @@ const RedBox = styled.div`
   justify-content: space-between;
 
   border: 1px solid #800000;
-  padding: 100px;
+  padding: 100px 0px;
 `;
 const Center = styled.div`
   width: 100%;

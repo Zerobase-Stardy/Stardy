@@ -3,7 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 import Page from "../components/Page";
 import { ThreeDots } from "react-loader-spinner";
-import { Link } from "react-router-dom";
+import cookies from "react-cookies";
 
 export default function AdminMember() {
   const [members, setMembers] = useState([]);
@@ -14,24 +14,39 @@ export default function AdminMember() {
   const [indexOfFirstPost, setIndexOfFirstPost] = React.useState(0);
   const [currentPosts, setCurrentPosts] = React.useState(0);
 
-  // const accessToken = cookies.load("accessToken");
-  // const header = {
-  //   Authorization: `Bearer ${accessToken}`,
-  // };
-  // useEffect(() => {
-  //   axios
-  //     .get("https://www.dokuny.blog/admin-management/members", {
-  //       headers: header,
-  //     })
-  //     .then((res) => setMembers(res.data))
-  //     .catch((err) => console.log(err))
-  // }, []);
+  const [nickname, setNickname] = useState("");
 
+  const accessToken = cookies.load("accessToken");
+  const header = {
+    Authorization: `Bearer ${accessToken}`,
+  };
   useEffect(() => {
     axios
-      .get("https://jsonplaceholder.typicode.com/users")
-      .then((res) => setMembers(res.data));
+      .get("https://www.dokuny.blog/admin-management/members", {
+        headers: header,
+      })
+      .then((res) => setMembers(res.data.data.content))
+      .catch((err) => console.log(err));
   }, []);
+
+  function changeHandler(e) {
+    setNickname(e.target.value);
+  }
+
+  function updateHandler(id) {
+    axios
+      .patch(
+        `https://www.dokuny.blog/admin-management/members/nickname/${id}`,
+        {
+          nickname: nickname,
+        },
+        {
+          headers: header,
+        }
+      )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(`에러 : ${err}`));
+  }
 
   useEffect(() => {
     setCount(members.length);
@@ -44,28 +59,45 @@ export default function AdminMember() {
     setCurrentpage(e);
   };
 
-  function deleteHandler(id) {
-    setMembers(members.filter((e) => e.id !== id));
-  }
-
   return (
     <List>
-      <ListHeader>
-        <div>ID</div>
-        <div>Name</div>
-        <div></div>
-      </ListHeader>
+      <ListHeader></ListHeader>
       {currentPosts && members.length > 0 ? (
         currentPosts.map((list) => (
-          <ListBody key={list.id}>
-            <div>{list.id}</div>
-            <div>{list.name}</div>
-            <DeleteBtn
-              type="button"
-              value="삭제"
-              onClick={() => deleteHandler(list.id)}
-            />
-          </ListBody>
+          <fieldset key={list.id}>
+            <ListWrap>
+              <Left>
+                <div>
+                  id : <span>{list.id}</span>
+                </div>
+                <div>
+                  email : <span>{list.email}</span>
+                </div>
+                <div>
+                  nickname : <span>{list.nickname}</span>
+                </div>
+                <div>
+                  point : <span>{list.point}</span>
+                </div>
+              </Left>
+
+              <UpdateWrap>
+                <form
+                  onSubmit={(e) => {
+                    updateHandler(list.id);
+                  }}
+                >
+                  <input
+                    type="text"
+                    placeholder="nickname"
+                    name="nickname"
+                    onChange={changeHandler}
+                  />
+                  <CreateBtn type="submit" value="수정" />
+                </form>
+              </UpdateWrap>
+            </ListWrap>
+          </fieldset>
         ))
       ) : (
         <Center>
@@ -85,6 +117,14 @@ export default function AdminMember() {
 const List = styled.div`
   margin-top: 50px;
   display: grid;
+
+  fieldset {
+    border: 1px solid black;
+
+    &:hover {
+      background-color: yellow;
+    }
+  }
 `;
 const ListHeader = styled.div`
   width: 100%;
@@ -93,38 +133,30 @@ const ListHeader = styled.div`
   height: 40px;
   background-color: black;
   color: white;
-  div {
-    font-size: 30px;
-    width: 25%;
-  }
 `;
 
-const ListBody = styled.div`
+const ListWrap = styled.div`
   width: 100%;
   margin-bottom: 10px;
   display: flex;
-  justify-content: space-between;
-  height: 30px;
   font-size: 18px;
-  div,
-  input {
-    width: 25%;
-  }
 
   &:hover {
     background-color: yellow;
   }
 `;
-const Center = styled.div`
+
+const Left = styled.div`
   width: 100%;
+  display: flex;
 
-  svg {
-    margin: 0 auto;
+  gap: 5px;
+  flex-direction: column;
+
+  span {
+    font-weight: bold;
+    color: #fe4040;
   }
-`;
-
-const DeleteBtn = styled.input`
-  width: 20px;
 `;
 
 const CreateBtn = styled.input`
@@ -132,12 +164,20 @@ const CreateBtn = styled.input`
   height: 30px;
 `;
 
-const CreateWrap = styled.div`
-  margin-top: 30px;
-
+const UpdateWrap = styled.div`
   form {
     width: 200px;
     display: flex;
     flex-direction: column;
+  }
+  margin-right: 50px;
+
+  margin-bottom: 20px;
+`;
+const Center = styled.div`
+  width: 100%;
+
+  svg {
+    margin: 0 auto;
   }
 `;

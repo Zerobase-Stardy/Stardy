@@ -51,7 +51,7 @@ export default function FreeContent() {
                 </span>
               </Date>
               <Content>
-                <p>{post.content}</p>
+                <div dangerouslySetInnerHTML={{ __html: post.content }} />
               </Content>
             </PostArea>
           )}
@@ -82,6 +82,12 @@ const Effect = styled.div`
   height: 53px;
   margin: 0 auto;
   background-image: url("https://static.starcraft.com/production/images/site/dividers/divider-terminal-detail.3a193b6d6e3a7d62cee253b2a245bbdd73bea9b6.png");
+  @media screen and (max-width: 666px) {
+    width: 300px;
+  }
+  @media screen and (max-width: 300px) {
+    display: none;
+  }
 `;
 
 const Wrap = styled.div`
@@ -93,6 +99,9 @@ const Wrap = styled.div`
   border-radius: 6px;
   margin: 0 auto;
   color: #b8bbcc;
+  @media screen and (max-width: 1024px) {
+    width: 90%;
+  }
 `;
 
 const RedBox = styled.div`
@@ -104,7 +113,7 @@ const RedBox = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   border: 1px solid #800000;
-  padding: 20px 70px;
+  padding: 20px 20px;
 
   h2 {
     width: 100%;
@@ -130,22 +139,49 @@ const Title = styled.div`
   h1 {
     text-align: center;
     font-size: 30px;
+
+    @media screen and (max-width: 666px) {
+      font-size: 24px;
+    }
   }
 `;
 
 const Date = styled.div`
+  margin-top: 20px;
   p {
     float: right;
+    @media screen and (max-width: 500px) {
+      display: none;
+    }
   }
   svg {
     font-size: 14px;
+    @media screen and (max-width: 666px) {
+      font-size: 11px;
+    }
+    @media screen and (max-width: 500px) {
+      font-size: 9px;
+    }
+  }
+
+  @media screen and (max-width: 666px) {
+    font-size: 11px;
   }
 `;
 
 const Content = styled.div`
   margin-top: 30px;
+  padding-bottom: 100px;
   p {
     font-size: 18px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  img {
+    max-width: 50%;
+    max-height: 50%;
+    margin: 0 auto;
   }
 `;
 

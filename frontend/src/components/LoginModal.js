@@ -31,7 +31,6 @@ export default function Login(props) {
           <GoogleButton />
           <KaKaoButton />
         </ButtonArea>
-        <AdminZone></AdminZone>
       </LoginArea>
     </Modal>
   );
@@ -62,6 +61,11 @@ const LoginArea = styled.div`
   border: 1px solid rgba(0, 204, 0, 0.6);
   border: 1px solid #800000;
 
+  @media screen and (max-width: 440px) {
+    width: 300px;
+    height: 300px;
+  }
+
   span {
     letter-spacing: 3px;
     font-size: 24px;
@@ -90,13 +94,4 @@ const ButtonArea = styled.div`
   display: grid;
   margin-top: 50px;
   gap: 20px;
-`;
-
-const AdminZone = styled.div`
-  margin-top: 30px;
-  font-size: 13px;
-  width: 100%;
-  padding-left: 20px;
-  display: flex;
-  gap: 10px;
 `;

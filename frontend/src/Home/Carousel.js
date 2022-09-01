@@ -8,11 +8,9 @@ export default function Carousel() {
   const images = [
     {
       id: 0,
-      url: "https://ifh.cc/g/xTjM5P.png",
+      url: "https://static.starcraft.com/production/images/content/reborn/carousal-planet-bg.da7b4ef66cd571f0d96de009649e5cad1984c5f1.jpg",
       title: "언제까지 스린이 할래?",
       Content: "입문자를 위한 일타강사의 강의",
-      link: "https://ifh.cc/g/poF0CD.png",
-      SmallImg: "https://ifh.cc/g/poF0CD.png",
     },
     {
       id: 1,
@@ -20,14 +18,12 @@ export default function Carousel() {
       title: "매일 업뎃되는 강의!",
       Content: "매일 업데이트 되는 다양한 강의를 둘러보세요.",
     },
-    // {
-    //   id: 2,
-    //   url: "https://ifh.cc/g/T3jpSS.png",
-    //   title: "믿고보는 강사진!",
-    //   Content: "최고의 경력을 가진 강사진",
-    //   link: "/",
-    //   SmallImg : ""
-    // },
+    {
+      id: 2,
+      url: "https://static.starcraft.com/production/images/content/reborn/carousal-terran-bg.e9dd2c91f5bd8bf343a47db26383c48f5cb7913c.jpg",
+      title: "믿고보는 강사진!",
+      Content: "최고의 경력을 가진 강사진",
+    },
   ];
 
   const settings = {
@@ -90,7 +86,7 @@ const CarouselWrap = styled.div`
 >>>>>>>> frontend-feat/races:frontend/src/components/Carousel.js
 
   .slick-dots {
-    bottom: 30px;
+    bottom: 10px;
   }
 
   .slick-dots li button:before {
@@ -115,6 +111,10 @@ const CarouselWrap = styled.div`
       font-weight: 900;
       font-size: 30px;
       transition: all 0.5s;
+
+      @media screen and (max-width: 855px) {
+        font-size: 20px;
+      }
     }
   }
 
@@ -140,7 +140,9 @@ const CarouselWrap = styled.div`
 const ImgZone = styled.div`
   width: 100%;
   height: 300px;
-
+  @media screen and (max-width: 660px) {
+    height: 200px;
+  }
   position: relative;
 `;
 
@@ -156,6 +158,10 @@ const ImgLinkZone = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  @media screen and (max-width: 1024px) {
+    width: 90%;
+    margin-left: 20px;
+  }
 `;
 
 const Title = styled.h2`
@@ -171,37 +177,45 @@ const Title = styled.h2`
   @media screen and (max-width: 1600px) {
     font-size: 30px;
   }
-  @media screen and (max-width: 450px) {
+  @media screen and (max-width: 860px) {
     font-size: 20px;
   }
 
-  @media screen and (max-width: 400px) {
-    font-size: 10px;
+  @media screen and (max-width: 550px) {
+    font-size: 15px;
   }
 `;
 const Content = styled.p`
   color: #fff;
   font-size: 20px;
   margin-top: 30px;
+
+  @media screen and (max-width: 860px) {
+    font-size: 16px;
+  }
+
+  @media screen and (max-width: 550px) {
+    font-size: 12px;
+  }
 `;
 
 const SmallImg = styled.div`
-  width: 400px;
-  height: 300px;
+  width: 300px;
   float: right;
+  @media screen and (max-width: 1024px) {
+    width: 300px;
+  }
 
   img {
     width: 100%;
+    float: right;
 
     @media screen and (max-width: 1600px) {
       width: 80%;
     }
-    @media screen and (max-width: 450px) {
-      width: 60%;
-    }
 
-    @media screen and (max-width: 400px) {
-      width: 40%;
+    @media screen and (max-width: 570px) {
+      display: none;
     }
   }
 `;

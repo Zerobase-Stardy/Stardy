@@ -33,7 +33,13 @@ const Wrap = styled.div`
   width: 70%;
   margin: 0 auto;
   display: grid;
-  gap: 40px;
+
+  @media screen and (max-width: 1024px) {
+    width: 90%;
+  }
+  @media screen and (max-width: 650px) {
+    width: 100%;
+  }
 `;
 
 const LinkZone = styled.div`
@@ -42,7 +48,18 @@ const LinkZone = styled.div`
   height: 200px;
   display: flex;
   justify-content: space-between;
-  gap: 5%;
+
+  @media screen and (max-width: 1024px) {
+    height: 150px;
+  }
+  @media screen and (max-width: 650px) {
+    height: 120px;
+  }
+
+  @media screen and (max-width: 440px) {
+    height: 100px;
+  }
+
   .progamer {
     box-shadow: 0 15px 35px rgba(255, 255, 255, 0.4);
     &:hover {
@@ -80,8 +97,28 @@ const LinkZone = styled.div`
     font-size: 24px;
     border: 1px solid #fff;
 
+    @media screen and (max-width: 1024px) {
+      width: 21%;
+    }
+    @media screen and (max-width: 670px) {
+      width: 21%;
+      font-size: 16px;
+      height: 60px;
+      line-height: 60px;
+    }
+
+    @media screen and (max-width: 440px) {
+      width: 21%;
+      font-size: 14px;
+      height: 60px;
+      line-height: 60px;
+    }
+
+    @media screen and (max-width: 338px) {
+      font-size: 10px;
+    }
+
     &:hover {
-      letter-spacing: 2px;
       transform: scale(1.2);
       cursor: pointer;
     }

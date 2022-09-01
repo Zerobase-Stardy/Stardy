@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { BsCoin } from "react-icons/bs";
 import Page from "./Page";
-import { ThreeDots } from "react-loader-spinner";
 import axios from "axios";
 
 export default function ProGamerLecture(props) {
@@ -46,7 +45,7 @@ export default function ProGamerLecture(props) {
         </Thumbnail>
         <Title>{data.title}</Title>
         <Name>
-          <p>{data.name}</p>
+          <p>{data.gamerName}</p>
         </Name>
         <Price>
           <span>
@@ -93,19 +92,25 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  min-height: 1200px;
-  gap: 2%;
+  justify-content: space-between;
 `;
 
 const LectureArea = styled.div`
   width: 23%;
-  height: 320px;
   margin-bottom: 30px;
   display: flex;
   flex-direction: column;
   transition: 0.25s;
 
-  padding: 10px;
+  @media screen and (max-width: 1024px) {
+    width: 31%;
+  }
+
+  @media screen and (max-width: 800px) {
+    width: 45%;
+  }
+
+  padding: 5px;
   gap: 10px;
   img {
     width: 100%;
@@ -126,18 +131,18 @@ const LectureArea = styled.div`
 
 const Thumbnail = styled.div``;
 const Title = styled.div`
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
 `;
 
 const Name = styled.div`
   p {
-    font-size: 16px;
+    font-size: 14px;
   }
 `;
 
 const Price = styled.div`
-  font-size: 16px;
+  font-size: 14px;
   display: flex;
 
   p {
@@ -145,7 +150,7 @@ const Price = styled.div`
     color: #ccff66;
   }
   span {
-    font-size: 20px;
+    font-size: 18px;
     color: #ccff66;
   }
 `;

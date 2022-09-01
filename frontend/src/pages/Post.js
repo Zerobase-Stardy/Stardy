@@ -17,26 +17,29 @@ export default function FreeBoard() {
             <h2>Community</h2>
             <BoardName>
               <Radio>
-                <Input
-                  name="boardtype"
-                  type="radio"
-                  id="free"
-                  onClick={(e) => {
-                    setChecked(e.target.id);
-                  }}
-                  defaultChecked
-                />
-                <Label htmlFor={"free"}>자유 게시판</Label>
-
-                <Input
-                  name="boardtype"
-                  type="radio"
-                  id="suggest"
-                  onClick={(e) => {
-                    setChecked(e.target.id);
-                  }}
-                />
-                <Label htmlFor={"suggest"}>빌드 건의</Label>
+                <Button>
+                  <Input
+                    name="boardtype"
+                    type="radio"
+                    id="free"
+                    onClick={(e) => {
+                      setChecked(e.target.id);
+                    }}
+                    defaultChecked
+                  />
+                  <Label htmlFor={"free"}>자유 게시판</Label>
+                </Button>
+                <Button>
+                  <Input
+                    name="boardtype"
+                    type="radio"
+                    id="suggest"
+                    onClick={(e) => {
+                      setChecked(e.target.id);
+                    }}
+                  />
+                  <Label htmlFor={"suggest"}>빌드 건의</Label>
+                </Button>
               </Radio>
               <Link to="write" style={{ marginLeft: "auto" }}>
                 <BsPencilSquare />
@@ -63,9 +66,15 @@ const Effect = styled.div`
   height: 53px;
   margin: 0 auto;
   background-image: url("https://static.starcraft.com/production/images/site/dividers/divider-terminal-detail.3a193b6d6e3a7d62cee253b2a245bbdd73bea9b6.png");
+  @media screen and (max-width: 662px) {
+    width: 300px;
+  }
+  @media screen and (max-width: 300px) {
+    display: none;
+  }
 `;
 const Wrap = styled.div`
-  width: 60%;
+  width: 80%;
   margin: 0 auto;
   padding: 5px;
   background-color: rgba(0, 0, 0, 0.8);
@@ -73,6 +82,10 @@ const Wrap = styled.div`
   border-radius: 6px;
   margin: 0 auto;
   color: #b8bbcc;
+
+  @media screen and (max-width: 1024px) {
+    width: 90%;
+  }
 `;
 
 const RedBox = styled.div`
@@ -83,13 +96,16 @@ const RedBox = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   border: 1px solid #800000;
-  padding: 20px 70px;
+  padding: 20px 20px;
 
   h2 {
     width: 100%;
     color: #b8bbcc;
     font-size: 24px;
     margin-bottom: 30px;
+    @media screen and (max-width: 662px) {
+      text-align: center;
+    }
   }
 `;
 
@@ -113,6 +129,9 @@ const BoardName = styled.div`
   line-height: 40px;
 
   svg {
+    @media screen and (max-width: 660px) {
+      font-size: 32px;
+    }
     font-size: 40px;
     margin-right: 0;
 
@@ -122,10 +141,35 @@ const BoardName = styled.div`
   }
 `;
 
+const Button = styled.div`
+  width: 135px;
+  font-size: 16px;
+
+  @media screen and (max-width: 600px) {
+    width: 100px;
+    font-size: 14px;
+  }
+
+  @media screen and (max-width: 450px) {
+    width: 150px;
+  }
+`;
+
 const Input = styled.input``;
-const Label = styled.label``;
+const Label = styled.label`
+  width: 100%;
+  height: 45px;
+  line-height: 45px;
+`;
 
 const Radio = styled.div`
+  display: flex;
+
+  @media screen and (max-width: 450px) {
+    flex-direction: column;
+  }
+  width: 100%;
+  gap: 5px;
   input[type="radio"] {
     width: 0;
     height: 0;
@@ -133,9 +177,7 @@ const Radio = styled.div`
   }
   input[type="radio"] + label {
     margin: 0;
-    padding: 10px 32px;
     position: relative;
-    font-size: 18px;
     display: inline-block;
     border-radius: 5px;
     border: 1px solid #cc0000;
@@ -149,7 +191,6 @@ const Radio = styled.div`
         );
     background-size: 1px 2px, cover;
     color: white;
-    line-height: 140%;
     text-align: center;
     transition: border-color 0.15s ease-out, color 0.25s ease-out,
       background-color 0.15s ease-out, box-shadow 0.15s ease-out;

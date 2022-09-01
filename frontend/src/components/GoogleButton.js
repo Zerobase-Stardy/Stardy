@@ -29,6 +29,11 @@ const GoogleBtn = styled.div`
   cursor: pointer;
   font-family: Nanum;
   font-size: 14px;
+
+  @media screen and (max-width: 440px) {
+    width: 250px;
+    height: 37.5px;
+  }
   &:hover {
     background-color: lightgray;
   }
@@ -37,10 +42,20 @@ const GoogleBtn = styled.div`
     float: left;
     width: 24px;
     height: 24px;
+
+    @media screen and (max-width: 440px) {
+      width: 18px;
+      height: 18px;
+    }
   }
 
   p {
     line-height: 25px;
     color: black;
+
+    @media screen and (max-width: 440px) {
+      line-height: 16px;
+      font-size: 12px;
+    }
   }
 `;
