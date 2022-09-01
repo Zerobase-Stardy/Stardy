@@ -1,143 +1,47 @@
 import styled from "styled-components"
-import { useState } from "react";
-
-
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 
 export default function Zerg(){
 
-    const datas = [
-        {
-          gamerId: 1,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "임요한",
-        },
-    
-        {
-          gamerId: 2,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "임요한",
-        },
-        {
-          gamerId: 3,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "임요한",
-        },
-        {
-          gamerId: 4,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "유영진",
-        },
-        {
-          gamerId: 5,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "유영진",
-        },
-        {
-          gamerId: 6,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "유영진",
-        },
-        {
-          gamerId: 7,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "저그킹",
-        },
-        {
-          gamerId: 8,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/5oYQCn24Sk4/mqdefault.jpg",
-          comment: "설명",
-          level: "Hard",
-          race: "테란(종족)",
-          price: 20,
-          name: "프로킹",
-        },
-        {
-          gamerId: 9,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/5oYQCn24Sk4/mqdefault.jpg",
-          comment: "설명",
-          level: "Hard",
-          race: "테란(종족)",
-          price: 20,
-        },
-        {
-          gamerId: 10,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/5oYQCn24Sk4/mqdefault.jpg",
-          comment: "설명",
-          level: "Hard",
-          race: "테란(종족)",
-          price: 20,
-        },
-      ];
+  const [lectures, setLectures] = useState([])
+
+  useEffect(() => {
+    axios
+    .get(`https://www.dokuny.blog/courses?race=zerg`)
+    .then((res) => {
+          setLectures(...lectures, res.data.data.content)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }, [])
+
 
     const [level, setLevel] = useState("Easy");
 
     const LevelSelectHandler = (e) => {
         setLevel(`${e.target.id}`)
-        console.log(level)
     }
 
     const [lecture, setLecture] = useState([])
 
 
-    const levelVideo = datas.map((data) => { 
-        if(data.level === level){
-        return(
-            <LectureInfo key={data.gamerId}>
-            <img src={data.thumblink} alt="썸네일" style={{ width: "100%"}}/>
-            <div> {data.title} </div>
-            </LectureInfo>
+    const levelVideo = lectures.map((data) => { 
+      if(data.level === level){
+      return(
+          <Link to={`/classRoom/${data.title}`}>
+          <LectureInfo key={data.id}>
+          <img src={data.thumbnailUrl} alt="썸네일" style={{ width: "100%"}}/>
+          <div style={{fontSize:"14px"}}> {data.title} </div>
+          </LectureInfo>
+          </Link>
 
-        ) 
-        }}) 
+      ) 
+      }}) 
+
 
     return(
         <Wrap>
@@ -152,7 +56,7 @@ export default function Zerg(){
                 이러한 생체 진화는 초월체에 대한 절대적인 충성심과 함께 저그를 우주에서 가장 두려운 존재 중 하나로 만들었다.
                 </div>
                 <LevelBox>
-                    <div id="Easy" onClick={LevelSelectHandler} style={{color: "#13cf3e"}}> Easy </div>
+                    <div id="Easy" onClick={LevelSelectHandler} style={{color: "#13cf3e",  marginRight: "8px"}}> Easy </div>
                     <div id="Hard" onClick={LevelSelectHandler}  style={{color: "red"}}> Hard </div>
                 </LevelBox>
             </RaceHeader>

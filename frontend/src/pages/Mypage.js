@@ -22,7 +22,6 @@ export default function MyPage() {
 
           <PageCategory>
             <LinkItem to={"/mypage/profile"}> 프로필 </LinkItem>
-            <LinkItem to={"/mypage/mylecture"}> 내 강의실 </LinkItem>
             <LinkItem to={"/mypage/attendance"}> 출석 체크 </LinkItem>
             <button
               onClick={() => {

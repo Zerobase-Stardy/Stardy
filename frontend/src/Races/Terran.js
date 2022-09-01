@@ -1,143 +1,67 @@
 import styled from "styled-components"
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { BsCoin } from "react-icons/bs";
+import { useSelector } from "react-redux";
 
 
 
 
 export default function Terran(){
+  const header = useSelector((state) => state.userinfo.value.header);
+  const [lectures, setLectures] = useState([])
 
-    const datas = [
-        {
-          gamerId: 1,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "임요한",
-        },
-    
-        {
-          gamerId: 2,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "임요한",
-        },
-        {
-          gamerId: 3,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "임요한",
-        },
-        {
-          gamerId: 4,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "유영진",
-        },
-        {
-          gamerId: 5,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "유영진",
-        },
-        {
-          gamerId: 6,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "유영진",
-        },
-        {
-          gamerId: 7,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "저그킹",
-        },
-        {
-          gamerId: 8,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/5oYQCn24Sk4/mqdefault.jpg",
-          comment: "설명",
-          level: "Hard",
-          race: "테란(종족)",
-          price: 20,
-          name: "프로킹",
-        },
-        {
-          gamerId: 9,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/5oYQCn24Sk4/mqdefault.jpg",
-          comment: "설명",
-          level: "Hard",
-          race: "테란(종족)",
-          price: 20,
-        },
-        {
-          gamerId: 10,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/5oYQCn24Sk4/mqdefault.jpg",
-          comment: "설명",
-          level: "Hard",
-          race: "테란(종족)",
-          price: 20,
-        },
-      ];
+  useEffect(() => {
+    axios
+    .get(`https://www.dokuny.blog/courses?race=terran`)
+    .then((res) => {
+          setLectures(...lectures, res.data.data.content)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }, [])
 
     const [level, setLevel] = useState("Easy");
 
     const LevelSelectHandler = (e) => {
         setLevel(`${e.target.id}`)
-        console.log(level)
     }
 
-    const [lecture, setLecture] = useState([])
+    function handleClick(e) {
+      const lectureId  = e.currentTarget.id
+      console.log(`${lectureId}`)
+      axios.post(`https://www.dokuny.blog/courses/${lectureId}/unlock`, {
+           headers: header
+       }).
+       catch((err) => console.log(err))
+
+       window.alert(`강의가 해금되었습니다! 마이페이지에서 확인 할 수 있습니다`)
+   }
+ 
+
+    const levelVideo = lectures.map((data) => { 
+      if(data.level === level){
+      return(
+ 
+          <LectureInfo key={data.id} onClick={handleClick} id={data.id}>
+          <img src={data.thumbnailUrl} alt="썸네일" style={{ width: "100%"}}/>
+          <div style={{fontSize:"16px", fontWeight:"700"}}> {data.title} </div>
+          <Name>
+            <p>{data.gamerName}</p>
+          </Name>
+          <Price>
+            <span>
+              <BsCoin /> :
+            </span>
+            &nbsp;
+            <p>{data.price}</p>
+          </Price>
+          </LectureInfo>
 
 
-    const levelVideo = datas.map((data) => { 
-        if(data.level === level){
-        return(
-            <LectureInfo>
-            <img src={data.thumblink} alt="썸네일" style={{ width: "100%"}}/>
-            <div> {data.title} </div>
-            </LectureInfo>
-
-        ) 
-        }}) 
+      ) 
+      }}) 
 
     return(
         <Wrap>
@@ -151,7 +75,7 @@ export default function Terran(){
                 이 젊은 종족은 자신들의 단점에도 불구하고 어떤 환경에서도 살아남을 수 있다는 굳은 신념을 지니고 있다.
                 </div>
                 <LevelBox>
-                    <div id="Easy" onClick={LevelSelectHandler} style={{color: "#13cf3e"}}> Easy </div>
+                    <div id="Easy" onClick={LevelSelectHandler} style={{color: "#13cf3e",  marginRight: "8px"}}> Easy </div>
                     <div id="Hard" onClick={LevelSelectHandler}  style={{color: "red"}}> Hard </div>
                 </LevelBox>
             </RaceHeader>
@@ -192,8 +116,20 @@ const LectureInfo = styled.div`
     width: 160px;
     height: 160px;
     margin: 8px;
+    
+  &:hover {
+    transform: scale(1.1);
+    border-radius: 5px;
+    border-color: #ccff66;
+    box-shadow: 0 0 10px #ccff66, inset 0 0 0 1px #000, inset 0 0 0 2px #ccff66;
+    color: #ccff66;
+  }
 
+  &:active {
+    transform: scale(1.2);
+  }
 `
+
 
 const LectureArea = styled.div`
     width: 540px;
@@ -201,3 +137,22 @@ const LectureArea = styled.div`
     flex-wrap: wrap;
     align-items: center;
 `
+const Name = styled.div`
+  p {
+    font-size: 14px;
+  }
+`;
+
+const Price = styled.div`
+  font-size: 14px;
+  display: flex;
+
+  p {
+    line-height: 23px;
+    color: #ccff66;
+  }
+  span {
+    font-size: 18px;
+    color: #ccff66;
+  }
+`;

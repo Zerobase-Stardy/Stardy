@@ -2,20 +2,17 @@
 import styled from "styled-components";
 import { HiOutlineX } from "react-icons/hi"
 
-export default function SideNav(props){
+export default function SideNav({info, openClick, style}){
     return (
-        <Nav style={props.style}> 강의 목록 제목
-                <CloseButton onClick={props.openClick}>
+        <Nav style={style}> {info.title}
+                <CloseButton onClick={openClick}>
                     <HiOutlineX />
                 </CloseButton>
                 <SideNavMenu>
-                    초급
+                    게이머: {info.gamerName}
                 </SideNavMenu>
                 <SideNavMenu>
-                    중급
-                </SideNavMenu>
-                <SideNavMenu>
-                    고급
+                    강의 난이도: {info.level}
                 </SideNavMenu>
         </Nav>
     )
@@ -24,12 +21,11 @@ export default function SideNav(props){
 
 const Nav = styled.ul`
     box-sizing: border-box;
-    box-shadow: 10px 2px 15px -7px #000000;
-    z-index: 1;
+    box-shadow: 10px 2px 15px -7px white;
     position: absolute;
     height: 100%;
     width: 24vw;
-    background-color: gray;
+    background-color: black;
     top: 0;
     left: 0;
     margin:0;
@@ -37,9 +33,8 @@ const Nav = styled.ul`
     font-size: 24px;
     font-weight: bold;
     color: white;
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: space-around;
+    z-index: 999;
+    border-radius: 4px;
 `
 
 

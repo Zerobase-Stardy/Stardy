@@ -1,6 +1,7 @@
 import { useState } from "react"
 import {  HiMenu, HiUser } from 'react-icons/hi';
 import styled from 'styled-components';
+import { Link } from "react-router-dom";
 
 export default function ClassRoomHeader(props){
 
@@ -25,12 +26,20 @@ export default function ClassRoomHeader(props){
     
     return(
         <Header>
-            <div style={{backgroundColor: "gray", cursor: "pointer"}} onClick={props.openClick}> <HiMenu size="40"/> </div>
-            <WordArea> 강의제목 </WordArea>
-            <BadgeArea onClick={iconHandler}> <HiUser/> 
+            <div style={{backgroundColor: "gray", cursor: "pointer"}} onClick={props.openClick}> <HiMenu size="64"/> </div>
+            <WordArea> {props.title} </WordArea>
+            <BadgeArea onClick={iconHandler}> <HiUser size="32"/> 
                 <UserMenu style={ userInfo }>
-                    <UserMenuList>마이 페이지</UserMenuList>
-                    <UserMenuList> 커뮤니티 </UserMenuList>
+                    <UserMenuList>
+                        <Link to="/mypage/profile">
+                            마이 페이지
+                        </Link>
+                    </UserMenuList>
+                    <UserMenuList> 
+                        <Link to="/post">
+                            커뮤니티 
+                        </Link>
+                    </UserMenuList>
                     <UserMenuList> 로그아웃 </UserMenuList>
                 </UserMenu>
             </BadgeArea>
@@ -40,13 +49,13 @@ export default function ClassRoomHeader(props){
 
 const Header = styled.header`
     width: 100%;
-    height: 40px;
+    height: 64px;
     border: 1px solid gray;
     color: white;
     display: flex;
     justify-content: space-between;
     border-color: gray;
-    font-size: 24px;
+    font-size: 32px;
     font-weight: bold;
     text-align: center;
 `
@@ -54,6 +63,9 @@ const WordArea = styled.span`
     position: absolute;
     left: 68px;
     top: 12px;
+    line-height: 24px;
+    font-family: NanumBold;
+    padding: 4px;
 `
 
 
@@ -61,24 +73,24 @@ const BadgeArea = styled.div`
     background-color: gray;
     border: 1px solid gray;
     border-radius: 50%;
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     margin: 5px 8px;
     cursor: pointer;
-    position: relative
+    position: relative;
+    line-height: 32px;
 `
 
 
 const UserMenu = styled.ul`
-    
     font-size: 12px;
     background-color: gray;
     position: absolute;
     color: white;
-    top: 40px;
+    top: 52px;
     right: 0;
     width: 96px;
-    height: 120px;
+    height: 156px;
     border-radius: 15px;
     box-shadow: 4px 2px 15px 1px #000000;
     padding: 0;
