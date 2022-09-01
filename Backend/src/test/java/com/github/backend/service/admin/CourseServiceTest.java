@@ -1,12 +1,16 @@
 package com.github.backend.service.admin;
 
 import com.github.backend.dto.course.CourseInfoOutputDto;
+import com.github.backend.dto.course.CourseInfoOutputDto.Info;
 import com.github.backend.dto.course.SearchCourse;
 import com.github.backend.persist.course.Course;
 import com.github.backend.persist.course.repository.querydsl.CourseSearchRepository;
 import com.github.backend.persist.gamer.Gamer;
 import com.github.backend.persist.course.repository.CourseRepository;
+import com.github.backend.persist.myCourse.MyCourse;
+import com.github.backend.persist.myCourse.repository.MyCourseRepository;
 import com.github.backend.service.course.impl.CourseService;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +22,7 @@ import org.springframework.data.domain.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.ArgumentMatchers.*;
@@ -32,6 +37,9 @@ public class CourseServiceTest {
 
     @Mock
     private CourseSearchRepository courseSearchRepository;
+
+    @Mock
+    private MyCourseRepository myCourseRepository;
 
     @InjectMocks
     private CourseService courseService;
@@ -93,5 +101,35 @@ public class CourseServiceTest {
         assertEquals(courseList.getContent().get(1).getRace(), course2.getRace());
     }
 
+    @DisplayName("강의 조회 성공")
+    @Test
+    void searchMyCourse_success(){
+        //given
+        Course course = Course.builder()
+            .id(2L)
+            .gamer(Gamer.builder()
+                .id(1L)
+                .name("유영진")
+                .build())
+            .title("벙커링")
+            .price(10L)
+            .build();
+
+        MyCourse myCourse = MyCourse.builder()
+            .course(course)
+            .build();
+
+        given(myCourseRepository.findByMember_IdAndCourse_Id(anyLong(), any()))
+            .willReturn(Optional.of(myCourse));
+
+        //when
+        Info info = courseService.searchMyCourse(anyLong(), anyLong());
+
+        //then
+        assertThat(info.getId()).isEqualTo(course.getId());
+        assertThat(info.getTitle()).isEqualTo(course.getTitle());
+        assertThat(info.getPrice()).isEqualTo(course.getPrice());
+
+    }
 }
 
