@@ -9,7 +9,7 @@ export default function FreeContent() {
   const [freeBoard, setFreeBoard] = useState([]);
   const [count, setCount] = React.useState(0); //아이템 총 개수
   const [currentpage, setCurrentpage] = React.useState(1); //현재페이지
-  const [postPerPage] = React.useState(10); //페이지당 아이템 개수
+  const [postPerPage] = React.useState(8); //페이지당 아이템 개수
   const [indexOfLastPost, setIndexOfLastPost] = React.useState(0);
   const [indexOfFirstPost, setIndexOfFirstPost] = React.useState(0);
   const [currentPosts, setCurrentPosts] = React.useState(0);
@@ -80,6 +80,11 @@ const List = styled.div`
     background-color: rgba(147, 168, 237, 0.2);
     transition: 0.5s;
   }
+
+  @media screen and (max-width: 650px) {
+    height: 110px;
+    padding: 10px;
+  }
 `;
 
 const Center = styled.div`
@@ -96,10 +101,24 @@ const Top = styled.div`
 const Title = styled.div`
   font-weight: bold;
   font-size: 24px;
+
+  @media screen and (max-width: 662px) {
+    font-size: 20px;
+  }
+  @media screen and (max-width: 350px) {
+    font-size: 18px;
+  }
 `;
 
 const Writer = styled.div`
   margin-left: auto;
+
+  @media screen and (max-width: 662px) {
+    font-size: 12px;
+  }
+  @media screen and (max-width: 450px) {
+    font-size: 11px;
+  }
 `;
 
 const Content = styled.div`
@@ -115,5 +134,12 @@ const Content = styled.div`
     display: -webkit-box;
     -webkit-line-clamp: 2; // 원하는 라인수
     -webkit-box-orient: vertical;
+  }
+
+  @media screen and (max-width: 662px) {
+    font-size: 12px;
+  }
+  @media screen and (max-width: 350px) {
+    font-size: 10px;
   }
 `;

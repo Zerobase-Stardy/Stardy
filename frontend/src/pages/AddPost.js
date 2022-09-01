@@ -114,6 +114,12 @@ const Effect = styled.div`
   height: 53px;
   margin: 0 auto;
   background-image: url("https://static.starcraft.com/production/images/site/dividers/divider-terminal-detail.3a193b6d6e3a7d62cee253b2a245bbdd73bea9b6.png");
+  @media screen and (max-width: 662px) {
+    width: 300px;
+  }
+  @media screen and (max-width: 300px) {
+    display: none;
+  }
 `;
 const Wrap = styled.div`
   width: 60%;
@@ -124,6 +130,10 @@ const Wrap = styled.div`
   border-radius: 6px;
   margin: 0 auto;
   color: #b8bbcc;
+
+  @media screen and (max-width: 1024px) {
+    width: 90%;
+  }
 `;
 
 const RedBox = styled.div`
@@ -136,7 +146,7 @@ const RedBox = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   border: 1px solid #800000;
-  padding: 20px 70px;
+  padding: 20px;
 
   h2 {
     width: 100%;
@@ -167,29 +177,6 @@ const Top = styled.div`
     color: #00cc00;
     outline: none;
     border: 1px solid #800000;
-  }
-
-  .ck.ck-editor__top .ck-sticky-panel .ck-toolbar {
-    border: 1px solid #800000;
-    border-bottom: none;
-  }
-  .ck-content {
-    min-height: 600px;
-  }
-  .ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
-    border: 1px solid #800000;
-  }
-  .ck.ck-editor__main > .ck-editor__editable {
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-
-  .ck.ck-toolbar {
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-
-  .ck-reset_all :not(.ck-reset_all-excluded *),
-  .ck.ck-reset_all {
-    color: #00cc00;
   }
 `;
 
@@ -225,6 +212,9 @@ const SubmitBtn = styled.input`
   &:hover {
     color: #ddff99;
   }
+  @media screen and (max-width: 400px) {
+    width: 100px;
+  }
 `;
 
 const CancelBtn = styled.input`
@@ -240,5 +230,9 @@ const CancelBtn = styled.input`
 
   &:hover {
     color: #ddff99;
+  }
+
+  @media screen and (max-width: 400px) {
+    width: 100px;
   }
 `;

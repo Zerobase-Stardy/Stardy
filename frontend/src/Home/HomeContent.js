@@ -32,17 +32,22 @@ export default function HomeCategory() {
                 스타 대회 일정
               </GreenBox>
             </GridBox>
-            <GridBox>
+            <GridBigBox className="big">
               <GreenBigBox>
                 <span>스타 리마스터 주요특징</span>
-                <ul>
-                  <li>그래픽 리마스터</li>
-                  <li>음성 및 음향 개선</li>
-                  <li>블리자드 친구 및 상대 찾기</li>
-                  <li>클래식 스타크래프트 게임 플레이</li>
-                </ul>
+                <div>그래픽 리마스터</div>
+                <div>음성 및 음향 개선</div>
+                <div>
+                  블리자드 친구 및 <br />
+                  상대 찾기
+                </div>
+                <div>
+                  클래식 스타크래프트
+                  <br />
+                  게임 플레이
+                </div>
               </GreenBigBox>
-            </GridBox>
+            </GridBigBox>
           </RedBox>
         </BrownBox>
       </StarBackground>
@@ -63,8 +68,17 @@ const Effect = styled.div`
   height: 53px;
   margin: 0 auto;
   background-image: url("https://static.starcraft.com/production/images/site/dividers/divider-terminal-detail.3a193b6d6e3a7d62cee253b2a245bbdd73bea9b6.png");
+  @media screen and (max-width: 662px) {
+    width: 300px;
+  }
+  @media screen and (max-width: 300px) {
+    display: none;
+  }
 `;
 const BrownBox = styled.div`
+  @media screen and (max-width: 1024px) {
+    width: 90%;
+  }
   width: 70%;
   padding: 3px;
   background-color: rgba(0, 0, 0, 0.8);
@@ -82,15 +96,30 @@ const RedBox = styled.div`
 
   border: 1px solid #800000;
   padding: 10px;
+
+  @media screen and (max-width: 800px) {
+    flex-direction: column;
+    gap: 20px;
+  }
 `;
 
 const PieBox = styled.div`
-  flex-basis: 30%;
+  flex-basis: 40%;
   height: 300px;
 `;
 
 const GridBox = styled.div`
   flex-basis: 20%;
+  height: 300px;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const GridBigBox = styled.div`
+  flex-basis: 30%;
   height: 300px;
   text-align: center;
 
@@ -118,14 +147,15 @@ const GreenBigBox = styled.div`
   border: 1px solid rgba(0, 204, 0, 0.6);
   box-shadow: 0 0 20px rgb(0 204 0 / 50%), inset 0 0 0 1px #000,
     inset 0 0 0 2px rgb(0 204 0 / 50%);
-  line-height: 60px;
   height: 300px;
-
+  display: grid;
+  padding: 10px;
   span {
+    margin-top: 20px;
     color: #80ff66;
   }
 
-  li {
+  div {
     color: #b8bbcc;
   }
   &:hover {

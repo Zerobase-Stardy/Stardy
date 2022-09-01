@@ -104,9 +104,18 @@ export default function Header(props) {
 
 const Wrap = styled.div`
   width: 70%;
+  height: 64px;
   margin: 0 auto;
   position: relative;
   color: #80ff66;
+
+  @media screen and (max-width: 1024px) {
+    width: 90%;
+  }
+
+  @media screen and (max-width: 660px) {
+    width: 97%;
+  }
 `;
 
 const HeaderArea = styled.header`
@@ -138,6 +147,9 @@ const HeaderNav = styled.div`
   justify-content: space-between;
   width: 30%;
   min-width: 240px;
+  @media screen and (max-width: 650px) {
+    font-size: 14px;
+  }
 
   a:hover {
     color: #ccff66;
@@ -146,12 +158,24 @@ const HeaderNav = styled.div`
 
 const UserName = styled.div`
   font-size: 12px;
+  @media screen and (max-width: 650px) {
+    font-size: 10px;
+  }
+
+  @media screen and (max-width: 650px) {
+    font-size: 10px;
+    line-height: 25px;
+  }
 `;
 const UserNaviArea = styled.div`
   position: absolute;
   right: 4px;
   top: 12px;
   font-size: 14px;
+
+  @media screen and (max-width: 650px) {
+    font-size: 12px;
+  }
 
   .mypage:hover {
     color: #ccff66;
@@ -164,7 +188,6 @@ const Login = styled.button`
   background-color: transparent;
   color: #80ff66;
   cursor: pointer;
-  font-size: 14px;
   font-family: Nanum;
 
   &:hover {
@@ -178,9 +201,11 @@ const Logout = styled.button`
   background-color: transparent;
   color: #80ff66;
   cursor: pointer;
-  font-size: 14px;
   font-family: Nanum;
 
+  @media screen and (max-width: 650px) {
+    font-size: 12px;
+  }
   &:hover {
     color: #ccff66;
   }

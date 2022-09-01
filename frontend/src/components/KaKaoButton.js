@@ -14,6 +14,13 @@ export default function KaKaoButton() {
 
 const KaKaoWrap = styled.div`
   width: 100%;
+
+  @media screen and (max-width: 440px) {
+    width: 80%;
+    img {
+      width: 250px;
+    }
+  }
 `;
 
 const KaKaoBtn = styled.a``;

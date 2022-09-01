@@ -124,7 +124,7 @@ const Wrap = styled.div`
     width: 28px;
   }
   .quill {
-    height: 800px;
+    height: 400px;
   }
 
   .ql-container {

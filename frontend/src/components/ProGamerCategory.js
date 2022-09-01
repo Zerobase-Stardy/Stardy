@@ -7,8 +7,8 @@ export default function ProGamerCategory() {
   const [gamers, setGamers] = useState([]);
   const [checkList, setCheckList] = useState([]);
   const [moreView, setMoreView] = useState(false);
-  const littleGamers = gamers.filter((gamer, idx) => idx < 17);
-  const bigGamers = gamers.filter((gamer, idx) => idx >= 17);
+  const littleGamers = gamers.filter((gamer, idx) => idx < 7);
+  const bigGamers = gamers.filter((gamer, idx) => idx >= 7);
 
   useEffect(() => {
     axios
@@ -31,7 +31,7 @@ export default function ProGamerCategory() {
 
   function gamerBtn(array) {
     return array.map((item, idx) => (
-      <div key={idx}>
+      <Box key={idx}>
         <Input
           name={item.nickname}
           type="checkbox"
@@ -41,7 +41,7 @@ export default function ProGamerCategory() {
           }}
         />
         <Label htmlFor={item.nickname}>{item.name}</Label>
-      </div>
+      </Box>
     ));
   }
 
@@ -52,7 +52,7 @@ export default function ProGamerCategory() {
         <CategoryArea>
           {gamerBtn(littleGamers)}
 
-          {moreView === false && gamers.length > 9 ? (
+          {moreView === false && gamers.length > 7 ? (
             <MoreViewBtn
               onClick={() => {
                 setMoreView(!moreView);
@@ -64,7 +64,7 @@ export default function ProGamerCategory() {
 
           {moreView ? gamerBtn(bigGamers) : null}
 
-          {moreView && gamers.length > 9 ? (
+          {moreView && gamers.length > 7 ? (
             <FolderBtn
               onClick={() => {
                 setMoreView(!moreView);
@@ -108,7 +108,7 @@ const RedBox = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   border: 1px solid #800000;
-  padding: 20px 70px;
+  padding: 20px;
 
   h2 {
     width: 100%;
@@ -124,18 +124,21 @@ const CategoryArea = styled.div`
   display: flex;
   flex-wrap: wrap;
   overflow: hidden;
-  gap: 20px;
+  gap: 10px;
+
+  @media screen and (max-width: 510px) {
+    gap: 10px;
+  }
 
   input[type="checkbox"] {
     width: 0;
     height: 0;
     position: absolute;
   }
+
   input[type="checkbox"] + label {
     margin: 0;
-    padding: 10px 32px;
     position: relative;
-    font-size: 18px;
     display: inline-block;
     border-radius: 5px;
     border: 1px solid #cc0000;
@@ -149,7 +152,7 @@ const CategoryArea = styled.div`
         );
     background-size: 1px 2px, cover;
     color: white;
-    line-height: 140%;
+    line-height: 45px;
     text-align: center;
     transition: border-color 0.15s ease-out, color 0.25s ease-out,
       background-color 0.15s ease-out, box-shadow 0.15s ease-out;
@@ -163,6 +166,35 @@ const CategoryArea = styled.div`
   }
 `;
 
+const Box = styled.div`
+  width: 11%;
+  height: 45px;
+  font-size: 16px;
+
+  @media screen and (max-width: 850px) {
+    width: 13%;
+  }
+
+  @media screen and (max-width: 700px) {
+    width: 16%;
+    font-size: 14px;
+  }
+
+  @media screen and (max-width: 500px) {
+    width: 22%;
+    font-size: 14px;
+  }
+
+  @media screen and (max-width: 340px) {
+    width: 30%;
+    font-size: 14px;
+  }
+
+  label {
+    width: 100%;
+    height: 100%;
+  }
+`;
 const Input = styled.input``;
 const Label = styled.label``;
 const MoreViewBtn = styled.button`
@@ -197,6 +229,5 @@ const FolderBtn = styled.button`
 const LectureArea = styled.div`
   width: 100%;
   margin: 0 auto;
-  min-height: 1200px;
   padding-top: 50px;
 `;

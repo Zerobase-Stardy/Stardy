@@ -66,6 +66,8 @@ header
 main{
   padding-bottom: 100px;
 }
+
+
 footer
 {
   width: 100%;
