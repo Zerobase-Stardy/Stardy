@@ -71,8 +71,6 @@ const Effect = styled.div`
 const CarouselWrap = styled.div`
   width: 100%;
   margin: 0 auto;
-<<<<<<<< HEAD:frontend/src/Home/Carousel.js
-========
   @media screen and (max-width: 1024px) {
     height: 400px;
   }
@@ -83,7 +81,6 @@ const CarouselWrap = styled.div`
   @media screen and (max-width: 400px) {
     height: 200px;
   }
->>>>>>>> frontend-feat/races:frontend/src/components/Carousel.js
 
   .slick-dots {
     bottom: 10px;
@@ -168,11 +165,7 @@ const Title = styled.h2`
   padding-top: 40px;
   color: #fff;
 
-<<<<<<<< HEAD:frontend/src/Home/Carousel.js
-  font-size: 30px;
-========
   font-size: 40px;
->>>>>>>> frontend-feat/races:frontend/src/components/Carousel.js
 
   @media screen and (max-width: 1600px) {
     font-size: 30px;

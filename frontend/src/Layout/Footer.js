@@ -19,7 +19,7 @@ export default function Footer() {
   const locationNow = useLocation();
   if (
     locationNow.pathname.includes("admin") ||
-    locationNow.pathname.includes("classRoom") ||
+    locationNow.pathname.includes("Classroom") ||
     locationNow.pathname.includes("error")
   )
     return null;
