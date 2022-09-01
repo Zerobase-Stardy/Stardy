@@ -2,23 +2,17 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 export default function NavHoverMenu(props) {
-  const LinkItem = ({ children, to }) => (
-    <Link to={to}>
-      <HoverEffect> {children} </HoverEffect>
-    </Link>
-  );
-
   return (
     <MenuItems style={props.style}>
       <ItemsUl>
         <li>
-          <LinkItem to="/races/terran"> 테란 </LinkItem>
+          <Link to="/races/terran"> <HoverEffect>테란 </HoverEffect> </Link>
         </li>
         <li>
-          <LinkItem to="/races/protoss"> 프로토스 </LinkItem>
+          <Link to="/races/protoss"><HoverEffect>프로토스 </HoverEffect> </Link>
         </li>
         <li>
-          <LinkItem to="/races/zerg"> 저그 </LinkItem>
+          <Link to="/races/zerg"> <HoverEffect>저그 </HoverEffect> </Link>
         </li>
       </ItemsUl>
     </MenuItems>

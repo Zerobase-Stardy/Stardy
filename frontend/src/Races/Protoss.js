@@ -1,140 +1,46 @@
 import styled from "styled-components"
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 
 
 
 export default function Protoss(){
+    const [lectures, setLectures] = useState([])
 
-    const datas = [
-        {
-          gamerId: 1,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "임요한",
-        },
+    useEffect(() => {
+      axios
+      .get(`https://www.dokuny.blog:443/course/courses?race=protoss`)
+      .then((res) => {
+            setLectures(...lectures, res.data.data.content)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    }, [])
     
-        {
-          gamerId: 2,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "임요한",
-        },
-        {
-          gamerId: 3,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "임요한",
-        },
-        {
-          gamerId: 4,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "유영진",
-        },
-        {
-          gamerId: 5,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "유영진",
-        },
-        {
-          gamerId: 6,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "유영진",
-        },
-        {
-          gamerId: 7,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-          comment: "설명",
-          level: "Easy",
-          race: "테란(종족)",
-          price: 20,
-          name: "저그킹",
-        },
-        {
-          gamerId: 8,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/5oYQCn24Sk4/mqdefault.jpg",
-          comment: "설명",
-          level: "Hard",
-          race: "테란(종족)",
-          price: 20,
-          name: "프로킹",
-        },
-        {
-          gamerId: 9,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/5oYQCn24Sk4/mqdefault.jpg",
-          comment: "설명",
-          level: "Hard",
-          race: "테란(종족)",
-          price: 20,
-        },
-        {
-          gamerId: 10,
-          title: "유영진 테란 강의",
-          videoUrl: "http://www.youtube.com",
-          thumblink: "http://i.ytimg.com/vi/5oYQCn24Sk4/mqdefault.jpg",
-          comment: "설명",
-          level: "Hard",
-          race: "테란(종족)",
-          price: 20,
-        },
-      ];
-
     const [level, setLevel] = useState("Easy");
 
     const LevelSelectHandler = (e) => {
         setLevel(`${e.target.id}`)
-        console.log(level)
     }
 
-    const [lecture, setLecture] = useState([])
+    function handleClick(e) {
+        //클릭한 강의의 url을 props로 보내면서 classRoom component를 렌더링 해주고 싶음
+        window.location.href=`/classRoom/${lectures.id}`
+      }
+  
 
-
-    const levelVideo = datas.map((data) => { 
+    const levelVideo = lectures.map((data) => { 
         if(data.level === level){
         return(
-            <LectureInfo>
-            <img src={data.thumblink} alt="썸네일" style={{ width: "100%"}}/>
-            <div> {data.title} </div>
+            <Link to={`/classRoom/${data.title}`}>
+            <LectureInfo key={data.id}>
+            <img src={data.thumbnailUrl} alt="썸네일" style={{ width: "100%"}}/>
+            <div style={{fontSize:"14px"}}> {data.title} </div>
             </LectureInfo>
+            </Link>
 
         ) 
         }}) 
@@ -192,6 +98,18 @@ const LectureInfo = styled.div`
     width: 160px;
     height: 160px;
     margin: 8px;
+
+    &:hover {
+        transform: scale(1.1);
+        border-radius: 5px;
+        border-color: #ccff66;
+        box-shadow: 0 0 10px #ccff66, inset 0 0 0 1px #000, inset 0 0 0 2px #ccff66;
+        color: #ccff66;
+      }
+    
+      &:active {
+        transform: scale(1.2);
+      }
 
 `
 

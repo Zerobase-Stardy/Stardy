@@ -1,8 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useSelector } from "react-redux";
-import cookies from "react-cookies";
-import axios from "axios";
 
 export default function Profile() {
   const user = useSelector((state) => state.userinfo.value);
@@ -31,7 +29,7 @@ export default function Profile() {
         </div>
         <Email> Email: {user.email}</Email>
       </UserInfo>
-      <div style={{margin: "5% 0 0 24px"}}>수강한 강의</div>
+      <div style={{margin: "5% 0 0 24px"}}>구매한 강의</div>
       <UserVideo>
         <ImgSample/>
         <ImgSample/>

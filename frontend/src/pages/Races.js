@@ -73,6 +73,7 @@ text-align: center;
     color : gray;
   }
 `
+
 const RedBox = styled.div`
 box-sizing: border-box;
 width: 100%;

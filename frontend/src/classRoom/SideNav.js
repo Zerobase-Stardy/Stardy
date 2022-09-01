@@ -25,7 +25,6 @@ export default function SideNav(props){
 const Nav = styled.ul`
     box-sizing: border-box;
     box-shadow: 10px 2px 15px -7px #000000;
-    z-index: 1;
     position: absolute;
     height: 100%;
     width: 24vw;
@@ -37,9 +36,7 @@ const Nav = styled.ul`
     font-size: 24px;
     font-weight: bold;
     color: white;
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: space-around;
+    z-index: 999;
 `
 
 

@@ -1,6 +1,7 @@
 import { useState } from "react"
 import {  HiMenu, HiUser } from 'react-icons/hi';
 import styled from 'styled-components';
+import { Link } from "react-router-dom";
 
 export default function ClassRoomHeader(props){
 
@@ -29,8 +30,16 @@ export default function ClassRoomHeader(props){
             <WordArea> 강의제목 </WordArea>
             <BadgeArea onClick={iconHandler}> <HiUser/> 
                 <UserMenu style={ userInfo }>
-                    <UserMenuList>마이 페이지</UserMenuList>
-                    <UserMenuList> 커뮤니티 </UserMenuList>
+                    <UserMenuList>
+                        <Link to="/mypage/profile">
+                            마이 페이지
+                        </Link>
+                    </UserMenuList>
+                    <UserMenuList> 
+                        <Link to="/post">
+                            커뮤니티 
+                        </Link>
+                    </UserMenuList>
                     <UserMenuList> 로그아웃 </UserMenuList>
                 </UserMenu>
             </BadgeArea>
@@ -53,7 +62,10 @@ const Header = styled.header`
 const WordArea = styled.span`
     position: absolute;
     left: 68px;
-    top: 12px;
+    top: 4px;
+    line-height: 24px;
+    font-family: NanumBold;
+    padding: 4px;
 `
 
 

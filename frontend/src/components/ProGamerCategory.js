@@ -21,6 +21,8 @@ export default function ProGamerCategory() {
       });
   }, []);
 
+  console.log(gamers)
+
   function checkHandler(checked, item) {
     if (checked) {
       setCheckList([...checkList, item.name]);

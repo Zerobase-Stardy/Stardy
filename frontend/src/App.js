@@ -9,7 +9,6 @@ import LoginModal from "./components/LoginModal";
 import Footer from "./Layout/Footer";
 import Header from "./Layout/Header";
 import Home from "./pages/Home";
-import MyLecture from "./pages/MyLecture";
 import Mypage from "./pages/Mypage";
 import ProGamer from "./pages/ProGamer";
 import Races from "./pages/Races";
@@ -27,6 +26,7 @@ import Terran from "./Races/Terran";
 import Protoss from "./Races/Protoss";
 import Error401 from "./pages/Error401";
 import KakaoHandle from "./components/KakaoHandle";
+import ClassRoom from "./classRoom/ClassRoom";
 
 function App() {
   const dispatch = useDispatch();
@@ -78,14 +78,13 @@ function App() {
         <Route path={"/post/:id"} element={<PostDetail />}></Route>
         <Route path={"/oauth/kakao"} element={<KakaoHandle />}></Route>
 
-        <Route path={"/mylecture"} element={<MyLecture />}></Route>
+        <Route path={"/classRoom/:id"} element={<ClassRoom />}></Route>
         <Route path={"/mypage"} element={<Mypage />}></Route>
         <Route path={"/admin"} element={<Admin />}></Route>
         <Route path={"/admin/login"} element={<AdminLogin />}></Route>
         <Route path={"/admin/signup"} element={<AdminSignUp />}></Route>
         <Route path={"mypage"} element={<Mypage />}>
           <Route path={"profile"} element={<Profile />}></Route>
-          <Route path={"mylecture"} element={<MyLecture />}></Route>
           <Route path={"attendance"} element={<Attendance />}></Route>
         </Route>
         <Route path={"/error401"} element={<Error401 />}></Route>
