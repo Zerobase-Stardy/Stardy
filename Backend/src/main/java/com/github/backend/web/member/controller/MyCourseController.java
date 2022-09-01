@@ -36,7 +36,7 @@ public class MyCourseController {
 
 
 	@Operation(
-		summary = "내 강의 조회", description = "해금한 강의를 조회합니다.",
+		summary = "내 강의 전체 조회", description = "해금한 강의를 전체 조회합니다.",
 		security = {@SecurityRequirement(name = "Authorization")},
 		tags = {"My Course"}
 	)
