@@ -78,7 +78,7 @@ function App() {
         <Route path={"/post/:id"} element={<PostDetail />}></Route>
         <Route path={"/oauth/kakao"} element={<KakaoHandle />}></Route>
 
-        <Route path={"/classRoom/:id"} element={<ClassRoom />}></Route>
+        <Route path={"/classRoom/:courseId"} element={<ClassRoom />}></Route>
         <Route path={"/mypage"} element={<Mypage />}></Route>
         <Route path={"/admin"} element={<Admin />}></Route>
         <Route path={"/admin/login"} element={<AdminLogin />}></Route>

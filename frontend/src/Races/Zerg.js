@@ -10,7 +10,7 @@ export default function Zerg(){
 
   useEffect(() => {
     axios
-    .get(`https://www.dokuny.blog:443/course/courses?race=zerg`)
+    .get(`https://www.dokuny.blog/courses?race=zerg`)
     .then((res) => {
           setLectures(...lectures, res.data.data.content)
     })

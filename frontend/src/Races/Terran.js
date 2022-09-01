@@ -1,20 +1,19 @@
 import styled from "styled-components"
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import { BsCoin } from "react-icons/bs";
-
+import { useSelector } from "react-redux";
 
 
 
 
 export default function Terran(){
-
+  const header = useSelector((state) => state.userinfo.value.header);
   const [lectures, setLectures] = useState([])
 
   useEffect(() => {
     axios
-    .get(`https://www.dokuny.blog:443/course/courses?race=terran`)
+    .get(`https://www.dokuny.blog/courses?race=terran`)
     .then((res) => {
           setLectures(...lectures, res.data.data.content)
     })
@@ -29,18 +28,23 @@ export default function Terran(){
         setLevel(`${e.target.id}`)
     }
 
-
     function handleClick(e) {
-      //클릭한 강의의 url을 props로 보내면서 classRoom component를 렌더링 해주고 싶음
-      window.location.href="/classRoom"
-      console.log( e.target.data )
-    }
+      const lectureId  = e.currentTarget.id
+      console.log(`${lectureId}`)
+      axios.post(`https://www.dokuny.blog/courses/${lectureId}/unlock`, {
+           headers: header
+       }).
+       catch((err) => console.log(err))
+
+       window.alert(`강의가 해금되었습니다! 마이페이지에서 확인 할 수 있습니다`)
+   }
+ 
 
     const levelVideo = lectures.map((data) => { 
       if(data.level === level){
       return(
-          <Link to={`/classRoom/${data.title}`}>
-          <LectureInfo key={data.id}>
+ 
+          <LectureInfo key={data.id} onClick={handleClick} id={data.id}>
           <img src={data.thumbnailUrl} alt="썸네일" style={{ width: "100%"}}/>
           <div style={{fontSize:"16px", fontWeight:"700"}}> {data.title} </div>
           <Name>
@@ -54,7 +58,7 @@ export default function Terran(){
             <p>{data.price}</p>
           </Price>
           </LectureInfo>
-          </Link>
+
 
       ) 
       }}) 

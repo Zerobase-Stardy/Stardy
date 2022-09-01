@@ -6,26 +6,32 @@ import { HiHome, HiArrowSmLeft, HiArrowSmRight } from 'react-icons/hi';
 import SideNav from "./SideNav";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 export default function ClassRoom(){
+
+    const header = useSelector((state) => state.userinfo.value.header);
     const [isOpen, setIsOpen] = useState(false)
     const [visible, setVisible] = useState({
         visibility: "hidden"
     })
-    const [url, setUrl] = useState("")
-    const { id } = useParams();
-
-    console.log( id )
-
-    // useEffect(() => {
-    //     axios.get(`https://www.dokuny.blog:443/course/courses?`)
-    //     .then((res) => {
-    //         console.log( res.data.data.content.videoUrl )
-    //     })
-    // })
+    const [url, setUrl] = useState("");
+    const [info, setinfo] = useState({});
+    
+    const { courseId } = useParams();
 
 
-    console.log(url)
+    useEffect(() => {
+        axios.get(`https://www.dokuny.blog/courses/${courseId}`, {
+            headers: header,
+        })
+        .then((res) => {
+            setUrl( res.data.data.videoUrl )
+            setinfo( res.data.data )
+
+        })
+    })
+
 
     const openClick = () =>{
         if(!isOpen){
@@ -45,8 +51,8 @@ export default function ClassRoom(){
 
     return(
         <Bgc>
-            <SideNav style={visible} openClick={openClick}/>
-            <ClassRoomHeader openClick={openClick}/>
+            <SideNav style={visible} openClick={openClick} info ={ info }/>
+            <ClassRoomHeader openClick={openClick} title={ info.title }/>
             <BodyStyle>
                 <RedBox>
                     <Video>
@@ -72,7 +78,7 @@ const Bgc = styled.div`
     background-image: url("https://static.starcraft.com/production/images/site/backdrops/backdrop-stars.890c5929ec65159852db3a0fab438e7aaa5c210f.jpg");
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 91vh;
 `
 const Video = styled.div`
     width: 65vw;
