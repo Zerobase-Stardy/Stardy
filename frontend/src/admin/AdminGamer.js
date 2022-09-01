@@ -156,7 +156,7 @@ export default function AdminGamer() {
             <ListWrap>
               <Left>
                 <div>
-                  id : <span>{list.id}</span>
+                  Id : <span>{list.id}</span>
                 </div>
                 <div>
                   introduce : <span>{list.introduce}</span>
