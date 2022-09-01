@@ -23,8 +23,7 @@ ul.pagination li {
 }
 
 ul.pagination li a {
-  text-decoration: none;
-  color: #808080;
+  color: #ccff66;
   font-size: 20px;
 }
 ul.pagination li.active a {
@@ -34,8 +33,9 @@ ul.pagination li.active a {
   line-height: 30px;
   border-radius: 4px;
   text-align: center;
-  background-color: #87c3a1;
-  color: #fff;
+  border-color: #ccff66;
+  box-shadow: 0 0 10px #ccff66, inset 0 0 0 1px #000, inset 0 0 0 2px #ccff66;
+  color: #ccff66;
 }
 ul.pagination li.active {
   font-weight: 800;

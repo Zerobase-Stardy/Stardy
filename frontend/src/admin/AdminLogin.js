@@ -1,47 +1,69 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import React, { useState } from "react";
 import styled from "styled-components";
-
+import cookies from "react-cookies";
 export default function AdminLogin() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const [inputs, setInputs] = useState([]);
 
+  function changeHandler(e) {
+    setInputs({
+      ...inputs,
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  function submitHandler(e) {
+    e.preventDefault();
+    axios
+      .post("https://www.dokuny.blog/admin/login", {
+        adminId: inputs.adminId,
+        password: inputs.password,
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          cookies.save("accessToken", res.data.data.accessToken, {
+            path: "/",
+          });
+          document.location.href = "/admin";
+        }
+        console.log(res.status, res.data.data.accessToken);
+      })
+      .catch((res) => {
+        if (res.response.status === 400) {
+          alert("등록 되지 않은 계정입니다.");
+        }
+      });
+  }
   return (
     <Main>
       <Wrap>
-        <LoginForm onSubmit={handleSubmit(onSubmit)}>
+        <LoginForm onSubmit={submitHandler}>
           <h1>Admin Login</h1>
           <label>아이디</label>
-          <input {...register("adminId")} type="text" placeholder="ID" />
+          <input
+            type="text"
+            placeholder="adminId"
+            name="adminId"
+            onChange={changeHandler}
+          />
           <label>비밀번호</label>
           <input
             type="password"
             placeholder="Password"
+            name="password"
             autoComplete="off"
-            {...register("password", { required: true })}
+            onChange={changeHandler}
           />
-          <input
-            type="submit"
-            value="로그인"
-            className="submit"
-            onClick={() => (document.location.href = "/admin")}
-          />
-          <Link to="/admin/signup">회원가입</Link>
+          <input type="submit" value="로그인" className="submit" />
         </LoginForm>
       </Wrap>
     </Main>
   );
 }
 
-const Main = styled.main`
+const Main = styled.div`
   width: 100%;
   padding-top: 70px;
-  background-color: #fbfbfb;
 `;
 
 const Wrap = styled.div`
@@ -68,6 +90,7 @@ const LoginForm = styled.form`
     height: 40px;
     padding: 5px;
     border: 0;
+    border: 1px solid black;
   }
 
   .submit:hover {

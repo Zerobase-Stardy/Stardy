@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import Page from "./Page";
+import { Link } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
 
 export default function FreeContent() {
@@ -16,8 +17,10 @@ export default function FreeContent() {
 
   useEffect(() => {
     axios
-      .get("https://jsonplaceholder.typicode.com/todos")
-      .then((res) => setsuggest(res.data));
+      .get("https://www.dokuny.blog/posts")
+      .then((res) =>
+        setsuggest(res.data.data.filter((data) => data.boardKind === "suggest"))
+      );
   }, []);
 
   useEffect(() => {
@@ -35,17 +38,22 @@ export default function FreeContent() {
     <>
       {currentPosts && suggest.length > 0 ? (
         currentPosts.map((list) => (
-          <List key={list.id}>
-            <Title> {list.title}</Title>
-            <Content>
-              <p>{list.body}</p>
-            </Content>
-          </List>
+          <Link to={`${list.id}`} key={list.id}>
+            <List>
+              <Top>
+                <Title>{list.title}</Title>
+                <Writer>{list.writer}</Writer>
+              </Top>
+              <Content>
+                <p>{list.content}</p>
+              </Content>
+            </List>
+          </Link>
         ))
       ) : (
         <Center>
           <ThreeDots
-            color="#87c3a1"
+            color="#ccff66"
             text-align="center"
             height={80}
             width={80}
@@ -65,13 +73,14 @@ const List = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
-  border-bottom: 1px solid #dde0ea;
+  border: 1px solid rgba(221, 224, 234, 0.4);
 
   &:hover {
-    background-color: #edf5f1;
+    background-color: rgba(147, 168, 237, 0.2);
     transition: 0.5s;
   }
 `;
+
 const Center = styled.div`
   width: 100%;
 
@@ -79,10 +88,17 @@ const Center = styled.div`
     margin: 0 auto;
   }
 `;
+const Top = styled.div`
+  width: 100%;
+  display: flex;
+`;
 const Title = styled.div`
   font-weight: bold;
   font-size: 24px;
-  width: 100%;
+`;
+
+const Writer = styled.div`
+  margin-left: auto;
 `;
 
 const Content = styled.div`

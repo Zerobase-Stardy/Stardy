@@ -1,129 +1,25 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ProGamerLecture from "../components/ProGamerLecture";
 
 export default function ProGamerCategory() {
-  const gamers = [
-    {
-      name: "유영진",
-      race: "테란",
-      nickName: "a",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "임요한",
-      race: "테란",
-      nickName: "b",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "저그킹",
-      race: "저그",
-      nickName: "c",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-    {
-      name: "프로킹",
-      race: "프로토스",
-      nickName: "d",
-      introduce: "단단한 테란",
-    },
-  ];
-
+  const [gamers, setGamers] = useState([]);
   const [checkList, setCheckList] = useState([]);
   const [moreView, setMoreView] = useState(false);
   const littleGamers = gamers.filter((gamer, idx) => idx < 17);
   const bigGamers = gamers.filter((gamer, idx) => idx >= 17);
+
+  useEffect(() => {
+    axios
+      .get("https://www.dokuny.blog/gamer/list")
+      .then((res) => {
+        setGamers(...gamers, res.data.data.content);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   function checkHandler(checked, item) {
     if (checked) {
@@ -137,48 +33,51 @@ export default function ProGamerCategory() {
     return array.map((item, idx) => (
       <div key={idx}>
         <Input
-          name={item.nickName}
+          name={item.nickname}
           type="checkbox"
-          id={item.nickName}
+          id={item.nickname}
           onChange={(e) => {
             checkHandler(e.target.checked, item);
           }}
         />
-        <Label htmlFor={item.nickName}>{item.name}</Label>
+        <Label htmlFor={item.nickname}>{item.name}</Label>
       </div>
     ));
   }
+
   return (
     <Wrap>
-      <h2>프로게이머별 강의</h2>
-      <CategoryArea>
-        {gamerBtn(littleGamers)}
+      <RedBox>
+        <h2>Pro-Gamer</h2>
+        <CategoryArea>
+          {gamerBtn(littleGamers)}
 
-        {moreView === false && gamers.length > 17 ? (
-          <MoreViewBtn
-            onClick={() => {
-              setMoreView(!moreView);
-            }}
-          >
-            ...
-          </MoreViewBtn>
-        ) : null}
+          {moreView === false && gamers.length > 9 ? (
+            <MoreViewBtn
+              onClick={() => {
+                setMoreView(!moreView);
+              }}
+            >
+              ...
+            </MoreViewBtn>
+          ) : null}
 
-        {moreView ? gamerBtn(bigGamers) : null}
+          {moreView ? gamerBtn(bigGamers) : null}
 
-        {moreView && gamers.length > 17 ? (
-          <FolderBtn
-            onClick={() => {
-              setMoreView(!moreView);
-            }}
-          >
-            접기
-          </FolderBtn>
-        ) : null}
-      </CategoryArea>
-      <LectureArea>
-        <ProGamerLecture checkList={checkList} />
-      </LectureArea>
+          {moreView && gamers.length > 9 ? (
+            <FolderBtn
+              onClick={() => {
+                setMoreView(!moreView);
+              }}
+            >
+              접기
+            </FolderBtn>
+          ) : null}
+        </CategoryArea>
+        <LectureArea>
+          <ProGamerLecture checkList={checkList} />
+        </LectureArea>
+      </RedBox>
     </Wrap>
   );
 }
@@ -187,6 +86,12 @@ const Wrap = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 2px solid #331f1f;
+  border-radius: 6px;
+  margin: 0 auto;
+  color: #b8bbcc;
   gap: 20px;
   h2 {
     width: 80%;
@@ -195,13 +100,31 @@ const Wrap = styled.div`
   }
 `;
 
+const RedBox = styled.div`
+  margin: 0 auto;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  border: 1px solid #800000;
+  padding: 20px 70px;
+
+  h2 {
+    width: 100%;
+    color: #b8bbcc;
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+`;
+
 const CategoryArea = styled.div`
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
   overflow: hidden;
-  gap: 10px;
+  gap: 20px;
 
   input[type="checkbox"] {
     width: 0;
@@ -210,12 +133,22 @@ const CategoryArea = styled.div`
   }
   input[type="checkbox"] + label {
     margin: 0;
-    padding: 10px 24px;
+    padding: 10px 32px;
     position: relative;
+    font-size: 18px;
     display: inline-block;
-    border-radius: 4px;
-    background-color: #b8b8b8;
-    color: #fff;
+    border-radius: 5px;
+    border: 1px solid #cc0000;
+    background: linear-gradient(0deg, transparent 50%, rgba(0, 0, 0, 0.6) 50%),
+      #800000
+        linear-gradient(
+          90deg,
+          #331f1f 0%,
+          rgba(51, 31, 31, 0) 50%,
+          #331f1f 100%
+        );
+    background-size: 1px 2px, cover;
+    color: white;
     line-height: 140%;
     text-align: center;
     transition: border-color 0.15s ease-out, color 0.25s ease-out,
@@ -223,9 +156,10 @@ const CategoryArea = styled.div`
     cursor: pointer;
   }
   input[type="checkbox"]:checked + label {
-    background-color: #87c3a1;
-    color: #fff;
-    border-color: #87c3a1;
+    background: linear-gradient(0deg, transparent 50%, rgba(0, 0, 0, 0.6) 50%),
+      red linear-gradient(90deg, red 0%, rgba(51, 31, 31, 0) 50%, red 100%);
+    background-size: 1px 2px, cover;
+    color: white;
   }
 `;
 
@@ -235,26 +169,33 @@ const MoreViewBtn = styled.button`
   width: 50px;
   height: 42px;
   border: none;
-  background-color: #3198dc;
+  background-color: black;
   border-radius: 4px;
   font-size: 20px;
-  color: white;
+  color: #80ff66;
   cursor: pointer;
+  border: 1px solid rgba(0, 204, 0, 0.6);
+  box-shadow: 0 0 20px rgb(0 204 0 / 50%), inset 0 0 0 1px #000,
+    inset 0 0 0 2px rgb(0 204 0 / 50%);
 `;
 
 const FolderBtn = styled.button`
   width: 50px;
   height: 42px;
   border: none;
-  background-color: #3198dc;
+  background-color: black;
+
+  border: 1px solid rgba(0, 204, 0, 0.6);
+  box-shadow: 0 0 20px rgb(0 204 0 / 50%), inset 0 0 0 1px #000,
+    inset 0 0 0 2px rgb(0 204 0 / 50%);
   border-radius: 4px;
   font-size: 16px;
-  color: white;
+  color: #80ff66;
   cursor: pointer;
 `;
 
 const LectureArea = styled.div`
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
   min-height: 1200px;
   padding-top: 50px;

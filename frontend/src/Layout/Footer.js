@@ -17,10 +17,16 @@ import {
 
 export default function Footer() {
   const locationNow = useLocation();
-  if (locationNow.pathname.includes("admin") || locationNow.pathname.includes("classRoom") ) return null;
+  if (
+    locationNow.pathname.includes("admin") ||
+    locationNow.pathname.includes("classRoom") ||
+    locationNow.pathname.includes("error")
+  )
+    return null;
 
   return (
     <footer>
+      <Effect />
       <Wrap>
         <Logo>Stardy</Logo>
         <Top>
@@ -66,6 +72,11 @@ export default function Footer() {
     </footer>
   );
 }
+const Effect = styled.div`
+  width: 100%;
+  height: 15px;
+  background-image: url("https://static.starcraft.com/production/images/site/dividers/divider-terran.dbf9b7c1f616bf3bc680ed70a7d8de85a44e1e59.jpg");
+`;
 
 const Wrap = styled.div`
   padding: 20px;
@@ -89,7 +100,7 @@ const Top = styled.div`
 const Bottom = styled.div`
   margin: 0 auto;
   text-align: center;
-  display: grid;
+  display: flex;
   gap: 20px;
   font-size: 14px;
 `;

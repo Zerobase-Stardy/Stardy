@@ -140,10 +140,10 @@ export default function Terran(){
         }}) 
 
     return(
-        <div style={{width: "100%", height: "100%"}}>
+        <Wrap>
             <RaceHeader>
                 Terran
-                <div style={{marginTop:"4px", fontSize: "14px", fontWeight: "normal"}}>
+                <div style={{marginTop:"4px", fontSize: "13px", fontWeight: "normal", lineHeight: "16px"}}>
                 은하계 외곽 지역에 있는 가혹한 불모의 환경에 적응하여 살아야 했던 테란은 그야말로 생존의 명수들이다. <br/>
                 프로토스의 첨단 기술도 저그의 타고난 전투력도 갖추지 못한 테란의 군사력은 다양한 유닛의 조합으로 유지된다.<br/> 
                 소모품에 불과하지만 효과적인 해병(Marine)부터 고도의 훈련을 쌓은 망령(Wraith) 전투기 조종사에 이르기까지 <br/>
@@ -158,18 +158,23 @@ export default function Terran(){
             <LectureArea>
                 {levelVideo}
             </LectureArea>
-        </div>
+        </Wrap>
     )
 }
+const Wrap = styled.div`
+  width: 100%;
+  height: 100%;
+  margin: 24px;
+`
 
 const RaceHeader = styled.div`
-    padding: 4%;
-    font-size: 24px;
-    border-bottom: 1px solid black;
-    height: 25vh;
-    width: 100%;
-    font-weight: bold;
-    position: relative;
+  padding-top: 4%;
+  font-size: 28px;
+  border-bottom: 1px solid white;
+  height: 27vh;
+  width: 100%;
+  font-weight: bold;
+  position: relative;
 `
 
 const LevelBox = styled.div`
@@ -180,6 +185,7 @@ const LevelBox = styled.div`
     width: 80px;
     font-size: 18px;
     cursor: pointer;
+    margin: 4px;
 `
 
 const LectureInfo = styled.div`

@@ -140,10 +140,10 @@ export default function Zerg(){
         }}) 
 
     return(
-        <div style={{width: "100%", height: "100%"}}>
+        <Wrap>
             <RaceHeader>
                 Zerg
-                <div style={{marginTop:"4px", fontSize: "14px", fontWeight: "normal"}}>
+                <div style={{marginTop:"4px", fontSize: "13px", fontWeight: "normal", lineHeight: "16px"}}>
                 저그는 초월체에 의해 군단에 흡수된 몇 가지 종류의 동물들로 이루어져 있다. <br/>
                 이들 생명체, 혹은 종은 각자의 효율적인 살인 병기 역할에 맞게 선택적으로 진화되어 <br/>
                 궁극적인 힘을 얻으려는 저그의 목적에 봉사한다. <br/>
@@ -159,15 +159,19 @@ export default function Zerg(){
             <LectureArea>
                 {levelVideo}
             </LectureArea>
-        </div>
+        </Wrap>
     )
 }
-
+const Wrap = styled.div`
+  width: 100%;
+  height: 100%;
+  margin: 24px;
+`
 const RaceHeader = styled.div`
-    padding: 4%;
-    font-size: 24px;
-    border-bottom: 1px solid black;
-    height: 25vh;
+    padding-top: 4%;
+    font-size: 28px;
+    border-bottom: 1px solid white;
+    height: 27vh;
     width: 100%;
     font-weight: bold;
     position: relative;
@@ -181,6 +185,7 @@ const LevelBox = styled.div`
     width: 80px;
     font-size: 18px;
     cursor: pointer;
+    margin: 4px;
 `
 
 const LectureInfo = styled.div`

@@ -1,150 +1,90 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { BsCoin } from "react-icons/bs";
+import Page from "./Page";
+import { ThreeDots } from "react-loader-spinner";
+import axios from "axios";
 
 export default function ProGamerLecture(props) {
-  //   const [lectures, setLectures] = useState([]);
-  const datas = [
-    {
-      gamerId: 1,
-      title: "유영진 테란 강의",
-      videoUrl: "http://www.youtube.com",
-      thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-      comment: "설명",
-      level: "입문(난이도)",
-      race: "테란(종족)",
-      price: 20,
-      name: "임요한",
-    },
-
-    {
-      gamerId: 2,
-      title: "유영진 테란 강의",
-      videoUrl: "http://www.youtube.com",
-      thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-      comment: "설명",
-      level: "입문(난이도)",
-      race: "테란(종족)",
-      price: 20,
-      name: "임요한",
-    },
-    {
-      gamerId: 3,
-      title: "유영진 테란 강의",
-      videoUrl: "http://www.youtube.com",
-      thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-      comment: "설명",
-      level: "입문(난이도)",
-      race: "테란(종족)",
-      price: 20,
-      name: "임요한",
-    },
-    {
-      gamerId: 4,
-      title: "유영진 테란 강의",
-      videoUrl: "http://www.youtube.com",
-      thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-      comment: "설명",
-      level: "입문(난이도)",
-      race: "테란(종족)",
-      price: 20,
-      name: "유영진",
-    },
-    {
-      gamerId: 5,
-      title: "유영진 테란 강의",
-      videoUrl: "http://www.youtube.com",
-      thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-      comment: "설명",
-      level: "입문(난이도)",
-      race: "테란(종족)",
-      price: 20,
-      name: "유영진",
-    },
-    {
-      gamerId: 6,
-      title: "유영진 테란 강의",
-      videoUrl: "http://www.youtube.com",
-      thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-      comment: "설명",
-      level: "입문(난이도)",
-      race: "테란(종족)",
-      price: 20,
-      name: "유영진",
-    },
-    {
-      gamerId: 7,
-      title: "유영진 테란 강의",
-      videoUrl: "http://www.youtube.com",
-      thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-      comment: "설명",
-      level: "입문(난이도)",
-      race: "테란(종족)",
-      price: 20,
-      name: "저그킹",
-    },
-    {
-      gamerId: 8,
-      title: "유영진 테란 강의",
-      videoUrl: "http://www.youtube.com",
-      thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-      comment: "설명",
-      level: "입문(난이도)",
-      race: "테란(종족)",
-      price: 20,
-      name: "프로킹",
-    },
-    {
-      gamerId: 9,
-      title: "유영진 테란 강의",
-      videoUrl: "http://www.youtube.com",
-      thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-      comment: "설명",
-      level: "입문(난이도)",
-      race: "테란(종족)",
-      price: 20,
-    },
-    {
-      gamerId: 10,
-      title: "유영진 테란 강의",
-      videoUrl: "http://www.youtube.com",
-      thumblink: "http://i.ytimg.com/vi/wFDLVWEtkl8/mqdefault.jpg",
-      comment: "설명",
-      level: "입문(난이도)",
-      race: "테란(종족)",
-      price: 20,
-    },
-  ];
+  const [lectures, setLectures] = useState([]);
+  const [count, setCount] = useState(0); //아이템 총 개수
+  const [currentpage, setCurrentpage] = useState(1); //현재페이지
+  const [postPerPage] = React.useState(12); //페이지당 아이템 개수
+  const [indexOfLastPost, setIndexOfLastPost] = useState(0);
+  const [indexOfFirstPost, setIndexOfFirstPost] = useState(0);
+  const [currentPosts, setCurrentPosts] = useState(0);
   const { checkList } = props;
 
-  const lecture = datas.map((data) => (
-    <LectureArea key={data.gamerId}>
-      <Thumbnail>
-        <img src={data.thumblink} alt="thumblink" />
-      </Thumbnail>
-      <Title>{data.title}</Title>
-      <Name>{data.name}</Name>
-      <Price>{data.price}</Price>
-    </LectureArea>
-  ));
+  // useEffect(() => {
+  //   axios
+  //     .get("https://jsonplaceholder.typicode.com/photos")
+  //     .then((res) => setLectures(res.data));
+  // }, []);
 
-  const filterLecture = datas.filter((data) => checkList.includes(data.name));
+  useEffect(() => {
+    axios
+      .get("https://www.dokuny.blog/course/courses")
+      .then((res) => setLectures(res.data.data.content));
+  }, []);
 
-  const filterView = filterLecture.map((data) => (
-    <LectureArea key={data.gamerId}>
-      <Thumbnail>
-        <img src={data.thumblink} alt="thumblink" />
-      </Thumbnail>
-      <Title>{data.title}</Title>
-      <Name>{data.name}</Name>
-      <Price>{data.price}</Price>
-    </LectureArea>
-  ));
-  console.log(filterLecture.length === 0 ? "비워짐" : "꽉참");
+  useEffect(() => {
+    setCount(lectures.length);
+    setIndexOfLastPost(currentpage * postPerPage);
+    setIndexOfFirstPost(indexOfLastPost - postPerPage);
+    setCurrentPosts(lectures.slice(indexOfFirstPost, indexOfLastPost));
+  }, [currentpage, indexOfFirstPost, indexOfLastPost, lectures, postPerPage]);
+
+  const setPage = (e) => {
+    setCurrentpage(e);
+  };
+
+  function lectureArea(data) {
+    return (
+      <LectureArea key={data.id}>
+        <Thumbnail>
+          <img src={data.thumbnailUrl} alt="thumblink" />
+        </Thumbnail>
+        <Title>{data.title}</Title>
+        <Name>
+          <p>{data.name}</p>
+        </Name>
+        <Price>
+          <span>
+            <BsCoin /> :
+          </span>
+          &nbsp;
+          <p>{data.price}</p>
+        </Price>
+      </LectureArea>
+    );
+  }
 
   return (
-    <Wrap>
-      {filterLecture.length === 0 ? <>{lecture}</> : <>{filterView}</>}
-    </Wrap>
+    <>
+      <Wrap>
+        {checkList.length === 0 ? (
+          <>{currentPosts && currentPosts.map((data) => lectureArea(data))}</>
+        ) : (
+          currentPosts
+            .filter((data) => checkList.includes(data.gamerName))
+            .map((data) => lectureArea(data))
+        )}
+      </Wrap>
+
+      {checkList.length === 0 ? (
+        <Page page={currentpage} count={count} setPage={setPage} />
+      ) : (
+        <Page
+          page={currentpage}
+          count={
+            currentPosts &&
+            currentPosts.filter((data) => checkList.includes(data.gamerName))
+              .length
+          }
+          setPage={setPage}
+        />
+      )}
+    </>
   );
 }
 
@@ -153,28 +93,59 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-
+  min-height: 1200px;
   gap: 2%;
 `;
 
 const LectureArea = styled.div`
   width: 23%;
-  height: 250px;
-  margin-bottom: 20px;
+  height: 320px;
+  margin-bottom: 30px;
   display: flex;
   flex-direction: column;
+  transition: 0.25s;
+
+  padding: 10px;
   gap: 10px;
   img {
     width: 100%;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+    border-radius: 5px;
+    border-color: #ccff66;
+    box-shadow: 0 0 10px #ccff66, inset 0 0 0 1px #000, inset 0 0 0 2px #ccff66;
+    color: #ccff66;
+  }
+
+  &:active {
+    transform: scale(1.2);
   }
 `;
 
 const Thumbnail = styled.div``;
 const Title = styled.div`
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 700;
 `;
 
-const Name = styled.div``;
+const Name = styled.div`
+  p {
+    font-size: 16px;
+  }
+`;
 
-const Price = styled.div``;
+const Price = styled.div`
+  font-size: 16px;
+  display: flex;
+
+  p {
+    line-height: 23px;
+    color: #ccff66;
+  }
+  span {
+    font-size: 20px;
+    color: #ccff66;
+  }
+`;
