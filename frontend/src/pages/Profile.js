@@ -8,7 +8,7 @@ export default function Profile() {
   const user = useSelector((state) => state.userinfo.value);
 
   const ProfileBadge = function(){
-    const profilImage = "https://via.placeholder.com/150"
+    const profilImage = "https://w.namu.la/s/dffd0ffc5c1dc39d2debfea46e1019057c766153087117d5af327336a6fe997691ae78bda40eccb72fd68d7f17632d5f7a1080659dd031e4ac54b35272a36744d8c0e10ffae8726ca4fc476e29552120b7ad341b602afdea4d73806d548cf19d"
     const badgeStyle = { borderRadius: "50%", 
                         width: "100px", 
                         height: "100px",
@@ -29,7 +29,7 @@ export default function Profile() {
             <Point> 출석 포인트: {user.point} </Point>
           </div>
         </div>
-        <Email> 이메일: <br/> {user.email}</Email>
+        <Email> Email: {user.email}</Email>
       </UserInfo>
       <div style={{margin: "5% 0 0 24px"}}>수강한 강의</div>
       <UserVideo>
@@ -57,13 +57,12 @@ const NickName = styled.div`
 
 const Point = styled.div`
   font-size: 12px;
+  font-family: Nanum;
 `
 const Email = styled.div`
-  width: 200px;
-  height: 36px;
   font-size: 16px;
-  background-color:  #b2b2b2;
   line-height: 18px;
+  font-family: Nanum;
 `
 
 const UserVideo = styled.div`

@@ -55,10 +55,24 @@ export default function Attendance() {
         <Calendar onChange={onChange}  
                   formatDay={(locale, date) => moment(date).format("DD")}
                   value={value} 
-                  tileClassName={ ({ date }) => {
-                     if (marks.find((x) => x === moment(date).format("YYYY-MM-DD"))) {
-                          return 'highlight';
-                      }
+                  tileContent={({ date, view }) => {
+                    let html = [];
+                    if (marks.find((x) => x === moment(date).format("YYYY-MM-DD"))) {
+                      html.push(
+                        <div style={{display:"flex", justifyContent:"center"}}>
+                        <div className="dot"></div>
+                        </div>
+                      )
+                    }
+                    if ( day === moment(date).format("YYYY-MM-DD")){
+                      html.push(<div className="today"></div>)
+                    }
+                    return (
+                      <>
+                          {html}
+                      </>
+                    );
+
                   }}
         />
 

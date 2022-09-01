@@ -140,10 +140,10 @@ export default function Protoss(){
         }}) 
 
     return(
-        <div style={{width: "100%", height: "100%"}}>
+        <Wrap>
             <RaceHeader>
                 Protoss
-                <div style={{marginTop:"4px", fontSize: "14px", fontWeight: "normal"}}>
+                <div style={{marginTop:"4px", fontSize: "13px", fontWeight: "normal", lineHeight: "16px"}}>
                 적응력이 뛰어난 테란이나 야성적인 저그와는 달리 프로토스는 둔감하며 보수적이다. <br/>
                 고도의 기술과 초능력을 가진 프로토스는 오랫동안 스스로를 은하계에서 가장 발달한 종족이라 자부하고 있었다.<br/>
                 그들은 비록 인구가 많지는 않지만 로봇형 전투 장비로 부족한 전사들을 보충하고, 기술과 사이오닉 능력을 <br/>
@@ -159,15 +159,19 @@ export default function Protoss(){
             <LectureArea>
                 {levelVideo}
             </LectureArea>
-        </div>
+        </Wrap>
     )
 }
-
+const Wrap = styled.div`
+  width: 100%;
+  height: 100%;
+  margin: 24px;
+`
 const RaceHeader = styled.div`
-    padding: 4%;
-    font-size: 24px;
-    border-bottom: 1px solid black;
-    height: 25vh;
+    padding-top: 4%;
+    font-size: 28px;
+    border-bottom: 1px solid white;
+    height: 27vh;
     width: 100%;
     font-weight: bold;
     position: relative;
@@ -181,6 +185,7 @@ const LevelBox = styled.div`
     width: 80px;
     font-size: 18px;
     cursor: pointer;
+    margin: 4px;
 `
 
 const LectureInfo = styled.div`
