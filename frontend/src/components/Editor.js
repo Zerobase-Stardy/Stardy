@@ -91,6 +91,11 @@ const Wrap = styled.div`
     color: #00cc00;
   }
 
+  img {
+    max-width: 300px;
+    max-height: 300px;
+  }
+
   .ql-snow.ql-toolbar button:hover,
   .ql-snow .ql-toolbar button:hover,
   .ql-snow.ql-toolbar button:focus,

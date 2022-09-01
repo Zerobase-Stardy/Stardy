@@ -46,9 +46,7 @@ export default function Addpost() {
             <SubmitBtn
               type="submit"
               value="제출"
-              onClick={(e) => {
-                e.preventDefault();
-
+              onClick={() => {
                 if (title !== "" && boardKind !== "" && content !== "") {
                   console.log({
                     title: title,
@@ -76,7 +74,7 @@ export default function Addpost() {
                     .then((res) => {
                       document.location.href = "/post";
                     })
-                    .catch((err) => console.log(err));
+                    .catch((err) => alert(err));
                 } else {
                   if (title === "") {
                     alert("제목을 입력해주세요");

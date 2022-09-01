@@ -13,11 +13,11 @@ onChange: 페이지가 바뀔 때 핸들링해줄 함수
 출처: https://cotak.tistory.com/112 [TaxFree:티스토리]
 */
 
-const FreePage = ({ page, count, setPage }) => {
+const FreePage = ({ page, count, setPage, postPerPage }) => {
   return (
     <Pagination
       activePage={page}
-      itemsCountPerPage={10}
+      itemsCountPerPage={postPerPage}
       totalItemsCount={count}
       pageRangeDisplayed={5}
       prevPageText={"‹"}

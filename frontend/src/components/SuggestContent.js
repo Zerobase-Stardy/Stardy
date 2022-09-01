@@ -63,7 +63,12 @@ export default function FreeContent() {
         </Center>
       )}
 
-      <Page page={currentpage} count={count} setPage={setPage} />
+      <Page
+        page={currentpage}
+        count={count}
+        setPage={setPage}
+        postPerPage={postPerPage}
+      />
     </>
   );
 }

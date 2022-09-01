@@ -4,7 +4,7 @@ import Carousel from "../Home/Carousel";
 import HomeButton from "../Home/HomeButton";
 import HomeCategory from "../Home/HomeContent";
 
-export default function Home() {
+export default function Home(props) {
   return (
     <Main>
       <Carousel />

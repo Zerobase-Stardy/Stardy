@@ -3,9 +3,11 @@ import axios from "axios";
 import cookies from "react-cookies";
 import styled from "styled-components";
 import { ThreeDots } from "react-loader-spinner";
+import { useNavigate } from "react-router-dom";
 
 export default function KakaoHandle() {
   const expires = new Date();
+  const navigate = useNavigate();
   let code = new URL(window.location.href).searchParams.get("code");
   expires.setHours(expires.getHours() + 1);
 
@@ -21,7 +23,8 @@ export default function KakaoHandle() {
           path: "/",
           expires,
         });
-        document.location.href = "/";
+        // document.location.href = "/";
+        navigate(-1);
       }, []);
   });
 

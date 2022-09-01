@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 import NavHoverMenu from "../components/NavHoverMenu";
 import cookies from "react-cookies";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { modal } from "../redux/loginSlice";
 
 const LinkItem = ({ active, children, to }) => (
   <Link
@@ -21,7 +23,7 @@ const LinkItem = ({ active, children, to }) => (
 export default function Header(props) {
   const user = useSelector((state) => state.userinfo.value);
   const header = useSelector((state) => state.userinfo.value.header);
-
+  const dispatch = useDispatch();
   const locationNow = useLocation();
   const [visible, setVisible] = useState({
     display: "none",
@@ -72,7 +74,13 @@ export default function Header(props) {
               Logout
             </Logout>
           ) : (
-            <Login onClick={props.toggle}> Login </Login>
+            <Login
+              onClick={() => {
+                dispatch(modal(true));
+              }}
+            >
+              Login
+            </Login>
           )}
           {user.login ? (
             <LinkItem to="/mypage/profile">

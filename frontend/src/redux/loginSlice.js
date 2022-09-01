@@ -15,14 +15,18 @@ const loginSlice = createSlice({
         Authorization: `Bearer ${accessToken}`,
       },
     },
+    loginmodal: false,
   },
 
   reducers: {
     login: (state, action) => {
       state.value = action.payload;
     },
+    modal: (state, action) => {
+      state.loginmodal = action.payload;
+    },
   },
 });
 
-export const { login } = loginSlice.actions;
+export const { login, modal } = loginSlice.actions;
 export default loginSlice;

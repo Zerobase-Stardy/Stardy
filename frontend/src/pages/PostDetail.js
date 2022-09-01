@@ -1,14 +1,25 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
 import { FaUserAlt } from "react-icons/fa";
-
+import { useSelector } from "react-redux";
+import { RiDeleteBin5Line } from "react-icons/ri";
+import { BsPencil } from "react-icons/bs";
+import FixEditor from "../components/FixEditor";
 export default function FreeContent() {
   const [post, setPost] = useState([]);
   const { id } = useParams();
+  const email = useSelector((state) => state.userinfo.value.email);
+  const header = useSelector((state) => state.userinfo.value.header);
+  const [amend, setAmend] = useState(false);
+  const [content, setContent] = useState("");
+
+  const handleText = (value) => {
+    setContent(value);
+    console.log(content);
+  };
 
   useEffect(() => {
     axios
@@ -16,7 +27,9 @@ export default function FreeContent() {
       .then((res) => setPost(res.data.data));
   }, []);
 
-  console.log(post);
+  function toggle() {
+    setAmend(!amend);
+  }
 
   function timeEdit(time) {
     time = Array.from(time);
@@ -25,47 +38,81 @@ export default function FreeContent() {
     time = time.slice(0, time.lastIndexOf(":"));
     return time.join("");
   }
+
+  function deletePost(id) {
+    axios
+      .delete(`https://www.dokuny.blog/posts/${id}`, {
+        headers: header,
+      })
+      .then((res) => {
+        console.log(res);
+        document.location.href = "/post";
+      });
+  }
+
   return (
     <Main>
       <Effect />
       <Wrap>
-        <RedBox>
-          {post.length === 0 ? (
-            <Center>
-              <ThreeDots
-                color="#ccff66"
-                margin="0 auto"
-                height={80}
-                width={100}
-              />
-            </Center>
-          ) : (
-            <PostArea>
-              <Title>
-                <h1>{post.title}</h1>
-              </Title>
-              <Date>
-                <p>{timeEdit(post.member.createdDate)}</p>
-                <span>
-                  <FaUserAlt /> {post.member.email}
-                </span>
-              </Date>
-              <Content>
-                <div dangerouslySetInnerHTML={{ __html: post.content }} />
-              </Content>
-            </PostArea>
-          )}
+        {amend ? (
+          <RedBox>
+            <FixEditor
+              writing={handleText}
+              content={post.content}
+              title={post.title}
+              boardKind={post.boardKind}
+              id={id}
+            />
+          </RedBox>
+        ) : (
+          <RedBox>
+            {post.length === 0 ? (
+              <Center>
+                <ThreeDots
+                  color="#ccff66"
+                  margin="0 auto"
+                  height={80}
+                  width={100}
+                />
+              </Center>
+            ) : (
+              <PostArea>
+                <Title>
+                  {email === post.member.email ? (
+                    <div onClick={() => deletePost(id)}>
+                      <RiDeleteBin5Line />
+                    </div>
+                  ) : null}
+                  <h1>{post.title}</h1>
+                  {email === post.member.email ? (
+                    <div onClick={toggle}>
+                      <BsPencil />
+                    </div>
+                  ) : null}
+                </Title>
+                <Date>
+                  <p>{timeEdit(post.member.createdDate)}</p>
+                  <span>
+                    <FaUserAlt /> {post.member.email}
+                  </span>
+                </Date>
+                <Content>
+                  <div dangerouslySetInnerHTML={{ __html: post.content }} />
+                </Content>
+              </PostArea>
+            )}
 
-          <Bottom>
-            <div
-              onClick={() => {
-                document.location.href = "/post";
-              }}
-            >
-              뒤로가기
-            </div>
-          </Bottom>
-        </RedBox>
+            <Bottom>
+              <div
+                onClick={() => {
+                  document.location.href = "/post";
+                }}
+              >
+                뒤로가기
+              </div>
+            </Bottom>
+          </RedBox>
+        )}
       </Wrap>
     </Main>
   );
@@ -136,13 +183,27 @@ const PostArea = styled.div`
 `;
 const Title = styled.div`
   width: 100%;
+  display: flex;
   h1 {
+    width: 100%;
     text-align: center;
     font-size: 30px;
 
     @media screen and (max-width: 666px) {
       font-size: 24px;
     }
+  }
+
+  svg {
+    font-size: 26px;
+    color: #80ff66;
+
+    &:hover {
+      color: #ccff66;
+    }
+  }
+  @media screen and (max-width: 666px) {
+    font-size: 22px;
   }
 `;
 

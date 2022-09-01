@@ -31,7 +31,7 @@ import KakaoHandle from "./components/KakaoHandle";
 function App() {
   const dispatch = useDispatch();
   const header = useSelector((state) => state.userinfo.value.header);
-
+  const loginmodal = useSelector((state) => state.userinfo.loginmodal);
   useEffect(() => {
     const accessToken = cookies.load("accessToken");
     if (accessToken !== undefined) {
@@ -54,17 +54,12 @@ function App() {
         });
     }
   }, []);
-  const [openModal, setOpenModal] = useState(false);
-
-  const toggleModal = () => {
-    setOpenModal(!openModal);
-  };
 
   return (
     <BrowserRouter>
       <ScrollToTop /> {/* 페이지 이동시 스크롤 위로 고정하는 컴포넌트 */}
       <GlobalStyles />
-      <Header toggle={toggleModal} />
+      <Header />
       <Routes>
         <Route path={"/"} element={<Home />}></Route>
         <Route path={"/progamer"} element={<ProGamer />}></Route>
@@ -91,9 +86,7 @@ function App() {
         <Route path={"/error401"} element={<Error401 />}></Route>
       </Routes>
       <Footer />
-      {openModal ? (
-        <LoginModal toggle={toggleModal} openModal={openModal} />
-      ) : null}
+      {loginmodal ? <LoginModal /> : null}
     </BrowserRouter>
   );
 }

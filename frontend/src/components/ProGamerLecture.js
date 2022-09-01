@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { BsCoin } from "react-icons/bs";
+import { useSelector, useDispatch } from "react-redux";
 import Page from "./Page";
 import axios from "axios";
+import { modal } from "../redux/loginSlice";
 
 export default function ProGamerLecture(props) {
   const [lectures, setLectures] = useState([]);
@@ -13,17 +15,12 @@ export default function ProGamerLecture(props) {
   const [indexOfFirstPost, setIndexOfFirstPost] = useState(0);
   const [currentPosts, setCurrentPosts] = useState(0);
   const { checkList } = props;
-
-  // useEffect(() => {
-  //   axios
-  //     .get("https://jsonplaceholder.typicode.com/photos")
-  //     .then((res) => setLectures(res.data));
-  // }, []);
-
+  const login = useSelector((state) => state.userinfo.value.login);
+  const dispatch = useDispatch();
   useEffect(() => {
-    axios
-      .get("https://www.dokuny.blog/course/courses")
-      .then((res) => setLectures(res.data.data.content));
+    axios.get("https://www.dokuny.blog/courses").then((res) => {
+      setLectures(res.data.data.content);
+    });
   }, []);
 
   useEffect(() => {
@@ -39,7 +36,17 @@ export default function ProGamerLecture(props) {
 
   function lectureArea(data) {
     return (
-      <LectureArea key={data.id}>
+      <LectureArea
+        key={data.id}
+        onClick={() => {
+          if (login !== true) {
+            alert("로그인 해주세요");
+            dispatch(modal(true));
+          } else {
+            document.location.href = `/Classroom/${data.id}`;
+          }
+        }}
+      >
         <Thumbnail>
           <img src={data.thumbnailUrl} alt="thumblink" />
         </Thumbnail>
@@ -71,7 +78,12 @@ export default function ProGamerLecture(props) {
       </Wrap>
 
       {checkList.length === 0 ? (
-        <Page page={currentpage} count={count} setPage={setPage} />
+        <Page
+          page={currentpage}
+          count={count}
+          setPage={setPage}
+          postPerPage={postPerPage}
+        />
       ) : (
         <Page
           page={currentpage}
@@ -80,6 +92,7 @@ export default function ProGamerLecture(props) {
             currentPosts.filter((data) => checkList.includes(data.gamerName))
               .length
           }
+          postPerPage={postPerPage}
           setPage={setPage}
         />
       )}
@@ -92,7 +105,11 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
+  gap: 1%;
+
+  @media screen and (max-width: 800px) {
+    gap: 10%;
+  }
 `;
 
 const LectureArea = styled.div`

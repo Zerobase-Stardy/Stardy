@@ -3,14 +3,17 @@ import styled from "styled-components";
 import { RiCloseLine } from "react-icons/ri";
 import GoogleButton from "./GoogleButton";
 import KaKaoButton from "./KaKaoButton";
+import { useSelector, useDispatch } from "react-redux";
+import { modal } from "../redux/loginSlice";
 
-export default function Login(props) {
+export default function Login() {
   const loginRef = useRef();
-  const { toggle, openModal } = props;
+  const dispatch = useDispatch();
+  const loginmodal = useSelector((state) => state.userinfo.loginmodal);
 
   function handleClickOutside(event) {
-    if (openModal && !loginRef.current.contains(event.target)) {
-      toggle();
+    if (loginmodal && !loginRef.current.contains(event.target)) {
+      dispatch(modal(false));
     }
   }
   useEffect(() => {
@@ -24,7 +27,11 @@ export default function Login(props) {
     <Modal>
       <LoginArea ref={loginRef}>
         <CloseBtn>
-          <RiCloseLine onClick={toggle} />
+          <RiCloseLine
+            onClick={() => {
+              dispatch(modal(false));
+            }}
+          />
         </CloseBtn>
         <span>로그인</span>
         <ButtonArea>

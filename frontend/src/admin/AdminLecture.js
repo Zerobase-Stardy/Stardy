@@ -24,7 +24,7 @@ export default function AdminLecture() {
 
   const [count, setCount] = React.useState(0); //아이템 총 개수
   const [currentpage, setCurrentpage] = React.useState(1); //현재페이지
-  const [postPerPage] = React.useState(10); //페이지당 아이템 개수
+  const [postPerPage] = React.useState(5); //페이지당 아이템 개수
   const [indexOfLastPost, setIndexOfLastPost] = React.useState(0);
   const [indexOfFirstPost, setIndexOfFirstPost] = React.useState(0);
   const [currentPosts, setCurrentPosts] = React.useState(0);
@@ -269,7 +269,12 @@ export default function AdminLecture() {
           />
         </Center>
       )}
-      <Page page={currentpage} count={count} setPage={setPage} />
+      <Page
+        page={currentpage}
+        count={count}
+        setPage={setPage}
+        postPerPage={postPerPage}
+      />
 
       <CreateWrap>
         <form onSubmit={submitHandler}>

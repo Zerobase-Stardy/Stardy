@@ -4,9 +4,13 @@ import { Link } from "react-router-dom";
 import { BsPencilSquare } from "react-icons/bs";
 import FreeContent from "../components/FreeContent";
 import SuggestContent from "../components/SuggestContent";
-
+import { useSelector, useDispatch } from "react-redux";
+import { modal } from "../redux/loginSlice";
 export default function FreeBoard() {
   const [checked, setChecked] = useState("free");
+  const login = useSelector((state) => state.userinfo.value.login);
+  const dispatch = useDispatch();
+
   return (
     <Main>
       <Effect />
@@ -41,7 +45,17 @@ export default function FreeBoard() {
                   <Label htmlFor={"suggest"}>빌드 건의</Label>
                 </Button>
               </Radio>
-              <Link to="write" style={{ marginLeft: "auto" }}>
+              <Link
+                to="write"
+                onClick={(e) => {
+                  if (login !== true) {
+                    alert("로그인 해주세요");
+                    dispatch(modal(true));
+                    e.preventDefault();
+                  }
+                }}
+                style={{ marginLeft: "auto" }}
+              >
                 <BsPencilSquare />
               </Link>
             </BoardName>

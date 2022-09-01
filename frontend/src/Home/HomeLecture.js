@@ -1,43 +1,57 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import { modal } from "../redux/loginSlice";
 
 export default function HomeLecture() {
+  const [lectures, setLectures] = useState([]);
+  const login = useSelector((state) => state.userinfo.value.login);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    axios.get("https://www.dokuny.blog/courses").then((res) => {
+      setLectures(res.data.data.content);
+    });
+  }, []);
+
+  function homeLayout(data) {
+    return (
+      <GreenBox
+        key={data.title}
+        onClick={() => {
+          if (login !== true) {
+            alert("로그인 해주세요");
+            dispatch(modal(true));
+          } else {
+            document.location.href = `/Classroom/${data.id}`;
+          }
+        }}
+      >
+        <Img>
+          <img src={data.thumbnailUrl} alt="강의" />
+        </Img>
+        <Content>
+          <Title>{data.title}</Title>
+          <Gamer>{data.gamerName}</Gamer>
+          <p>{data.level}</p>
+        </Content>
+      </GreenBox>
+    );
+  }
+
   return (
     <MainArea>
       <StarBackground>
         <Effect />
         <BrownBox>
           <RedBox>
-            <h2>신규 강의</h2>
-            <GreenBox>
-              <Img>
-                <img src=" https://i1.ytimg.com/vi/GNDugFKBqd0/mqdefault.jpg" />
-              </Img>
-              <Content>
-                <Title>무한 질럿</Title>
-                <Gamer>임요환</Gamer>
-              </Content>
-            </GreenBox>
-            <GreenBox>
-              <Img>
-                <img src=" https://i1.ytimg.com/vi/yYeDIWGZnwk/mqdefault.jpg" />
-              </Img>
-
-              <Content>
-                <Title>무한 질럿</Title>
-                <Gamer>임요환</Gamer>
-              </Content>
-            </GreenBox>
-            <GreenBox>
-              <Img>
-                <img src=" https://i1.ytimg.com/vi/3ROYmns-F9E/mqdefault.jpg" />
-              </Img>
-              <Content>
-                <Title>리콜 되면 알지?</Title>
-                <Gamer>임요환</Gamer>
-              </Content>
-            </GreenBox>
+            <h2>입문자 신규 강의</h2>
+            {lectures.length > 0
+              ? lectures
+                  .filter((e) => e.level === "Easy")
+                  .map((data, idx) => idx < 3 && homeLayout(data))
+              : null}
           </RedBox>
         </BrownBox>
       </StarBackground>
@@ -45,71 +59,12 @@ export default function HomeLecture() {
         <Effect />
         <BrownBox>
           <RedBox>
-            <h2>신규 강의</h2>
-            <GreenBox>
-              <Img>
-                <img src=" https://i1.ytimg.com/vi/GNDugFKBqd0/mqdefault.jpg" />
-              </Img>
-              <Content>
-                <Title>무한 질럿</Title>
-                <Gamer>임요환</Gamer>
-              </Content>
-            </GreenBox>
-            <GreenBox>
-              <Img>
-                <img src=" https://i1.ytimg.com/vi/yYeDIWGZnwk/mqdefault.jpg" />
-              </Img>
-
-              <Content>
-                <Title>무한 질럿</Title>
-                <Gamer>임요환</Gamer>
-              </Content>
-            </GreenBox>
-            <GreenBox>
-              <Img>
-                <img src=" https://i1.ytimg.com/vi/3ROYmns-F9E/mqdefault.jpg" />
-              </Img>
-              <Content>
-                <Title>리콜 되면 알지?</Title>
-                <Gamer>임요환</Gamer>
-              </Content>
-            </GreenBox>
-          </RedBox>
-        </BrownBox>
-      </StarBackground>
-      <StarBackground>
-        <Effect />
-        <BrownBox>
-          <RedBox>
-            <h2>신규 강의</h2>
-            <GreenBox>
-              <Img>
-                <img src=" https://i1.ytimg.com/vi/GNDugFKBqd0/mqdefault.jpg" />
-              </Img>
-              <Content>
-                <Title>무한 질럿</Title>
-                <Gamer>임요환</Gamer>
-              </Content>
-            </GreenBox>
-            <GreenBox>
-              <Img>
-                <img src=" https://i1.ytimg.com/vi/yYeDIWGZnwk/mqdefault.jpg" />
-              </Img>
-
-              <Content>
-                <Title>무한 질럿</Title>
-                <Gamer>임요환</Gamer>
-              </Content>
-            </GreenBox>
-            <GreenBox>
-              <Img>
-                <img src=" https://i1.ytimg.com/vi/3ROYmns-F9E/mqdefault.jpg" />
-              </Img>
-              <Content>
-                <Title>리콜 되면 알지?</Title>
-                <Gamer>임요환</Gamer>
-              </Content>
-            </GreenBox>
+            <h2>숙련자 신규 강의</h2>
+            {lectures.length > 0
+              ? lectures
+                  .filter((e) => e.level === "Hard")
+                  .map((data, idx) => idx < 3 && homeLayout(data))
+              : null}
           </RedBox>
         </BrownBox>
       </StarBackground>
