@@ -167,30 +167,29 @@ export default function AdminLecture() {
                 <div>
                   id: <span>{list.id}</span>
                 </div>
-
-                <div>
-                  comment: <span>{list.comment}</span>
-                </div>
                 <div>
                   gamerName :<span>{list.gamerName}</span>
-                </div>
-                <div>
-                  level : <span>{list.level}</span>
-                </div>
-                <div>
-                  price : <span>{list.price}</span>
-                </div>
-                <div>
-                  race : <span>{list.race}</span>
-                </div>
-                <div>
-                  thumbnailUrl : <span>{list.thumbnailUrl}</span>
                 </div>
                 <div>
                   title : <span>{list.title}</span>
                 </div>
                 <div>
                   videoUrl : <span>{list.videoUrl}</span>
+                </div>
+                <div>
+                  thumbnailUrl : <span>{list.thumbnailUrl}</span>
+                </div>
+                <div>
+                  comment: <span>{list.comment}</span>
+                </div>
+                <div>
+                  level : <span>{list.level}</span>
+                </div>
+                <div>
+                  <div>
+                    race : <span>{list.race}</span>
+                  </div>
+                  price : <span>{list.price}</span>
                 </div>
               </Left>
 
