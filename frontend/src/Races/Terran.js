@@ -151,7 +151,7 @@ export default function Terran(){
                 이 젊은 종족은 자신들의 단점에도 불구하고 어떤 환경에서도 살아남을 수 있다는 굳은 신념을 지니고 있다.
                 </div>
                 <LevelBox>
-                    <div id="Easy" onClick={LevelSelectHandler} style={{color: "#13cf3e"}}> Easy </div>
+                    <div id="Easy" onClick={LevelSelectHandler} style={{color: "#13cf3e",  marginRight: "8px"}}> Easy </div>
                     <div id="Hard" onClick={LevelSelectHandler}  style={{color: "red"}}> Hard </div>
                 </LevelBox>
             </RaceHeader>

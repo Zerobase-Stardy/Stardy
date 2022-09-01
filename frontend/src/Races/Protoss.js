@@ -152,7 +152,7 @@ export default function Protoss(){
                 프로토스는 또 다시 내전에 빠질까 염려하여 교리에서 한 발짝이라도 벗어나는 것을 두려워하기 때문이다.
                 </div>
                 <LevelBox>
-                    <div id="Easy" onClick={LevelSelectHandler} style={{color: "#13cf3e"}}> Easy </div>
+                    <div id="Easy" onClick={LevelSelectHandler} style={{color: "#13cf3e", marginRight: "8px"}}> Easy </div>
                     <div id="Hard" onClick={LevelSelectHandler}  style={{color: "red"}}> Hard </div>
                 </LevelBox>
             </RaceHeader>

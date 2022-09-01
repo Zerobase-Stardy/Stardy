@@ -152,7 +152,7 @@ export default function Zerg(){
                 이러한 생체 진화는 초월체에 대한 절대적인 충성심과 함께 저그를 우주에서 가장 두려운 존재 중 하나로 만들었다.
                 </div>
                 <LevelBox>
-                    <div id="Easy" onClick={LevelSelectHandler} style={{color: "#13cf3e"}}> Easy </div>
+                    <div id="Easy" onClick={LevelSelectHandler} style={{color: "#13cf3e",  marginRight: "8px"}}> Easy </div>
                     <div id="Hard" onClick={LevelSelectHandler}  style={{color: "red"}}> Hard </div>
                 </LevelBox>
             </RaceHeader>
