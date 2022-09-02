@@ -26,7 +26,8 @@ export default function Profile() {
       headers: header,
     })
     .then((res) => {
-      setMyVideo( [...res.data.data.content])
+      const cutLecture =  [...res.data.data.content].slice(0, 6)
+      setMyVideo( [...cutLecture])
     })
     .catch((err) => console.log(err))
   }, [])
@@ -42,8 +43,6 @@ export default function Profile() {
       </Link>
     )
   })
-
-  console.log(myvideo)
   
   return (
     <div>

@@ -27,6 +27,7 @@ import Protoss from "./Races/Protoss";
 import Error401 from "./pages/Error401";
 import KakaoHandle from "./components/KakaoHandle";
 import ClassRoom from "./classRoom/ClassRoom";
+import Bookmark from "./pages/Bookmark";
 
 function App() {
   const dispatch = useDispatch();
@@ -81,6 +82,7 @@ function App() {
         <Route path={"mypage"} element={<Mypage />}>
           <Route path={"profile"} element={<Profile />}></Route>
           <Route path={"attendance"} element={<Attendance />}></Route>
+          <Route path={"bookmark"} element={<Bookmark />}></Route>
         </Route>
         <Route path={"/error401"} element={<Error401 />}></Route>
       </Routes>

@@ -1,12 +1,14 @@
 import styled from "styled-components"
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { BsCoin } from "react-icons/bs";
+import { useSelector } from "react-redux";
 
 
 export default function Zerg(){
+    const header = useSelector((state) => state.userinfo.value.header);
 
-  const [lectures, setLectures] = useState([])
+    const [lectures, setLectures] = useState([])
 
   useEffect(() => {
     axios
@@ -25,23 +27,51 @@ export default function Zerg(){
     const LevelSelectHandler = (e) => {
         setLevel(`${e.target.id}`)
     }
-
-    const [lecture, setLecture] = useState([])
-
-
-    const levelVideo = lectures.map((data) => { 
-      if(data.level === level){
-      return(
-          <Link to={`/classRoom/${data.title}`}>
-          <LectureInfo key={data.id}>
-          <img src={data.thumbnailUrl} alt="썸네일" style={{ width: "100%"}}/>
-          <div style={{fontSize:"14px"}}> {data.title} </div>
-          </LectureInfo>
-          </Link>
-
-      ) 
-      }}) 
-
+    function handleClick(e) {
+        const lectureId  = e.currentTarget.id
+        console.log(`${lectureId}`)
+        axios.post(`https://www.dokuny.blog/courses/${lectureId}/unlock`,{}, {
+             headers: header
+         }).
+         then(()=>{
+            window.alert(`강의가 해금되었습니다! 마이페이지에서 확인 할 수 있습니다`)
+  
+          }).
+          catch((err) => {
+            if(err.response.status === 500){
+              window.alert("이미 소지한 강의입니다 마이페이지에서 확인해주세요")
+            } else if (err.response.status === 401){
+              window.alert("먼저 로그인을 해주세요")
+            } else if(err.response.status === 403){
+              window.alert("포인트가 부족합니다")
+            }
+          })
+     }
+   
+  
+      const levelVideo = lectures.map((data) => { 
+        if(data.level === level){
+        return(
+   
+            <LectureInfo key={data.id} onClick={handleClick} id={data.id}>
+            <img src={data.thumbnailUrl} alt="썸네일" style={{ width: "100%"}}/>
+            <div style={{fontSize:"16px", fontWeight:"700"}}> {data.title} </div>
+            <Name>
+              <p>{data.gamerName}</p>
+            </Name>
+            <Price>
+              <span>
+                <BsCoin /> :
+              </span>
+              &nbsp;
+              <p>{data.price}</p>
+            </Price>
+            </LectureInfo>
+  
+  
+        ) 
+        }}) 
+  
 
     return(
         <Wrap>
@@ -105,3 +135,23 @@ const LectureArea = styled.div`
     flex-wrap: wrap;
     align-items: center;
 `
+
+const Name = styled.div`
+  p {
+    font-size: 14px;
+  }
+`;
+
+const Price = styled.div`
+  font-size: 14px;
+  display: flex;
+
+  p {
+    line-height: 23px;
+    color: #ccff66;
+  }
+  span {
+    font-size: 18px;
+    color: #ccff66;
+  }
+`;
