@@ -11,6 +11,6 @@ public interface PostService {
     PostRegisterOutPutDto.Info registerPost(PostReq.Request request, MemberInfo memberInfo);
     PostInfoOutPutDto.Info getPostDetail(Long postId);
     PostUpdateOutPutDto.Info updatePost(Long postId, PostReq.Request request, MemberInfo memberInfo);
-    PostInfoOutPutDto.Info deletePost(Long postId);
+    PostInfoOutPutDto.Info deletePost(Long postId, MemberInfo memberInfo);
     Page<PostListOutPutDto.Info> getTitleList(SearchTitle searchTitle, Pageable pageable);
 }

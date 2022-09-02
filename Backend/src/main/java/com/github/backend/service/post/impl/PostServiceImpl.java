@@ -63,9 +63,17 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostInfoOutPutDto.Info deletePost(Long postId) {
+    public PostInfoOutPutDto.Info deletePost(Long postId, MemberInfo memberInfo) {
+        Member member = memberRepository.findById(memberInfo.getId())
+                .orElseThrow(() -> new PostException(PostErrorCode.MEMBER_NOT_EXISTS));
+
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_EXISTS));
+
+        if(!Objects.equals(member.getId(), post.getMember().getId())){
+            throw new PostException(PostErrorCode.MEMBER_NOT_EXISTS);
+        }
+
         postRepository.delete(post);
 
         return PostInfoOutPutDto.Info.of((post));
