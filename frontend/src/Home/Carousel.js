@@ -71,11 +71,13 @@ const Effect = styled.div`
 const CarouselWrap = styled.div`
   width: 100%;
   margin: 0 auto;
+  height: 300px;
+
   @media screen and (max-width: 1024px) {
-    height: 400px;
-  }
-  @media screen and (max-width: 450px) {
     height: 300px;
+  }
+  @media screen and (max-width: 647px) {
+    height: 200px;
   }
 
   @media screen and (max-width: 400px) {

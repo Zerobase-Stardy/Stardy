@@ -115,12 +115,14 @@ export default function Editor(props) {
                     title: title,
                     boardKind: boardKind,
                     content: content,
+                    postId: Number(props.id),
                   },
 
                   {
                     headers: header,
                   },
                   console.log({
+                    postId: Number(props.id),
                     title: title,
                     boardKind: boardKind,
                     content: content,
