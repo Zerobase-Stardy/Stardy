@@ -23,8 +23,7 @@ export default function KakaoHandle() {
           path: "/",
           expires,
         });
-        // document.location.href = "/";
-        navigate(-1);
+        document.location.href = "/";
       }, []);
   });
 

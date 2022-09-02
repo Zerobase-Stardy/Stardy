@@ -1,4 +1,5 @@
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
+import { useSelector } from "react-redux";
 import ReactQuill, { Quill } from "react-quill";
 import { CustomToolbar } from "../Layout/CustomToolbar";
 import axios from "axios";
@@ -10,9 +11,11 @@ Quill.register("modules/imageResize", ImageResize);
 
 export default function Editor(props) {
   const quillRef = useRef();
+  const header = useSelector((state) => state.userinfo.value.header);
 
   const imageHandler = () => {
     const input = document.createElement("input");
+
     input.setAttribute("type", "file");
     input.setAttribute("accept", "image/*");
     input.click();
@@ -21,12 +24,14 @@ export default function Editor(props) {
       const formData = new FormData();
       const file = input.files[0];
       formData.append("image", file);
-      axios.post("https://dokuny.blog/postImage", formData).then((res) => {
-        const url = res.data.data.path;
-        const editor = quillRef.current.getEditor();
-        const range = editor.getSelection();
-        editor.insertEmbed(range.index, "image", url);
-      });
+      axios
+        .post("https://dokuny.blog/postImage", formData, { headers: header })
+        .then((res) => {
+          const url = res.data.data.path;
+          const editor = quillRef.current.getEditor();
+          const range = editor.getSelection();
+          editor.insertEmbed(range.index, "image", url);
+        });
     };
   };
 
@@ -61,10 +66,15 @@ export default function Editor(props) {
   ];
   const [text, setText] = useState("");
 
+  useEffect(() => {
+    props.writing(text);
+  });
+
   const handleText = (value) => {
     setText(value);
-    props.writing(text);
   };
+
+  useEffect(() => {});
 
   return (
     <Wrap>
