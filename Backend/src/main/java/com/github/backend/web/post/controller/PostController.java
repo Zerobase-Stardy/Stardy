@@ -102,9 +102,10 @@ public class PostController {
     )
     @DeleteMapping("/posts/{postId}")
     public ResponseEntity<Result<?>> deletePost(
-            @PathVariable("postId") Long postId
+            @PathVariable("postId") Long postId,
+            @AuthenticationPrincipal MemberInfo memberInfo
     ) {
-        PostInfoOutPutDto.Info postInfo = postService.deletePost(postId);
+        PostInfoOutPutDto.Info postInfo = postService.deletePost(postId ,memberInfo);
 
         return ResponseEntity.ok().body(
                 Result.builder()
