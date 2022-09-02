@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 @RequiredArgsConstructor
 @Service
 public class PostServiceImpl implements PostService {
@@ -35,7 +37,7 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(() -> new PostException(PostErrorCode.POST_NOT_EXISTS));
 
 
-        if (post.getMember().getId() != memberInfo.getId()) {
+        if (!Objects.equals(post.getMember().getId(), memberInfo.getId())) {
             throw new PostException(PostErrorCode.POST_NOT_EQ_MEMBER);
         }
 
@@ -47,7 +49,7 @@ public class PostServiceImpl implements PostService {
     @Transactional
     @Override
     public PostRegisterOutPutDto.Info registerPost(PostReq.Request req, MemberInfo memberInfo) {
-        Member member = memberRepository.findByEmail(memberInfo.getEmail())
+        Member member = memberRepository.findById(memberInfo.getId())
                 .orElseThrow(() -> new PostException(PostErrorCode.MEMBER_NOT_EXISTS));
 
         Post post = postRepository.save(Post.builder()
