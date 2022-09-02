@@ -22,6 +22,7 @@ export default function MyPage() {
 
           <PageCategory>
             <LinkItem to={"/mypage/profile"}> 프로필 </LinkItem>
+            <LinkItem to={"/mypage/bookmark"}> 강의 즐겨찾기 </LinkItem>
             <LinkItem to={"/mypage/attendance"}> 출석 체크 </LinkItem>
             <button
               onClick={() => {
@@ -73,7 +74,7 @@ border: 1px solid #800000;
 
 const PageCategory = styled.div`
   box-sizing: border-box;
-  width: 144px;
+  width: 170px;
   min-width: 120px;
   font-size: 24px;
   font-weight: bold;

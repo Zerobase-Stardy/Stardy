@@ -26,11 +26,8 @@ export default function Attendance() {
 
     const handleClick = () => {
       axios
-        .post("https://www.dokuny.blog/members/me/attendances/daily", {
+        .post("https://www.dokuny.blog/members/me/attendances/daily",{}, {
           headers: header,
-        })
-        .then((response) => {
-          console.log(response);
         })
         .catch((err) => console.log(err));
 
