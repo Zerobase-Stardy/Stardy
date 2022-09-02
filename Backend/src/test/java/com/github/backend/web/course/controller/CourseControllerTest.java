@@ -104,7 +104,7 @@ class CourseControllerTest {
         //when
 
         //then
-        mockMvc.perform(get("/course/courses"))
+        mockMvc.perform(get("/courses"))
                 .andDo(print())
                 .andExpect(jsonPath("$.data.content[0].title").value(course.getTitle()))
                 .andExpect(jsonPath("$.data.content[0].videoUrl").value(course.getVideoUrl()))

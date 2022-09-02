@@ -7,7 +7,6 @@ import com.github.backend.service.post.PostService;
 import com.github.backend.service.post.impl.S3UploadService;
 import com.github.backend.web.post.dto.PostReq;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +15,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Tag(name = "Post", description = "게시판 관련 API")
 @RequiredArgsConstructor
@@ -56,11 +57,12 @@ public class PostController {
         security = {@SecurityRequirement(name = "Authorization")},
         tags = {"Post"}
     )
+    @Secured("ROLE_USER")
     @PutMapping("/posts/{postId}")
     public ResponseEntity<Result<?>> updatePost(
             @PathVariable("postId") Long postId
             ,@RequestBody @Valid PostReq.Request request
-            ,@AuthenticationPrincipal MemberInfo memberInfo
+            ,@ApiIgnore @AuthenticationPrincipal MemberInfo memberInfo
     ) throws IOException {
 
         PostUpdateOutPutDto.Info update = postService.updatePost(
@@ -100,10 +102,11 @@ public class PostController {
         security = {@SecurityRequirement(name = "Authorization")},
         tags = {"Post"}
     )
+    @Secured("ROLE_USER")
     @DeleteMapping("/posts/{postId}")
     public ResponseEntity<Result<?>> deletePost(
             @PathVariable("postId") Long postId,
-            @AuthenticationPrincipal MemberInfo memberInfo
+        @ApiIgnore @AuthenticationPrincipal MemberInfo memberInfo
     ) {
         PostInfoOutPutDto.Info postInfo = postService.deletePost(postId ,memberInfo);
 
@@ -121,10 +124,11 @@ public class PostController {
         security = {@SecurityRequirement(name = "Authorization")},
         tags = {"Post"}
     )
+    @Secured("ROLE_USER")
     @PostMapping("/posts")
     public ResponseEntity<Result<?>> registerPost(
-            @AuthenticationPrincipal MemberInfo memberInfo,
-            @RequestBody @Valid PostReq.Request request
+            @ApiIgnore @AuthenticationPrincipal MemberInfo memberInfo,
+            @RequestBody PostReq.Request request
     ) throws IOException {
         PostRegisterOutPutDto.Info postRegisterOutPutDto = postService.registerPost(
                 request,
@@ -144,6 +148,7 @@ public class PostController {
         security = {@SecurityRequirement(name = "Authorization")},
         tags = {"Post"}
     )
+    @Secured("ROLE_USER")
     @PostMapping("/postImage")
     public ResponseEntity<Result<?>> getImagePath(@RequestPart("image") MultipartFile multipartFile) throws IOException {
         String imagePath = s3UploadService.upload(multipartFile, "image").getPath();
@@ -162,6 +167,7 @@ public class PostController {
         security = {@SecurityRequirement(name = "Authorization")},
         tags = {"Post"}
     )
+    @Secured("ROLE_USER")
     @DeleteMapping("/deleteImage")
     public ResponseEntity<Result<?>> deleteImage(@RequestParam String imageKey) throws IOException {
         s3UploadService.remove(imageKey);
