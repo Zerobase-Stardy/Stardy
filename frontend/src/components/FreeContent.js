@@ -16,12 +16,13 @@ export default function FreeContent() {
 
   useEffect(() => {
     axios
-      .get("https://www.dokuny.blog/posts")
-      .then((res) =>
+      .get("https://www.dokuny.blog/posts?page=0&size=100000")
+      .then((res) => {
+        console.log(res);
         setFreeBoard(
           res.data.data.content.filter((data) => data.boardKind === "free")
-        )
-      );
+        );
+      });
   }, []);
 
   useEffect(() => {

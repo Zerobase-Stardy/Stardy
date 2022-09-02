@@ -43,7 +43,7 @@ export default function Header(props) {
 
   if (
     locationNow.pathname.includes("admin") ||
-    locationNow.pathname.includes("Classroom") ||
+    locationNow.pathname.includes("classRoom") ||
     locationNow.pathname.includes("error")
   )
     return null;
