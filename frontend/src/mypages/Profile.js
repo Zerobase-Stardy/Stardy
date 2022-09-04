@@ -11,6 +11,8 @@ export default function Profile() {
   const [star, setStar] = useState([]);
   const [bookmarkList, setbookmarkList] = useState([]);
 
+
+
   const ProfileBadge = function(){
     const profilImage = "https://w.namu.la/s/dffd0ffc5c1dc39d2debfea46e1019057c766153087117d5af327336a6fe997691ae78bda40eccb72fd68d7f17632d5f7a1080659dd031e4ac54b35272a36744d8c0e10ffae8726ca4fc476e29552120b7ad341b602afdea4d73806d548cf19d"
     const badgeStyle = { borderRadius: "50%", 
