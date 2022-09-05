@@ -58,13 +58,7 @@ export default function ProGamerLecture(props) {
         );
       })
       .catch((err) => {
-        if (err.response.status === 500) {
-          window.alert("이미 소지한 강의입니다 마이페이지에서 확인해주세요");
-        } else if (err.response.status === 401) {
-          window.alert("먼저 로그인을 해주세요");
-        } else if (err.response.status === 403) {
-          window.alert("포인트가 부족합니다");
-        }
+        window.alert(`${err.response.data.errorDescription}`)
       });
   }
 
