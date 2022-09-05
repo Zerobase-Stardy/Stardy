@@ -1,6 +1,7 @@
 package com.github.backend.dto.Post;
 
 import com.github.backend.persist.post.Post;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,6 +14,7 @@ public class PostListOutPutDto{
         private String title;
         private String writer;
         private String boardKind;
+        private LocalDateTime createdAt;
         private String content;
 
 
@@ -23,6 +25,7 @@ public class PostListOutPutDto{
                     .writer(post.getMember().getEmail())
                     .boardKind(post.getBoardKind())
                     .content(post.getContent())
+                .createdAt(post.getCreatedDate())
                     .build();
         }
     }
