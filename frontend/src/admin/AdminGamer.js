@@ -27,9 +27,12 @@ export default function AdminGamer() {
 
   useEffect(() => {
     axios
-      .get("https://www.dokuny.blog/admin-management/gamers", {
-        headers: header,
-      })
+      .get(
+        "https://www.dokuny.blog/admin-management/gamers/?page=0&size=100000",
+        {
+          headers: header,
+        }
+      )
       .then((response) => setGamers(response.data.data.content))
       .catch((error) => {
         document.location.href = "/error401";

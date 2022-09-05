@@ -17,11 +17,13 @@ export default function ProGamerLecture(props) {
   const { checkList } = props;
   const header = useSelector((state) => state.userinfo.value.header);
   const login = useSelector((state) => state.userinfo.value.login);
-  const dispatch = useDispatch();
+
   useEffect(() => {
-    axios.get("https://www.dokuny.blog/courses").then((res) => {
-      setLectures(res.data.data.content);
-    });
+    axios
+      .get("https://www.dokuny.blog/courses?page=0&size=100000")
+      .then((res) => {
+        setLectures(res.data.data.content);
+      });
   }, []);
 
   useEffect(() => {
@@ -34,7 +36,6 @@ export default function ProGamerLecture(props) {
   const setPage = (e) => {
     setCurrentpage(e);
   };
-
 
   function handleClick(e) {
     const lectureId = e.currentTarget.id
@@ -61,11 +62,7 @@ export default function ProGamerLecture(props) {
 
   function lectureArea(data) {
     return (
-      <LectureArea
-        key={data.id}
-        onClick={handleClick}
-        id={data.id}
-      >
+      <LectureArea key={data.id} onClick={handleClick} id={data.id}>
         <Thumbnail>
           <img src={data.thumbnailUrl} alt="thumblink" />
         </Thumbnail>
