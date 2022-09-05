@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 export default function Zerg(){
     const header = useSelector((state) => state.userinfo.value.header);
-
+    const login = useSelector((state) => state.userinfo.value.login);
     const [lectures, setLectures] = useState([])
 
   useEffect(() => {
@@ -29,6 +29,7 @@ export default function Zerg(){
     }
     function handleClick(e) {
         const lectureId  = e.currentTarget.id
+        if(login === false) return window.alert("로그인이 필요합니다.")
         console.log(`${lectureId}`)
         axios.post(`https://www.dokuny.blog/courses/${lectureId}/unlock`,{}, {
              headers: header
