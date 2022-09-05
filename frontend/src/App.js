@@ -29,7 +29,7 @@ import KakaoHandle from "./components/KakaoHandle";
 import ClassRoom from "./classRoom/ClassRoom";
 import Bookmark from "./mypages/Bookmark";
 import MyLecture from "./mypages/MyLecture";
-import GoogleHandle from "./components/GoogleHandle"
+import GoogleHandle from "./components/GoogleHandle";
 
 function App() {
   const dispatch = useDispatch();
@@ -86,7 +86,7 @@ function App() {
           <Route path={"profile"} element={<Profile />}></Route>
           <Route path={"attendance"} element={<Attendance />}></Route>
           <Route path={"bookmark"} element={<Bookmark />}></Route>
-          <Route path={"mylecture"} element={<MyLecture/>}></Route>
+          <Route path={"mylecture"} element={<MyLecture />}></Route>
         </Route>
         <Route path={"/error401"} element={<Error401 />}></Route>
       </Routes>
