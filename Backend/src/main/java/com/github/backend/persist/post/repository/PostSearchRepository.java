@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.github.backend.persist.post.QPost.*;
 import static io.jsonwebtoken.lang.Strings.hasText;
 
 @Repository
@@ -23,19 +24,20 @@ public class PostSearchRepository {
 
     public Page<Post> searchByWhere(TitleSearchCondition condition, Pageable pageable) {
 
-        List<Post> result = queryFactory.select(QPost.post)
-                .from(QPost.post)
+        List<Post> result = queryFactory.select(post)
+                .from(post)
                 .where(
                         titleContain(condition.getTitle()),
                         boardKind(condition.getBoardKind())
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+            .orderBy(post.createdDate.desc())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory
-                .select(QPost.post.count())
-                .from(QPost.post)
+                .select(post.count())
+                .from(post)
                 .where(
                         titleContain(condition.getTitle()),
                         boardKind(condition.getBoardKind())
@@ -47,10 +49,10 @@ public class PostSearchRepository {
     }
 
     private BooleanExpression titleContain(String title) {
-        return hasText(title) ? QPost.post.title.contains(title) : null;
+        return hasText(title) ? post.title.contains(title) : null;
     }
 
     private BooleanExpression boardKind(String boardKind) {
-        return hasText(boardKind) ? QPost.post.boardKind.contains(boardKind) : null;
+        return hasText(boardKind) ? post.boardKind.contains(boardKind) : null;
     }
 }
