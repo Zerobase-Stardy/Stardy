@@ -1,9 +1,9 @@
 import styled from "styled-components"
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
 import { BsCoin } from "react-icons/bs";
-
+import { useSelector,useDispatch } from "react-redux";
+import { modal } from "../redux/loginSlice";
 
 
 
@@ -11,6 +11,7 @@ export default function Protoss(){
     const [lectures, setLectures] = useState([])
     const header = useSelector((state) => state.userinfo.value.header);
     const login = useSelector((state) => state.userinfo.value.login);
+    const dispatch = useDispatch();
 
     useEffect(() => {
       axios
@@ -31,7 +32,11 @@ export default function Protoss(){
 
     function handleClick(e) {
        const lectureId = e.currentTarget.id
-       if(login === false) return window.alert("로그인이 필요합니다.")
+       if(login === false) {
+        alert("로그인이 필요합니다.");
+        dispatch(modal(true));
+        e.preventDefault();
+       }
         axios.post(`https://www.dokuny.blog/courses/${lectureId}/unlock`,{}, {
             headers: header
         }).
