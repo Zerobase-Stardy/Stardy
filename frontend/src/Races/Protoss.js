@@ -10,6 +10,7 @@ import { BsCoin } from "react-icons/bs";
 export default function Protoss(){
     const [lectures, setLectures] = useState([])
     const header = useSelector((state) => state.userinfo.value.header);
+    const login = useSelector((state) => state.userinfo.value.login);
 
     useEffect(() => {
       axios
@@ -30,6 +31,7 @@ export default function Protoss(){
 
     function handleClick(e) {
        const lectureId = e.currentTarget.id
+       if(login === false) return window.alert("로그인이 필요합니다.")
         axios.post(`https://www.dokuny.blog/courses/${lectureId}/unlock`,{}, {
             headers: header
         }).

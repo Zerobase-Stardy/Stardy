@@ -16,6 +16,7 @@ export default function ProGamerLecture(props) {
   const [currentPosts, setCurrentPosts] = useState(0);
   const { checkList } = props;
   const header = useSelector((state) => state.userinfo.value.header);
+  const login = useSelector((state) => state.userinfo.value.login);
   const dispatch = useDispatch();
   useEffect(() => {
     axios.get("https://www.dokuny.blog/courses").then((res) => {
@@ -37,12 +38,14 @@ export default function ProGamerLecture(props) {
 
   function handleClick(e) {
     const lectureId = e.currentTarget.id
+
+    if(login === false) return window.alert("로그인이 필요합니다.")
+    
      axios.post(`https://www.dokuny.blog/courses/${lectureId}/unlock`,{}, {
          headers: header
      }).
      then(()=>{
        window.alert(`강의가 해금되었습니다! 마이페이지에서 확인 할 수 있습니다`)
-
      }).
      catch((err) => {
        if(err.response.status === 500){

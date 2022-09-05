@@ -7,6 +7,7 @@ import { modal } from "../redux/loginSlice";
 export default function HomeLecture() {
   const [lectures, setLectures] = useState([]);
   const login = useSelector((state) => state.userinfo.value.login);
+  const header = useSelector((state) => state.userinfo.value.header);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -15,18 +16,32 @@ export default function HomeLecture() {
     });
   }, []);
 
+  function handleClick(e) {
+    const lectureId = e.currentTarget.id
+    if(login === false) return window.alert("로그인이 필요합니다.")
+     axios.post(`https://www.dokuny.blog/courses/${lectureId}/unlock`,{}, {
+         headers: header
+     }).
+     then(()=>{
+        document.location.href = `/Classroom/${lectureId}`;
+     }).
+     catch((err) => {
+       if(err.response.status === 500){
+         window.alert("이미 소지한 강의입니다 마이페이지에서 확인해주세요")
+       } else if (err.response.status === 401){
+         window.alert("먼저 로그인을 해주세요")
+       } else if(err.response.status === 403){
+         window.alert("포인트가 부족합니다")
+       }
+     })
+
+ }
+
   function homeLayout(data) {
     return (
       <GreenBox
         key={data.title}
-        onClick={() => {
-          if (login !== true) {
-            alert("로그인 해주세요");
-            dispatch(modal(true));
-          } else {
-            document.location.href = `/Classroom/${data.id}`;
-          }
-        }}
+        onClick={ handleClick }
       >
         <Img>
           <img src={data.thumbnailUrl} alt="강의" />
