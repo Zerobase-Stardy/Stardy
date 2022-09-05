@@ -28,11 +28,10 @@ export default function Attendance() {
       axios
         .post("https://www.dokuny.blog/members/me/attendances/daily",{}, {
           headers: header,
+        }).then(() => {
+          return alert(`출석하셨습니다. (포인트 +50p) 현재 포인트 ${user.point}`)
         })
-        .catch((err) => console.log(err));
-
-
-        alert(`출석하셨습니다. (포인트 +50p) 현재 포인트 ${user.point}`)
+        .catch((err) => alert(`${err.response.data.errorDescription}`));
       }
 
     
@@ -44,7 +43,7 @@ export default function Attendance() {
         setMarks([...pick]); 
       }))
       .catch((err) => console.log(err))
-    }, [])
+    }, user.point)
 
 
     return (
