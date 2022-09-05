@@ -22,9 +22,10 @@ export default function FreeContent() {
   };
 
   useEffect(() => {
-    axios
-      .get(`https://www.dokuny.blog/posts/${id}`)
-      .then((res) => setPost(res.data.data));
+    axios.get(`https://www.dokuny.blog/posts/${id}`).then((res) => {
+      setPost(res.data.data);
+      console.log(res.data.data);
+    });
   }, []);
 
   function toggle() {
@@ -91,7 +92,7 @@ export default function FreeContent() {
                   ) : null}
                 </Title>
                 <Date>
-                  <p>{timeEdit(post.member.createdDate)}</p>
+                  <p>{timeEdit(post.member.lastModifiedDate)}</p>
                   <span>
                     <FaUserAlt /> {post.member.nickname}
                   </span>
@@ -231,6 +232,7 @@ const Date = styled.div`
 `;
 
 const Content = styled.div`
+  width: 100%;
   margin-top: 30px;
   padding-bottom: 100px;
   p {
@@ -240,7 +242,7 @@ const Content = styled.div`
   }
 
   img {
-    max-width: 50%;
+    max-width: 100%;
     max-height: 50%;
     margin: 0 auto;
   }
