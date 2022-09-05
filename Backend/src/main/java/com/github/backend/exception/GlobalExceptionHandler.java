@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = AdminException.class)
     public ResponseEntity<ErrorResult> adminExceptionHandler(AdminException e) {
-        return ResponseEntity.ok().body(
+        return ResponseEntity.badRequest().body(
                 ErrorResult.builder()
                         .errorCode(e.getErrorCode().name())
                         .errorDescription(e.getErrorMessage())
@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = AttendanceException.class)
     public ResponseEntity<ErrorResult> attendanceExceptionHandler(AttendanceException e) {
-        return ResponseEntity.ok().body(
+        return ResponseEntity.badRequest().body(
                 ErrorResult.builder()
                         .errorCode(e.getErrorCode().name())
                         .errorDescription(e.getErrorMessage())
@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = JwtInvalidException.class)
     public ResponseEntity<ErrorResult> JwtInvalidExceptionHandler(JwtInvalidException e) {
-        return ResponseEntity.ok().body(
+        return ResponseEntity.badRequest().body(
                 ErrorResult.builder()
                         .errorCode(e.getErrorCode().name())
                         .errorDescription(e.getErrorMessage())
@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = OAuthException.class)
     public ResponseEntity<ErrorResult> OAuthExceptionHandler(OAuthException e) {
-        return ResponseEntity.ok().body(
+        return ResponseEntity.badRequest().body(
                 ErrorResult.builder()
                         .errorCode(e.getErrorCode().name())
                         .errorDescription(e.getErrorMessage())
@@ -60,7 +60,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = CourseException.class)
     public ResponseEntity<ErrorResult> CourseExceptionHandler(CourseException e) {
-        return ResponseEntity.ok().body(
+        return ResponseEntity.badRequest().body(
                 ErrorResult.builder()
                         .errorCode(e.getErrorCode().name())
                         .errorDescription(e.getErrorMessage())
@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = GamerException.class)
     public ResponseEntity<ErrorResult> GamerExceptionHandler(GamerException e) {
-        return ResponseEntity.ok().body(
+        return ResponseEntity.badRequest().body(
                 ErrorResult.builder()
                         .errorCode(e.getErrorCode().name())
                         .errorDescription(e.getErrorMessage())
@@ -80,7 +80,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = MemberException.class)
     public ResponseEntity<ErrorResult> MemberExceptionHandler(MemberException e) {
-        return ResponseEntity.ok().body(
+        return ResponseEntity.badRequest().body(
                 ErrorResult.builder()
                         .errorCode(e.getErrorCode().name())
                         .errorDescription(e.getErrorMessage())
@@ -90,7 +90,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = MyCourseException.class)
     public ResponseEntity<ErrorResult> MyCourseExceptionHandler(MyCourseException e) {
-        return ResponseEntity.ok().body(
+        return ResponseEntity.badRequest().body(
                 ErrorResult.builder()
                         .errorCode(e.getErrorCode().name())
                         .errorDescription(e.getErrorMessage())
@@ -100,7 +100,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = PostException.class)
     public ResponseEntity<ErrorResult> PostExceptionHandler(PostException e) {
-        return ResponseEntity.ok().body(
+        return ResponseEntity.badRequest().body(
                 ErrorResult.builder()
                         .errorCode(e.getErrorCode().name())
                         .errorDescription(e.getErrorMessage())
