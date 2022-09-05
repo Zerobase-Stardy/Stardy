@@ -22,9 +22,12 @@ export default function AdminMember() {
   };
   useEffect(() => {
     axios
-      .get("https://www.dokuny.blog/admin-management/members", {
-        headers: header,
-      })
+      .get(
+        "https://www.dokuny.blog/admin-management/members?page=0&size=100000",
+        {
+          headers: header,
+        }
+      )
       .then((res) => setMembers(res.data.data.content))
       .catch((err) => console.log(err));
   }, []);

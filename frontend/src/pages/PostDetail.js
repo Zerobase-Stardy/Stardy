@@ -93,7 +93,7 @@ export default function FreeContent() {
                 <Date>
                   <p>{timeEdit(post.member.createdDate)}</p>
                   <span>
-                    <FaUserAlt /> {post.member.email}
+                    <FaUserAlt /> {post.member.nickname}
                   </span>
                 </Date>
                 <Content>

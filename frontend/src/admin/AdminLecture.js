@@ -31,10 +31,16 @@ export default function AdminLecture() {
 
   useEffect(() => {
     axios
-      .get("https://www.dokuny.blog/admin-management/courses", {
-        headers: header,
-      })
-      .then((response) => setLectures(...lectures, response.data.data.content));
+      .get(
+        "https://www.dokuny.blog/admin-management/courses?page=0&size=100000",
+        {
+          headers: header,
+        }
+      )
+      .then((response) => {
+        console.log(response.data.data.content);
+        setLectures(...lectures, response.data.data.content);
+      });
   }, []);
 
   useEffect(() => {

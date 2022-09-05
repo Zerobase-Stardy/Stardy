@@ -12,7 +12,7 @@ export default function ProGamerCategory() {
 
   useEffect(() => {
     axios
-      .get("https://www.dokuny.blog/gamer/list")
+      .get("https://www.dokuny.blog/gamer/list?page=0&size=100000")
       .then((res) => {
         setGamers(...gamers, res.data.data.content);
       })
@@ -21,7 +21,7 @@ export default function ProGamerCategory() {
       });
   }, []);
 
-  console.log(gamers)
+  console.log(gamers);
 
   function checkHandler(checked, item) {
     if (checked) {
@@ -226,6 +226,11 @@ const FolderBtn = styled.button`
   font-size: 16px;
   color: #80ff66;
   cursor: pointer;
+
+  @media screen and (max-width: 340px) {
+    width: 30%;
+    font-size: 12px;
+  }
 `;
 
 const LectureArea = styled.div`
