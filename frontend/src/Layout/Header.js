@@ -182,7 +182,7 @@ const UserNaviArea = styled.div`
   font-size: 14px;
 
   @media screen and (max-width: 650px) {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .mypage:hover {
