@@ -151,10 +151,10 @@
 
 
 
-|  ![image](https://user-images.githubusercontent.com/49369306/195608027-5633bd06-1c29-4916-bf75-65567de3b2a5.png)   | ![8A47FFE3-01CC-4D5D-BFEF-2442C199 (1)](https://user-images.githubusercontent.com/101342819/195843132-6ac73804-173b-42a2-82fd-46abbe4fadb4.jpg)     |   ![imoge](https://user-images.githubusercontent.com/49369306/195610304-6a7a322e-ffc0-491b-a56b-3bae9ff83c2e.jpg)  |  ![hsh](https://user-images.githubusercontent.com/49369306/194506216-ee652477-527c-495b-9c00-5c7759524560.png)    | ![jjm](https://user-images.githubusercontent.com/90626691/194509019-075c0978-68cc-43e8-8490-9d9f5b2eb019.PNG)     |
+|  ![image](https://avatars.githubusercontent.com/u/104823768?v=4)   | ![8A47FFE3-01CC-4D5D-BFEF-2442C199 (1)](https://avatars.githubusercontent.com/u/110148272?v=4)     |   ![imoge](https://avatars.githubusercontent.com/u/87813831?v=4)  |  ![hsh](https://avatars.githubusercontent.com/u/68585648?v=4)    | ![jjm](https://avatars.githubusercontent.com/u/56738768?v=4)     |
 | :---------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------: |
 |Front-End|Front-End|Back-End|Back-End|Back-End|Back-End|
-| [이승훈](https://github.com/younjaewon) | [임호준](https://github.com/onLuke) | [👑이도훈](https://github.com/Dokuny) | [노영훈](https://github.com/malslapq) | [김현빈](https://github.com/eongiin) | 
+| [이승훈](https://github.com/mandarin-sep) | [임호준](https://github.com/h0d00) | [👑이도훈](https://github.com/Dokuny) | [노영훈](https://github.com/NohYeongHun) | [김현빈](https://github.com/hyunebin) | 
 
 <br><br>
 
