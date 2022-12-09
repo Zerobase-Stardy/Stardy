@@ -51,7 +51,7 @@
 <br><br>
 
 ## 🧑‍🤝‍🧑 팀원 소개
-- [자세한 소개 문서 (notion)](https://www.notion.so/dokuny/168c85490d764c27b0a959fa68188269)
+- [자세한 소개 문서 (notion)](https://towering-report-bae.notion.site/Stardy-53a8edaeeb174e1f9a939a4bfb1d98ad)
 
 
 
