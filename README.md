@@ -2,7 +2,7 @@
 ![레이스](https://user-images.githubusercontent.com/87813831/196915696-7a65ebf3-64bf-4474-8300-b6df87777cc6.png)
 
 
->팀프로젝트를 구하거나 인원을 모집할 수 있는 플랫폼입니다.
+>스타크래프트 강의를 난이도별로 제공하는 서비스입니다.
 - [팀 프로젝트 문서 (노션)](https://www.notion.so/dokuny/Stardy-1a5d71be1ff149c8b8495a148c1bca3c)
 <br><br>
 
